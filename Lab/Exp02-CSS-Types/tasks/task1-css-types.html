@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Task 1 — CSS Types Practice</title>
+  <!-- EXTERNAL: styles the footer only -->
+  <link rel="stylesheet" href="css/task1-footer.css">
+  <!-- INTERNAL: styles the main content only -->
+  <style>
+    body { margin: 0; background: #fbf9f4; color: #1c1b19; font: 400 17px/1.65 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
+    main h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; font-size: 1.4rem; margin: 2rem 0 .6rem; padding-top: .8rem; border-top: 2px solid #1c1b19; }
+    main h2:first-child { margin-top: .5rem; }
+    main p { margin: 0 0 1rem; }
+    main code { font: .88em Consolas, monospace; background: #f2ece0; padding: .05em .3em; }
+    main table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    main th, main td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid #e6e0d4; }
+    main thead th { border-bottom: 2px solid #1c1b19; }
+    main .out { background: #14212e; color: #e9e4d6; font: .84rem/1.55 Consolas, monospace; padding: .8rem 1rem; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- INLINE: every style on the header is a style attribute -->
+  <header style="max-width: 46rem; margin: 0 auto; padding: 3rem 1.5rem 1rem; border-bottom: 1px solid #e6e0d4;">
+    <p style="margin: 0; color: #9c4221; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; font-family: Arial, sans-serif;">Experiment 02 · Practice Task 1</p>
+    <h1 style="margin: .2rem 0 .4rem; font-family: Georgia, 'Times New Roman', serif; font-weight: 600; font-size: 2rem; line-height: 1.25; color: #1c1b19;">Three types of CSS on one page</h1>
+    <p style="margin: 0; color: #736f66; font-family: Arial, sans-serif;">This header is styled only with <span style="font-family: Consolas, monospace; background: #f2ece0; padding: 0 .3em;">style=""</span> attributes.</p>
+  </header>
+
+  <main>
+    <h2>Who styles what</h2>
+    <table>
+      <thead><tr><th>Region</th><th>CSS type</th><th>Where the rules live</th></tr></thead>
+      <tbody>
+        <tr><td>Header</td><td>Inline</td><td><code>style</code> attributes on each element</td></tr>
+        <tr><td>Main</td><td>Internal</td><td><code>&lt;style&gt;</code> in this file's head</td></tr>
+        <tr><td>Footer</td><td>External</td><td><code>tasks/css/task1-footer.css</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>Proof</h2>
+    <p>Read back from the browser: the computed font family of each region, and which
+      stylesheet (if any) a rule for it came from.</p>
+    <pre class="out" id="proof"></pre>
+  </main>
+
+  <footer class="site-footer">
+    <p>Footer styled by an external stylesheet · Suryansh Mishra · 590012069</p>
+  </footer>
+
+  <script>
+    (function () {
+      var out = [];
+      var h = document.querySelector("header"), m = document.querySelector("main"), f = document.querySelector("footer");
+      out.push("header  inline style attr : " + (h.getAttribute("style") ? "yes" : "no"));
+      var sheets = Array.prototype.map.call(document.styleSheets, function (s) {
+        return (s.href ? s.href.split("/").slice(-2).join("/") : "<style> in head") + " (" + s.cssRules.length + " rules)";
+      });
+      out.push("stylesheets on page       : " + sheets.join(" | "));
+      out.push("main    font-family       : " + getComputedStyle(m).fontFamily.split(",")[0]);
+      out.push("footer  background-color  : " + getComputedStyle(f).backgroundColor);
+      document.getElementById("proof").textContent = out.join("\n");
+    })();
+  </script>
+</body>
+</html>

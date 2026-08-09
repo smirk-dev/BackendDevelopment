@@ -1,0 +1,17 @@
+/* task2.css — Practice Task 2: fourteen selectors, one per rule, all scoped to #board.
+   The page reads this sheet back and counts what every selector matches. */
+
+/* 01 element    */ #board article { padding: .8rem 1rem; border: 1px solid var(--rule); background: #fff; }
+/* 02 class      */ #board .tag { font: .75rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+/* 03 id         */ #board #pinned { border-left: 4px solid var(--accent); }
+/* 04 universal  */ #board * { margin-top: 0; }
+/* 05 descendant */ #board article p { margin-bottom: .3rem; }
+/* 06 child      */ #board > section > h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; }
+/* 07 adjacent   */ #board h4 + .tag { display: block; margin-bottom: .4rem; }
+/* 08 general    */ #board h4 ~ footer { font-size: .85rem; color: var(--muted); }
+/* 09 attribute  */ #board a[href^="https"] { color: #2f5d8a; }
+/* 10 attribute  */ #board [data-status="done"] h4 { text-decoration: line-through; color: var(--muted); }
+/* 11 pseudo-cls */ #board article:hover { border-color: var(--ink); }
+/* 12 pseudo-cls */ #board li:nth-child(odd) { background: var(--wash); }
+/* 13 pseudo-cls */ #board article:not([data-status]) h4 { font-style: italic; }
+/* 14 pseudo-el  */ #board h4::before { content: "\00A7  "; color: var(--accent); }

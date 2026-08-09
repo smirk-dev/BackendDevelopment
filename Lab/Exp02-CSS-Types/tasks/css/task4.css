@@ -1,0 +1,50 @@
+/* task4.css — Practice Task 4: an animated gallery.
+   (1) hover transitions on the cards, (2) a loading spinner, (3) a subtle background animation. */
+
+/* (3) background: a hairline grid drawn by an inline SVG, drifting very slowly */
+body.gallery-page {
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0V48' fill='none' stroke='%23e6e0d4' stroke-width='1'/%3E%3C/svg%3E");
+  animation: drift 40s linear infinite;
+}
+@keyframes drift { from { background-position: 0 0; } to { background-position: 48px 96px; } }
+
+/* (2) loading spinner — visible while the gallery "loads" */
+.loader { display: flex; align-items: center; gap: .8rem; padding: 2rem 0; color: var(--muted); }
+.spinner {
+  width: 2.4rem; height: 2.4rem;
+  border: 3px solid var(--rule);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.is-loading .gallery { display: none; }
+.is-ready .loader { display: none; }
+
+/* (1) cards with hover transitions */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1.2rem; animation: rise .5s ease-out both; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.plate {
+  margin: 0;
+  background: #fff;
+  border: 1px solid var(--rule);
+  transition: transform .35s ease, border-color .35s ease;
+}
+.plate svg { display: block; width: 100%; height: auto; background: var(--wash); transition: background-color .35s ease; }
+.plate svg .shape { transition: transform .5s ease, fill .35s ease; transform-origin: 50% 50%; transform-box: fill-box; }
+.plate figcaption { padding: .6rem .8rem; font-size: .92rem; border-top: 1px solid var(--rule); transition: color .35s ease; }
+.plate figcaption small { display: block; font-family: var(--mono); font-size: .75rem; }
+
+.plate:hover, .plate:focus-within { transform: translateY(-6px); border-color: var(--ink); }
+.plate:hover svg, .plate:focus-within svg { background-color: #f6dcc9; }
+.plate:hover .shape, .plate:focus-within .shape { transform: rotate(90deg) scale(1.1); fill: var(--accent); }
+.plate:hover figcaption, .plate:focus-within figcaption { color: var(--accent); }
+.plate a { color: inherit; text-decoration: none; display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.gallery-page { animation: none; }
+  .spinner { animation-duration: 3s; }
+  .plate, .plate svg, .plate .shape, .gallery { transition: none; animation: none; }
+}

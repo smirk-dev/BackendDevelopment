@@ -1,0 +1,65 @@
+/* selectors.css — a second external sheet. One rule per selector type, each scoped to its own
+   demo box (#s-...) so the gallery cannot leak into the rest of the page. */
+
+/* 1  element / type */
+#s-element p { font-family: var(--serif); font-style: italic; }
+
+/* 2  class */
+#s-class .highlight { background: #f6dcc9; padding: 0 .2em; }
+
+/* 3  id */
+#s-id #only-one { border-left: 3px solid var(--accent); padding-left: .6rem; }
+
+/* 4  universal (scoped: * inside this box only) */
+#s-universal * { font-family: var(--mono); font-size: .85rem; }
+
+/* 5  descendant — any depth */
+#s-descendant div em { color: var(--accent); }
+
+/* 6  child — direct children only */
+#s-child ul > li { list-style: square; color: var(--accent); }
+#s-child ul > li li { color: var(--muted); list-style: circle; }
+
+/* 7  adjacent sibling — only the first p straight after h4 */
+#s-adjacent h4 + p { font-weight: 700; }
+
+/* 8  general sibling — every p after h4 */
+#s-general h4 ~ p { color: var(--accent); }
+
+/* 9  attribute — presence, exact, prefix, suffix, substring, word, lang */
+#s-attr [title] { text-decoration: underline dotted; }
+#s-attr a[href^="https"] { color: #2f5d8a; }
+#s-attr a[href$=".pdf"]::after { content: " [pdf]"; font: .75rem var(--mono); }
+#s-attr a[href*="example"] { font-weight: 600; }
+#s-attr input[type="text"] { border: 1px solid var(--accent); }
+#s-attr [class~="pill"] { border: 1px solid var(--ink); padding: 0 .4em; border-radius: 1em; }
+#s-attr [lang|="en"] { font-style: italic; }
+
+/* 10 pseudo-classes — state and structure */
+#s-pseudo-class li:first-child { font-weight: 700; }
+#s-pseudo-class li:last-child { color: var(--muted); }
+#s-pseudo-class li:nth-child(even) { background: #fff; }
+#s-pseudo-class li:not(.skip):hover { color: var(--accent); }
+#s-pseudo-class input:focus { outline: 2px solid var(--accent); }
+#s-pseudo-class input:checked + label { text-decoration: line-through; }
+#s-pseudo-class input:invalid { border-color: #b3261e; }
+#s-pseudo-class a:visited { color: #6b4f8a; }
+#s-pseudo-class li:is(.a, .b) { font-style: italic; }
+
+/* 11 pseudo-elements — parts of an element that are not in the DOM */
+#s-pseudo-el p::first-letter { font: 600 2.2rem/1 var(--serif); float: left; margin: .1rem .35rem 0 0; color: var(--accent); }
+#s-pseudo-el p::first-line { font-variant: small-caps; }
+#s-pseudo-el .quote::before { content: "\201C"; color: var(--accent); }
+#s-pseudo-el .quote::after { content: "\201D"; color: var(--accent); }
+#s-pseudo-el ::selection { background: var(--accent); color: #fff; }
+#s-pseudo-el input::placeholder { color: var(--accent); font-style: italic; }
+#s-pseudo-el li::marker { color: var(--accent); content: "\2192  "; }
+
+/* 12 grouping — one declaration block, many selectors */
+#s-group h4, #s-group h5, #s-group .as-heading { font-family: var(--serif); color: var(--accent); margin: .2rem 0; }
+
+/* specificity duel (see the specificity section) */
+#spec p { color: #2f5d8a; }                 /* (1,0,1) */
+#spec .note { color: #2f7a5b; }             /* (1,1,0) — wins over the line above */
+p.note { color: #7a2f6b; }                  /* (0,1,1) — loses to both */
+#spec p.note.loud { color: var(--accent); } /* (1,2,1) — the winner */

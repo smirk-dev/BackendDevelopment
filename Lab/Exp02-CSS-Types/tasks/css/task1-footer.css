@@ -1,0 +1,10 @@
+/* task1-footer.css — the EXTERNAL part of Task 1. It touches the footer and nothing else. */
+.site-footer {
+  max-width: 46rem;
+  margin: 0 auto 2rem;
+  padding: 1rem 1.5rem;
+  background: #14212e;
+  color: #e9e4d6;
+  font: .88rem/1.5 Consolas, "SF Mono", monospace;
+}
+.site-footer p { margin: 0; }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Task 3 — Layout Creation</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/task3.css">
+</head>
+<body class="site">
+  <nav class="site-nav" aria-label="Main">
+    <a class="brand" href="#">Field Notes</a>
+    <ul>
+      <li><a href="#" aria-current="page">Home</a></li>
+      <li><a href="#articles">Articles</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="../index.html#files">Exp 02</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+    <header class="hero">
+      <p class="eyebrow">Experiment 02 · Practice Task 3 · <span class="bp"></span></p>
+      <h1>A typical website layout</h1>
+      <p class="lede">Flexbox lays out the navigation bar along one axis. CSS Grid places the page
+        regions with named areas and lays out the cards. Two media queries rearrange both for
+        tablets and phones — resize the window and watch the label above change.</p>
+    </header>
+
+    <main class="content" id="articles">
+      <h2>Latest articles</h2>
+      <div class="cards">
+        <article><h3>Inline vs external</h3><p>Why a linked sheet beats copy-pasted style attributes.</p></article>
+        <article><h3>The cascade</h3><p>Origin, specificity, then source order — in that sequence.</p></article>
+        <article><h3>Box model</h3><p>What <code>border-box</code> changes about width.</p></article>
+        <article><h3>Flexbox</h3><p>One axis at a time: rows or columns.</p></article>
+        <article><h3>Grid</h3><p>Rows and columns together, with named areas.</p></article>
+        <article><h3>Media queries</h3><p>Same HTML, a different layout per screen.</p></article>
+      </div>
+    </main>
+
+    <aside class="aside" id="about">
+      <h2>About this layout</h2>
+      <ul>
+        <li><code>.site-nav</code> — <code>display: flex</code></li>
+        <li><code>.page</code> — <code>grid-template-areas</code></li>
+        <li><code>.cards</code> — 3 → 2 → 1 columns</li>
+        <li>Breakpoints at 1024, 768 and 480px</li>
+      </ul>
+    </aside>
+
+    <footer class="foot">Suryansh Mishra · 590012069 · Backend Development (CSFS3008P)</footer>
+  </div>
+</body>
+</html>

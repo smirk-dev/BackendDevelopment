@@ -1,0 +1,73 @@
+/* task3.css — Practice Task 3: a typical site layout.
+   Flexbox for the navigation bar, CSS Grid for the page and the card grid, media queries for phones. */
+
+body.site { max-width: none; padding: 0; }
+
+/* ---- navigation: flexbox ---- */
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .8rem 1.5rem;
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
+  position: sticky; top: 0;
+}
+.site-nav .brand { font: 600 1.25rem var(--serif); text-decoration: none; color: var(--ink); }
+.site-nav ul { display: flex; gap: 1.4rem; list-style: none; margin: 0; padding: 0; }
+.site-nav ul a { text-decoration: none; color: var(--ink); padding: .2rem 0; border-bottom: 1px solid transparent; }
+.site-nav ul a:hover, .site-nav ul a[aria-current] { border-bottom-color: var(--accent); color: var(--accent); }
+
+/* ---- page: named grid areas ---- */
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  grid-template-areas:
+    "hero    hero"
+    "content aside"
+    "foot    foot";
+  gap: 2rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+.hero    { grid-area: hero; padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--rule); }
+.content { grid-area: content; }
+.aside   { grid-area: aside; padding-left: 1.5rem; border-left: 1px solid var(--rule); }
+.foot    { grid-area: foot; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+.hero h1 { font-size: 2.6rem; margin: 0 0 .4rem; }
+.content h2, .aside h2 { margin-top: 0; border-top: 0; padding-top: 0; font-size: 1.3rem; }
+
+/* ---- cards: auto-fitting grid ---- */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.cards article { padding: 1rem; border: 1px solid var(--rule); background: #fff; }
+.cards article h3 { margin-bottom: .3rem; }
+.cards article p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+/* breakpoint indicator (CSS only) */
+.bp::after { content: "desktop · > 1024px"; font: .75rem var(--mono); color: var(--accent); }
+
+/* ---- tablet ---- */
+@media (max-width: 1024px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bp::after { content: "tablet · 769–1024px"; }
+}
+@media (max-width: 768px) {
+  .page {
+    grid-template-columns: 1fr;
+    grid-template-areas: "hero" "content" "aside" "foot";
+    gap: 1.5rem;
+  }
+  .aside { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); padding-top: 1rem; }
+  .hero h1 { font-size: 2rem; }
+  .bp::after { content: "small tablet · 481–768px"; }
+}
+/* ---- phone ---- */
+@media (max-width: 480px) {
+  .site-nav { flex-direction: column; align-items: flex-start; gap: .4rem; padding: .7rem 1rem; position: static; }
+  .site-nav ul { flex-wrap: wrap; gap: .3rem 1rem; }
+  .page { padding: 1rem; }
+  .cards { grid-template-columns: 1fr; }
+  .bp::after { content: "phone · ≤ 480px"; }
+}

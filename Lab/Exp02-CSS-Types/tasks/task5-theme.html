@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Task 5 — Theme Creator</title>
+  <!-- Set the theme before first paint, so a returning dark-mode visitor never sees a white flash. -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("exp02-theme"); } catch (e) {}
+      if (!t) t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/task5.css">
+</head>
+<body class="theme-page">
+<header class="masthead">
+  <p class="eyebrow">Experiment 02 · Practice Task 5</p>
+  <h1>Theme creator</h1>
+  <p class="lede">One button switches between a light and a dark theme. It changes the
+    background, the text and the cards by flipping a single <code>data-theme</code> attribute on
+    <code>&lt;html&gt;</code>; the stylesheet does the rest with custom properties. The first
+    visit follows the system's <code>prefers-color-scheme</code>; the choice is remembered.</p>
+  <p class="row">
+    <button type="button" class="theme-switch" id="theme-switch" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span id="theme-label">Dark mode</span></button>
+    <a href="../index.html#files">← back to Experiment 02</a>
+  </p>
+</header>
+
+<main>
+  <h2>Cards</h2>
+  <div class="theme-cards">
+    <div class="theme-card"><h3>Background</h3><p><code>--bg</code> moves from warm paper to near-black.</p></div>
+    <div class="theme-card"><h3>Text</h3><p><code>--fg</code> and <code>--soft</code> flip so contrast stays above 4.5 : 1.</p></div>
+    <div class="theme-card"><h3>Cards</h3><p><code>--card</code> and <code>--card-line</code> keep the cards a step lighter than the page.</p></div>
+  </div>
+
+  <h2>Live token values</h2>
+  <p class="tokens" id="tokens"></p>
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development (CSFS3008P)</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById("theme-switch");
+    function paint() {
+      var dark = root.getAttribute("data-theme") === "dark";
+      btn.setAttribute("aria-pressed", String(dark));
+      document.getElementById("theme-label").textContent = dark ? "Light mode" : "Dark mode";
+      var cs = getComputedStyle(root);
+      document.getElementById("tokens").innerHTML = ["--bg", "--fg", "--soft", "--card", "--pop"].map(function (k) {
+        var v = cs.getPropertyValue(k).trim();
+        return '<span style="background:' + v + '"></span>' + k + ": " + v;
+      }).join("<br>") + "<br>body background: " + getComputedStyle(document.body).backgroundColor;
+    }
+    btn.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("exp02-theme", next); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/* print.css — external sheet with media="print": the browser downloads it but applies it
+   only when printing (or when DevTools emulates print media). */
+body { max-width: none; background: #fff; font-size: 11pt; }
+nav.toc, .layers, button, .k-demo, .k-bar { display: none !important; }
+a[href^="http"]::after, a[href$=".html"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+h2 { break-before: auto; break-after: avoid; }
+pre.code, .out { background: #fff; color: #000; border: 1px solid #999; white-space: pre-wrap; }

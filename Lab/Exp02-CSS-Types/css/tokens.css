@@ -1,0 +1,25 @@
+/* tokens.css — reaches the page through @import inside style.css, not through a <link>.
+   That makes it the fourth way a stylesheet can arrive: an imported sheet. */
+
+:root {
+  --paper: #fbf9f4;
+  --ink: #1c1b19;
+  --muted: #736f66;
+  --rule: #e6e0d4;
+  --accent: #9c4221;
+  --wash: #f2ece0;
+  --dark: #14212e;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: Consolas, "SF Mono", "DejaVu Sans Mono", monospace;
+
+  /* source colours for the cascade lab — one per origin */
+  --c-external: #2f5d8a;
+  --c-imported: #5b6b2f;
+  --c-internal: #2f7a5b;
+  --c-inline: #9c4221;
+  --c-important: #7a2f6b;
+}
+
+/* proof the import loaded: style.css never sets this, only this file does */
+.imported-proof { color: var(--c-imported); font-weight: 600; }

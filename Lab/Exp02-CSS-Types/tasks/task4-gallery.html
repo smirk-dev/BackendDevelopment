@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Task 4 — Animation Gallery</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/task4.css">
+</head>
+<body class="gallery-page is-loading">
+<header class="masthead">
+  <p class="eyebrow">Experiment 02 · Practice Task 4</p>
+  <h1>Animation gallery</h1>
+  <p class="lede">Hover or tab onto a plate: the card lifts and the shape turns, all with
+    <code>transition</code>. The spinner and the slowly drifting grid behind the page are
+    <code>@keyframes</code> animations. Everything calms down under
+    <code>prefers-reduced-motion</code>.</p>
+  <p><a href="../index.html#files">← back to Experiment 02</a> · <button type="button" id="reload">Show the loader again</button></p>
+</header>
+
+<main>
+  <div class="loader" role="status"><div class="spinner" aria-hidden="true"></div><span>Loading plates…</span></div>
+  <div class="gallery">
+      <figure class="plate">
+        <a href="#plate-1" id="plate-1">
+          <svg viewBox="0 0 200 160" role="img" aria-label="Square"><rect class="shape" x="60" y="40" width="80" height="80" fill="#1c1b19"/></svg>
+          <figcaption>Plate 1 — Square<small>transform: rotate(90deg)</small></figcaption>
+        </a>
+      </figure>
+      <figure class="plate">
+        <a href="#plate-2" id="plate-2">
+          <svg viewBox="0 0 200 160" role="img" aria-label="Circle"><circle class="shape" cx="100" cy="80" r="42" fill="#1c1b19"/></svg>
+          <figcaption>Plate 2 — Circle<small>fill transition</small></figcaption>
+        </a>
+      </figure>
+      <figure class="plate">
+        <a href="#plate-3" id="plate-3">
+          <svg viewBox="0 0 200 160" role="img" aria-label="Triangle"><polygon class="shape" points="100,34 148,122 52,122" fill="#1c1b19"/></svg>
+          <figcaption>Plate 3 — Triangle<small>rotate + scale</small></figcaption>
+        </a>
+      </figure>
+      <figure class="plate">
+        <a href="#plate-4" id="plate-4">
+          <svg viewBox="0 0 200 160" role="img" aria-label="Bars"><g class="shape" fill="#1c1b19"><rect x="56" y="50" width="16" height="60"/><rect x="82" y="38" width="16" height="72"/><rect x="108" y="62" width="16" height="48"/><rect x="134" y="30" width="16" height="80"/></g></svg>
+          <figcaption>Plate 4 — Bars<small>group transform</small></figcaption>
+        </a>
+      </figure>
+      <figure class="plate">
+        <a href="#plate-5" id="plate-5">
+          <svg viewBox="0 0 200 160" role="img" aria-label="Diamond"><polygon class="shape" points="100,38 142,80 100,122 58,80" fill="#1c1b19"/></svg>
+          <figcaption>Plate 5 — Diamond<small>transform-box</small></figcaption>
+        </a>
+      </figure>
+      <figure class="plate">
+        <a href="#plate-6" id="plate-6">
+          <svg viewBox="0 0 200 160" role="img" aria-label="Rings"><g class="shape" fill="none" stroke="#1c1b19" stroke-width="6"><circle cx="80" cy="80" r="30"/><circle cx="120" cy="80" r="30"/></g></svg>
+          <figcaption>Plate 6 — Rings<small>stroke group</small></figcaption>
+        </a>
+      </figure>
+  </div>
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development (CSFS3008P)</footer>
+
+<script>
+  (function () {
+    var b = document.body;
+    function load() {
+      b.classList.remove("is-ready"); b.classList.add("is-loading");
+      setTimeout(function () { b.classList.remove("is-loading"); b.classList.add("is-ready"); }, 1200);
+    }
+    document.getElementById("reload").addEventListener("click", load);
+    load();
+  })();
+</script>
+</body>
+</html>

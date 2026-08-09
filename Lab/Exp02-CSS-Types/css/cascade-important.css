@@ -1,0 +1,3 @@
+/* cascade-important.css — an EXTERNAL sheet linked before the <style>, yet it beats the
+   internal rule and the inline style attribute. !important flips the normal order. */
+.cascade-target { color: var(--c-important) !important; }

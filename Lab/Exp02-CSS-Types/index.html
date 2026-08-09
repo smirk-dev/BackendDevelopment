@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Experiment 02 — All Types of Cascading Style Sheets</title>
+
+  <!-- EXTERNAL: linked sheets. style.css itself pulls in tokens.css with @import (IMPORTED). -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/selectors.css">
+  <!-- EXTERNAL with a media attribute: only applies when printing -->
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <!-- cascade lab layers (switched on and off by js/main.js) -->
+  <link rel="stylesheet" href="css/cascade-external.css" id="layer-external">
+  <link rel="stylesheet" href="css/cascade-important.css" id="layer-important">
+
+  <!-- INTERNAL: a <style> element in the head. It comes after the links, so on equal
+       specificity it beats them by source order. -->
+  <style id="layer-internal">
+    .cascade-target { color: var(--c-internal); }
+  </style>
+  <style>
+    .from-internal { color: var(--c-internal); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 02</p>
+  <h1>All types of Cascading Style Sheets</h1>
+  <p class="lede">One page, styled from every place CSS can come from — an external file, an
+    imported file, a <code>&lt;style&gt;</code> block and the <code>style</code> attribute —
+    plus the cascade that decides between them, every selector type, the box model, layout and
+    motion. The manual's six pages are in <a href="#files"><code>manual/</code></a>, unchanged.</p>
+  <nav class="toc" aria-label="Sections">
+    <a href="#types">1 · Types</a>
+    <a href="#cascade">2 · Cascade</a>
+    <a href="#selectors">3 · Selectors</a>
+    <a href="#specificity">4 · Specificity</a>
+    <a href="#box">5 · Box model</a>
+    <a href="#layout">6 · Layout</a>
+    <a href="#motion">7 · Motion</a>
+    <a href="#files">8 · Manual pages &amp; tasks</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- =============================== 1 =============================== -->
+<section id="types">
+  <h2>1 — The ways CSS reaches a page</h2>
+  <p>Each card below is coloured by a different origin. Open DevTools on any of them and the
+    Styles panel names the file — or says <code>element.style</code> / <code>index.html</code>.</p>
+
+  <div class="origins">
+    <div class="origin">
+      <span class="tag from-external">External</span>
+      <h3>A linked <code>.css</code> file</h3>
+      <p>This label is coloured by <code>.from-external</code> in <code>css/style.css</code>,
+        brought in with <code>&lt;link rel="stylesheet"&gt;</code>. Reused by every page that
+        links it, cached by the browser.</p>
+      <pre class="code"><code>&lt;link rel="stylesheet" href="css/style.css"&gt;</code></pre>
+    </div>
+
+    <div class="origin">
+      <span class="tag imported-proof">Imported</span>
+      <h3><code>@import</code> inside a stylesheet</h3>
+      <p>This label's colour is set only in <code>css/tokens.css</code>, which no
+        <code>&lt;link&gt;</code> mentions — <code>style.css</code> imports it. So are all the
+        colour tokens this page uses.</p>
+      <pre class="code"><code>/* first line of style.css */
+@import url("tokens.css");</code></pre>
+    </div>
+
+    <div class="origin">
+      <span class="tag from-internal">Internal</span>
+      <h3>A <code>&lt;style&gt;</code> block</h3>
+      <p>Coloured by <code>.from-internal</code>, written in the <code>&lt;head&gt;</code> of
+        this file. Applies to this page only; no extra request.</p>
+      <pre class="code"><code>&lt;style&gt;
+  .from-internal { color: var(--c-internal); }
+&lt;/style&gt;</code></pre>
+    </div>
+
+    <div class="origin">
+      <span class="tag" style="color: var(--c-inline); font-weight: 600;">Inline</span>
+      <h3>The <code>style</code> attribute</h3>
+      <p style="border-left: 3px solid var(--c-inline); padding-left: .6rem;">This paragraph's
+        left rule and the label above are inline: written on the element itself. Highest
+        normal priority, impossible to reuse.</p>
+      <pre class="code"><code>&lt;span style="color: var(--c-inline);"&gt;</code></pre>
+    </div>
+  </div>
+
+  <p class="well" style="margin-top: 1rem;">Two more ways, both external:
+    <code>&lt;link media="print"&gt;</code> loads <code>css/print.css</code>, which applies only
+    when the page is printed (try Print preview — the navigation and buttons disappear and links
+    show their address), and the browser's own <strong>user-agent stylesheet</strong>, which is
+    why an unstyled <code>&lt;h1&gt;</code> is already big and bold.</p>
+</section>
+
+<!-- =============================== 2 =============================== -->
+<section id="cascade">
+  <h2>2 — The cascade, live</h2>
+  <p>The sentence below is targeted by <strong>four</strong> rules at once. Switch layers off and
+    on; the text takes the colour of whichever rule the cascade picks, and the panel says why.</p>
+
+  <p class="cascade-target" id="cascade-target" style="color: var(--c-inline);">Which rule colours this sentence?</p>
+
+  <div class="layers" role="group" aria-label="Cascade layers">
+    <button type="button" data-layer="external" aria-pressed="true"><span class="swatch" style="background: var(--c-external);"></span>External file</button>
+    <button type="button" data-layer="internal" aria-pressed="true"><span class="swatch" style="background: var(--c-internal);"></span>Internal &lt;style&gt;</button>
+    <button type="button" data-layer="inline" aria-pressed="true"><span class="swatch" style="background: var(--c-inline);"></span>Inline style=""</button>
+    <button type="button" data-layer="important" aria-pressed="false"><span class="swatch" style="background: var(--c-important);"></span>!important (file)</button>
+  </div>
+  <pre class="out" id="cascade-out" aria-live="polite"></pre>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Priority (low → high)</th><th>Where</th><th>Here</th></tr></thead>
+    <tbody>
+      <tr><td>1 User-agent</td><td>Browser defaults</td><td>margins on <code>&lt;p&gt;</code></td></tr>
+      <tr><td>2 External</td><td><code>&lt;link&gt;</code> / <code>@import</code></td><td><code>css/cascade-external.css</code></td></tr>
+      <tr><td>3 Internal</td><td><code>&lt;style&gt;</code></td><td><code>#layer-internal</code> in the head</td></tr>
+      <tr><td>4 Inline</td><td><code>style=""</code></td><td>on the sentence</td></tr>
+      <tr><td>5 <code>!important</code></td><td>any origin</td><td><code>css/cascade-important.css</code> — an external file that still wins</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">Strictly, external-versus-internal is not a separate rank: both are author
+    styles and the later one wins on equal specificity. The <code>&lt;style&gt;</code> beats the
+    file here because it comes after the <code>&lt;link&gt;</code>. Move it above and the file
+    would win.</p>
+</section>
+
+<!-- =============================== 3 =============================== -->
+<section id="selectors">
+  <h2>3 — Every selector type</h2>
+  <p>Rules in <code>css/selectors.css</code>, one per box. The counter under each heading is
+    computed by <code>document.querySelectorAll()</code> with the same selector, so it proves
+    what the rule actually hits.</p>
+
+  <div class="sel-grid">
+    <div class="sel" id="s-element">
+      <h3>Element · <code>p</code></h3>
+      <small data-count="#s-element p"></small>
+      <div class="demo"><p>Every paragraph in this box is italic serif.</p><span>A span is not.</span></div>
+    </div>
+
+    <div class="sel" id="s-class">
+      <h3>Class · <code>.highlight</code></h3>
+      <small data-count="#s-class .highlight"></small>
+      <div class="demo">Classes are <span class="highlight">reusable</span> on <span class="highlight">many</span> elements.</div>
+    </div>
+
+    <div class="sel" id="s-id">
+      <h3>ID · <code>#only-one</code></h3>
+      <small data-count="#s-id #only-one"></small>
+      <div class="demo"><p id="only-one" style="margin: 0;">An id is unique on the page.</p></div>
+    </div>
+
+    <div class="sel" id="s-universal">
+      <h3>Universal · <code>*</code></h3>
+      <small data-count="#s-universal *"></small>
+      <div class="demo"><p style="margin: 0;">Everything inside this box is <b>monospace</b>, <i>whatever</i> its tag.</p></div>
+    </div>
+
+    <div class="sel" id="s-descendant">
+      <h3>Descendant · <code>div em</code></h3>
+      <small data-count="#s-descendant div em"></small>
+      <div class="demo"><p style="margin: 0;"><em>Nested deep</em> still matches — <span><em>any depth</em></span>.</p></div>
+    </div>
+
+    <div class="sel" id="s-child">
+      <h3>Child · <code>ul &gt; li</code></h3>
+      <small data-count="#s-child ul > li"></small>
+      <div class="demo">
+        <ul style="margin: 0;"><li>Direct child (square)</li><li>Direct child
+          <ul><li>grandchild — matched by <code>ul &gt; li</code> of the inner list, styled muted by a more specific rule</li></ul>
+        </li></ul>
+      </div>
+    </div>
+
+    <div class="sel" id="s-adjacent">
+      <h4 style="margin: 0;">Adjacent sibling · <code>h4 + p</code></h4>
+      <p style="margin: .3rem 0;">I come straight after the h4 — bold.</p>
+      <p style="margin: 0;">I am the second sibling — not bold.</p>
+      <small data-count="#s-adjacent h4 + p"></small>
+    </div>
+
+    <div class="sel" id="s-general">
+      <h4 style="margin: 0;">General sibling · <code>h4 ~ p</code></h4>
+      <p style="margin: .3rem 0;">Every later p sibling…</p>
+      <p style="margin: 0;">…is accent-coloured.</p>
+      <small data-count="#s-general h4 ~ p"></small>
+    </div>
+
+    <div class="sel" id="s-attr">
+      <h3>Attribute · <code>[attr]</code>, <code>^=</code> <code>$=</code> <code>*=</code> <code>~=</code> <code>|=</code></h3>
+      <small data-count="#s-attr [title], #s-attr a[href^='https'], #s-attr a[href$='.pdf'], #s-attr a[href*='example'], #s-attr input[type='text'], #s-attr [class~='pill'], #s-attr [lang|='en']"></small>
+      <div class="demo">
+        <abbr title="Cascading Style Sheets">CSS</abbr> ·
+        <a href="https://example.com/">https link</a> ·
+        <a href="notes.pdf">notes.pdf</a> ·
+        <span class="tag pill">pill</span> ·
+        <span lang="en-GB">colour</span><br>
+        <label>Text input <input type="text" size="10"></label>
+      </div>
+    </div>
+
+    <div class="sel" id="s-pseudo-class">
+      <h3>Pseudo-class · <code>:first-child</code> <code>:nth-child()</code> <code>:not()</code> <code>:checked</code> …</h3>
+      <small data-count="#s-pseudo-class li:nth-child(even)"></small>
+      <div class="demo">
+        <ul style="margin: 0;">
+          <li>first-child (bold)</li><li class="a">nth-child(even) · :is(.a)</li><li class="skip">:not(.skip) — no hover colour</li><li class="b">hover me · :is(.b)</li><li>last-child (muted)</li>
+        </ul>
+        <input type="checkbox" id="pc-done"> <label for="pc-done">:checked + label</label><br>
+        <label>:invalid <input type="email" value="not-an-email" size="12"></label>
+      </div>
+    </div>
+
+    <div class="sel" id="s-pseudo-el">
+      <h3>Pseudo-element · <code>::first-letter</code> <code>::first-line</code> <code>::before</code> …</h3>
+      <div class="demo">
+        <p style="margin: 0;">Pseudo-elements style parts of an element that do not exist in the HTML: the first letter, the first line, generated content, the selection and the placeholder.</p>
+        <p class="quote" style="margin: .4rem 0 0;">Quotation marks added by ::before and ::after.</p>
+        <ol style="margin: .3rem 0;"><li>::marker replaced</li><li>on each list item</li></ol>
+        <input type="text" placeholder="::placeholder" size="14"> <small>select some text above</small>
+      </div>
+    </div>
+
+    <div class="sel" id="s-group">
+      <h3>Grouping · <code>h4, h5, .as-heading</code></h3>
+      <small data-count="#s-group h4, #s-group h5, #s-group .as-heading"></small>
+      <div class="demo"><h4>An h4</h4><h5>An h5</h5><p class="as-heading">A paragraph with a class</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== 4 =============================== -->
+<section id="specificity">
+  <h2>4 — Specificity</h2>
+  <p>When origins tie, the more specific selector wins. Counted as <em>(ids, classes /
+    attributes / pseudo-classes, elements / pseudo-elements)</em>; inline styles sit above all
+    three. The numbers below are computed by <code>js/main.js</code>, not typed in.</p>
+  <div class="table-wrap">
+    <table id="spec-table">
+      <thead><tr><th>Selector</th><th>(a, b, c)</th><th>Manual's weight</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div id="spec" class="well">
+    <p class="note loud" id="spec-target" style="margin: 0;">Four rules want to colour this sentence.</p>
+  </div>
+  <pre class="out" id="spec-out"></pre>
+</section>
+
+<!-- =============================== 5 =============================== -->
+<section id="box">
+  <h2>5 — Box model</h2>
+  <p>Content 240px, padding 20px, border 8px, margin 16px (the tinted band is an
+    <code>outline</code> drawn over the margin). Switch <code>box-sizing</code> to see what
+    <code>width</code> means.</p>
+  <div class="row">
+    <button type="button" id="bm-toggle" aria-pressed="true">box-sizing: border-box</button>
+  </div>
+  <div class="bm-stage"><div class="bm-box" id="bm-box">I am the content box.</div></div>
+  <pre class="out" id="bm-out"></pre>
+</section>
+
+<!-- =============================== 6 =============================== -->
+<section id="layout">
+  <h2>6 — Layout: flexbox, grid, position</h2>
+
+  <article>
+    <h3>Flexbox — one dimension</h3>
+    <div class="row" role="group" aria-label="justify-content">
+      <button type="button" data-justify="flex-start">flex-start</button>
+      <button type="button" data-justify="center">center</button>
+      <button type="button" data-justify="space-between">space-between</button>
+      <button type="button" data-justify="space-around">space-around</button>
+      <button type="button" data-justify="flex-end">flex-end</button>
+    </div>
+    <div class="flex-demo" id="flex-demo" style="margin-top: .6rem;"><div>1</div><div>2</div><div>3</div></div>
+    <small id="flex-out"></small>
+  </article>
+
+  <article>
+    <h3>Grid — two dimensions</h3>
+    <div class="grid-demo"><div>1</div><div class="wide">2 · span 2 columns</div><div class="tall">3 · span 2 rows</div><div>4</div><div>5</div></div>
+  </article>
+
+  <article>
+    <h3><code>position</code></h3>
+    <div class="pos-stage">
+      <span class="pos-static">static</span>
+      <span class="pos-relative">relative: top 1.4rem, left 1.5rem</span>
+      <span class="pos-absolute">absolute: right/bottom .6rem</span>
+    </div>
+    <div class="pos-sticky-demo" tabindex="0" aria-label="Scrollable sticky demo">
+      <h4>sticky header — scroll this box</h4>
+      <p>Line 1</p><p>Line 2</p><p>Line 3</p><p>Line 4</p><p>Line 5</p><p>Line 6</p><p>Line 7</p><p>Line 8</p>
+    </div>
+  </article>
+</section>
+
+<!-- =============================== 7 =============================== -->
+<section id="motion">
+  <h2>7 — Transitions and animations</h2>
+  <div class="row" style="gap: 2rem;">
+    <a class="t-demo" href="#motion">transition on :hover / :focus</a>
+    <div class="k-demo" role="img" aria-label="Spinning loader"></div>
+  </div>
+  <div class="k-bar" style="margin-top: 1rem;"></div>
+  <p class="muted">Both keyframe animations slow to a crawl under
+    <code>prefers-reduced-motion: reduce</code>.</p>
+</section>
+
+<!-- =============================== 8 =============================== -->
+<section id="files">
+  <h2>8 — Manual pages and practice tasks</h2>
+  <h3>The manual's six pages, byte-for-byte</h3>
+  <ul class="files">
+    <li><a href="manual/index-external.html">Part A — index-external.html</a><span>+ styles.css, external sheet</span></li>
+    <li><a href="manual/index-internal.html">Part B — index-internal.html</a><span>&lt;style&gt; in the head</span></li>
+    <li><a href="manual/index-inline.html">Part C — index-inline.html</a><span>style attributes only</span></li>
+    <li><a href="manual/index-selectors.html">Part D — index-selectors.html</a><span>every selector type</span></li>
+    <li><a href="manual/index-layout.html">Part E — index-layout.html</a><span>flexbox &amp; grid</span></li>
+    <li><a href="manual/index-animations.html">Part F — index-animations.html</a><span>transitions &amp; keyframes</span></li>
+  </ul>
+  <h3 style="margin-top: 1.5rem;">Practice tasks</h3>
+  <ul class="files">
+    <li><a href="tasks/task1-css-types.html">Task 1 — CSS types practice</a><span>inline header, internal main, external footer</span></li>
+    <li><a href="tasks/task2-selectors.html">Task 2 — Selector challenge</a><span>14 selectors, each one counted</span></li>
+    <li><a href="tasks/task3-layout.html">Task 3 — Layout creation</a><span>flex nav, grid content, responsive</span></li>
+    <li><a href="tasks/task4-gallery.html">Task 4 — Animation gallery</a><span>hover cards, spinner, background drift</span></li>
+    <li><a href="tasks/task5-theme.html">Task 5 — Theme creator</a><span>dark mode toggle</span></li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  Suryansh Mishra · 590012069 · Backend Development (CSFS3008P) · Experiment 02
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

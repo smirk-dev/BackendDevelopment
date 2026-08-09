@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Task 2 — Selector Challenge</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/task2.css" id="task2-sheet">
+  <style>
+    #board { display: grid; gap: 1.2rem; }
+    #board > section { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .8rem; }
+    #board > section > h3 { grid-column: 1 / -1; margin: 0; }
+    #board ul { padding-left: 1.1rem; margin: .3rem 0; }
+    #board footer { margin: .4rem 0 0; padding: 0; border: 0; }
+  </style>
+</head>
+<body>
+<header class="masthead">
+  <p class="eyebrow">Experiment 02 · Practice Task 2</p>
+  <h1>Selector challenge</h1>
+  <p class="lede">A small task board styled by fourteen selectors — element, class, id, universal,
+    descendant, child, adjacent and general sibling, attribute, pseudo-class and pseudo-element.
+    The table underneath is generated from <code>css/task2.css</code> itself.</p>
+  <p><a href="../index.html#files">← back to Experiment 02</a></p>
+</header>
+
+<main id="board">
+  <section>
+    <h3>This week</h3>
+    <article id="pinned">
+      <h4>Write the lab report</h4>
+      <span class="tag">pinned</span>
+      <p>Cover all three types of CSS.</p>
+      <ul><li>Inline</li><li>Internal</li><li>External</li></ul>
+      <footer>due Friday</footer>
+    </article>
+    <article data-status="done">
+      <h4>Read the manual</h4>
+      <span class="tag">done</span>
+      <p>Parts A to F, including the viva questions.</p>
+      <footer>finished</footer>
+    </article>
+    <article data-status="doing">
+      <h4>Build the selector page</h4>
+      <span class="tag">doing</span>
+      <p>Reference: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors">MDN selectors</a>.</p>
+      <footer>in progress</footer>
+    </article>
+  </section>
+  <section>
+    <h3>Later</h3>
+    <article>
+      <h4>Responsive layout</h4>
+      <p>Experiment 03 — media queries.</p>
+      <ul><li>480px</li><li>768px</li><li>1024px</li></ul>
+      <footer>no status yet — italic title</footer>
+    </article>
+  </section>
+</main>
+
+<h2>Selectors used, and what each one matched</h2>
+<div class="table-wrap">
+  <table id="sel-table"><thead><tr><th>#</th><th>Selector</th><th>Matches</th></tr></thead><tbody></tbody></table>
+</div>
+<p class="muted" id="sel-summary"></p>
+
+<script>
+  (function () {
+    var rules = document.getElementById("task2-sheet").sheet.cssRules, tbody = document.querySelector("#sel-table tbody"), n = 0, all = 0;
+    Array.prototype.forEach.call(rules, function (r) {
+      if (!r.selectorText) return;
+      n++;
+      var sel = r.selectorText, probe = sel.replace(/::before|::after/g, "").replace(/:hover/g, "");
+      var count = document.querySelectorAll(probe).length;
+      if (count) all++;
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td></td><td><code></code></td><td></td>";
+      tr.children[0].textContent = n;
+      tr.children[1].firstChild.textContent = sel;
+      tr.children[2].textContent = count + (/:hover/.test(sel) ? " (when hovered)" : "") + (/::before/.test(sel) ? " (::before on each)" : "");
+      tbody.appendChild(tr);
+    });
+    var s = document.getElementById("sel-summary");
+    s.textContent = n + " selectors in task2.css; " + all + " of them match at least one element.";
+    s.dataset.selectors = n; s.dataset.matching = all;
+  })();
+</script>
+</body>
+</html>

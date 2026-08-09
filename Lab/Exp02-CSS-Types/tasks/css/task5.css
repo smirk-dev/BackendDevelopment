@@ -1,0 +1,45 @@
+/* task5.css — Practice Task 5: a theme creator.
+   Every colour on the page goes through a custom property; the dark theme only redefines the
+   properties. That is the whole trick: one attribute on <html> re-colours background, text and cards. */
+
+:root {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --soft: var(--muted);
+  --line: var(--rule);
+  --card: #ffffff;
+  --card-line: var(--rule);
+  --pop: var(--accent);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #15140f;
+  --fg: #ece6d8;
+  --soft: #a59e8f;
+  --line: #34312a;
+  --card: #1f1d17;
+  --card-line: #3d392f;
+  --pop: #e08a5f;
+  color-scheme: dark;
+}
+
+body.theme-page { background: var(--bg); color: var(--fg); transition: background-color .3s ease, color .3s ease; }
+.theme-page h2 { border-top-color: var(--fg); }
+.theme-page a, .theme-page .eyebrow { color: var(--pop); }
+.theme-page .lede, .theme-page footer, .theme-page small { color: var(--soft); }
+.theme-page footer, .theme-page nav.toc { border-color: var(--line); }
+.theme-page code { background: var(--card); color: var(--fg); }
+
+.theme-switch { display: inline-flex; align-items: center; gap: .6rem; padding: .45rem .9rem; font: 500 .92rem var(--sans); background: var(--card); color: var(--fg); border: 1px solid var(--fg); cursor: pointer; }
+.theme-switch:hover { background: var(--fg); color: var(--bg); }
+.theme-switch .dot { width: .9rem; height: .9rem; border-radius: 50%; border: 2px solid currentColor; background: transparent; }
+:root[data-theme="dark"] .theme-switch .dot { background: currentColor; }
+
+.theme-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem; margin-top: 1rem; }
+.theme-card { padding: 1rem; background: var(--card); border: 1px solid var(--card-line); transition: background-color .3s ease, border-color .3s ease; }
+.theme-card h3 { color: var(--pop); margin-bottom: .3rem; }
+.theme-card p { margin: 0; }
+.tokens { font: .82rem/1.6 var(--mono); }
+.tokens span { display: inline-block; width: .8em; height: .8em; border: 1px solid var(--fg); vertical-align: -.05em; margin-right: .4em; }
+
+@media (prefers-reduced-motion: reduce) { body.theme-page, .theme-card { transition: none; } }

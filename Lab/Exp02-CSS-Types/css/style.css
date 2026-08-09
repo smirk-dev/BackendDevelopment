@@ -1,0 +1,143 @@
+/* style.css — the EXTERNAL stylesheet, linked from index.html with <link rel="stylesheet">.
+   Same hand as Exp 01: warm paper, one accent, hairline rules, serif headings, no shadows. */
+
+@import url("tokens.css");   /* imported sheet: must come before every other rule */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  max-width: 52rem;
+  padding: 0 1.5rem 5rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.65 var(--sans);
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; line-height: 1.25; }
+h1 { font-size: 2.2rem; margin: .2rem 0 .6rem; }
+h2 { font-size: 1.6rem; margin: 3.5rem 0 1rem; padding-top: 1rem; border-top: 2px solid var(--ink); }
+h3 { font-size: 1.15rem; margin: 0 0 .5rem; }
+
+a { color: var(--accent); }
+code { font: .88em var(--mono); background: var(--wash); padding: .05em .3em; }
+pre code { background: none; padding: 0; }
+
+.masthead { padding-top: 3rem; }
+.eyebrow { margin: 0; color: var(--accent); font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+.lede { color: var(--muted); max-width: 38rem; }
+nav.toc { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin-top: 1.2rem; padding: .6rem 0; border-block: 1px solid var(--rule); font-size: .95rem; }
+nav.toc a { text-decoration: none; }
+nav.toc a:hover { text-decoration: underline; }
+
+article { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+
+pre.code, .out {
+  margin: .6rem 0 0;
+  padding: .8rem 1rem;
+  background: var(--dark);
+  color: #e9e4d6;
+  font: .84rem/1.55 var(--mono);
+  overflow-x: auto;
+  white-space: pre;
+}
+.out { white-space: pre-wrap; }
+
+table { width: 100%; border-collapse: collapse; margin: .6rem 0; font-size: .92rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th { border-bottom: 2px solid var(--ink); }
+.table-wrap { overflow-x: auto; }
+
+button {
+  font: 500 .88rem var(--sans);
+  padding: .4rem .8rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+}
+button:hover, button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+button[aria-pressed="false"] { color: var(--muted); border-color: var(--rule); text-decoration: line-through; }
+button[aria-pressed="false"]:hover { color: var(--ink); border-color: var(--ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: .5rem .7rem; align-items: center; }
+
+.well { padding: .7rem 1rem; border: 1px solid var(--rule); background: var(--wash); }
+.swatch { display: inline-block; width: .8em; height: .8em; vertical-align: -.05em; margin-right: .3em; border: 1px solid var(--ink); }
+small, .muted { color: var(--muted); }
+
+/* --- the four origins, side by side --- */
+.origins { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.origin { padding: .9rem 1rem; border: 1px solid var(--rule); background: #fff; }
+.origin h3 { margin-bottom: .3rem; }
+.origin .tag { font: .75rem var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+.from-external { color: var(--c-external); font-weight: 600; }   /* this rule is the external one */
+
+/* --- cascade lab: layout only; the competing colours live in cascade-*.css and the <style> --- */
+.cascade-target { font-family: var(--serif); font-size: 1.5rem; padding: .6rem 0; margin: .4rem 0; border-block: 1px solid var(--rule); }
+.layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .5rem; margin: .6rem 0; }
+.layers button { text-align: left; }
+
+/* --- selectors gallery --- */
+.sel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.sel { padding: .8rem 1rem; border: 1px solid var(--rule); background: #fff; }
+.sel h3 code { background: none; padding: 0; color: var(--accent); }
+.sel .demo { margin-top: .5rem; padding: .6rem .8rem; background: var(--wash); }
+
+/* --- box model --- */
+.bm-stage { padding: 1rem; background: var(--wash); overflow-x: auto; }
+.bm-box {
+  width: 240px;
+  padding: 20px;
+  border: 8px solid var(--ink);
+  margin: 16px;
+  background: #fff;
+  outline: 16px solid rgba(156, 66, 33, .15);   /* paints where the margin sits */
+}
+.bm-box.content-box { box-sizing: content-box; }
+
+/* --- layout --- */
+.flex-demo { display: flex; gap: .5rem; padding: .5rem; border: 1px dashed var(--ink); min-height: 5rem; flex-wrap: wrap; }
+.flex-demo > div, .grid-demo > div { padding: .5rem .8rem; background: var(--ink); color: var(--paper); font: .85rem var(--mono); }
+.grid-demo { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; padding: .5rem; border: 1px dashed var(--ink); }
+.grid-demo .wide { grid-column: span 2; background: var(--accent); }
+.grid-demo .tall { grid-row: span 2; background: var(--accent); }
+
+.pos-stage { position: relative; height: 9rem; border: 1px dashed var(--ink); background: var(--wash); overflow: hidden; }
+.pos-stage span { padding: .2rem .5rem; font: .8rem var(--mono); background: #fff; border: 1px solid var(--ink); }
+.pos-static { position: static; }
+.pos-relative { position: relative; top: 1.4rem; left: 1.5rem; }
+.pos-absolute { position: absolute; right: .6rem; bottom: .6rem; }
+.pos-sticky-demo { height: 8rem; overflow-y: auto; border: 1px dashed var(--ink); margin-top: .8rem; }
+.pos-sticky-demo h4 { position: sticky; top: 0; margin: 0; padding: .3rem .6rem; background: var(--ink); color: var(--paper); font: 600 .85rem var(--sans); }
+.pos-sticky-demo p { margin: 0; padding: .3rem .6rem; }
+
+/* --- motion --- */
+.t-demo { display: inline-block; padding: .7rem 1.1rem; border: 1px solid var(--ink); background: #fff; transition: background-color .3s ease, color .3s ease, transform .3s ease; }
+.t-demo:hover, .t-demo:focus-visible { background: var(--ink); color: var(--paper); transform: translateY(-3px); }
+.k-demo { width: 2.2rem; height: 2.2rem; border: 3px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+.k-bar { height: .4rem; background: var(--accent); transform-origin: left; animation: grow 2.4s ease-in-out infinite alternate; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes grow { from { transform: scaleX(.1); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .k-demo, .k-bar { animation-duration: 10s; }
+  .t-demo { transition: none; }
+}
+
+/* --- links out --- */
+.files { list-style: none; padding: 0; margin: 0; }
+.files li { padding: .55rem 0; border-bottom: 1px solid var(--rule); display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; }
+.files li span { color: var(--muted); font-size: .92rem; }
+
+footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+
+/* --- responsive: the same sheet adapts at two breakpoints --- */
+@media (max-width: 40rem) {
+  .origins, .sel-grid { grid-template-columns: 1fr; }
+  .grid-demo { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 1.8rem; }
+}
+@media (max-width: 26rem) {
+  body { padding: 0 1rem 4rem; }
+  .bm-box { width: 180px; }
+}

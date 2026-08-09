@@ -1,0 +1,3 @@
+/* cascade-external.css — layer 1 of the cascade lab: an ordinary external rule.
+   Same selector as the internal rule, so the internal one wins only by coming later. */
+.cascade-target { color: var(--c-external); }
