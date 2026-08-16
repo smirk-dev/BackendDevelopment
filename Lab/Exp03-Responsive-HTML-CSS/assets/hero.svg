@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="300" viewBox="0 0 500 300" role="img" aria-labelledby="t">
+  <title id="t">Hero illustration: a page layout at three breakpoints</title>
+  <rect width="500" height="300" fill="#f2ece0"/>
+  <g fill="none" stroke="#1c1b19" stroke-width="2">
+    <rect x="30" y="50" width="250" height="170"/>
+    <rect x="305" y="70" width="110" height="150"/>
+    <rect x="435" y="100" width="40" height="120"/>
+  </g>
+  <g fill="#1c1b19">
+    <rect x="30" y="50" width="250" height="18"/>
+    <rect x="305" y="70" width="110" height="14"/>
+    <rect x="435" y="100" width="40" height="10"/>
+  </g>
+  <g fill="#9c4221">
+    <rect x="46" y="86" width="68" height="56"/><rect x="122" y="86" width="68" height="56"/><rect x="198" y="86" width="68" height="56"/>
+    <rect x="317" y="96" width="40" height="40"/><rect x="363" y="96" width="40" height="40"/>
+    <rect x="443" y="120" width="24" height="24"/>
+  </g>
+  <g fill="#e6e0d4">
+    <rect x="46" y="156" width="220" height="8"/><rect x="46" y="172" width="180" height="8"/>
+    <rect x="317" y="148" width="86" height="8"/><rect x="317" y="164" width="70" height="8"/>
+    <rect x="443" y="156" width="24" height="6"/>
+  </g>
+  <text x="250" y="262" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#1c1b19">desktop · tablet · phone</text>
+</svg>

@@ -1,0 +1,141 @@
+/* Exp 03 — a responsive page with plain HTML and CSS. Same hand as Exp 01/02:
+   warm paper, one accent, hairline rules, serif headings. No framework, no build step.
+   Written mobile-first: the base rules are the phone layout, min-width queries add columns. */
+
+:root {
+  --paper: #fbf9f4;
+  --ink: #1c1b19;
+  --muted: #736f66;
+  --rule: #e6e0d4;
+  --accent: #9c4221;
+  --wash: #f2ece0;
+  --card: #ffffff;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: Consolas, "SF Mono", "DejaVu Sans Mono", monospace;
+  --gutter: 1rem;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* sticky footer: body is a column, main grows */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 16px/1.65 var(--sans);
+}
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.25; }
+a { color: var(--accent); }
+code { font: .88em var(--mono); background: var(--wash); padding: .05em .3em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap { width: 100%; max-width: 72rem; margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---------- navigation (flexbox) ---------- */
+.site-nav { border-bottom: 2px solid var(--ink); background: var(--paper); }
+.site-nav .wrap { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; padding-block: .7rem; }
+.logo { font: 600 1.2rem var(--serif); color: var(--ink); text-decoration: none; }
+.site-nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: .2rem 1rem; }
+.site-nav ul a { color: var(--ink); text-decoration: none; padding: .2rem 0; border-bottom: 1px solid transparent; }
+.site-nav ul a:hover, .site-nav ul a[aria-current] { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ---------- header ---------- */
+.header { padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--rule); }
+.eyebrow { color: var(--accent); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+.header h1 { font-size: 1.9rem; margin: .3rem 0 .5rem; }
+.header p.lede { color: var(--muted); max-width: 40rem; }
+.bp { display: inline-block; margin-top: .8rem; padding: .15rem .5rem; border: 1px solid var(--accent); font: .78rem var(--mono); color: var(--accent); }
+.bp::after { content: "phone · ≤ 480px · 1 column"; }
+
+/* ---------- cards (grid) ---------- */
+main { flex: 1; padding: 1.5rem 0 2.5rem; }
+main h2 { font-size: 1.35rem; margin: 2rem 0 .8rem; padding-top: .8rem; border-top: 2px solid var(--ink); }
+main h2:first-child { margin-top: 0; }
+.cards { display: grid; grid-template-columns: 1fr; gap: var(--gutter); }
+.card { background: var(--card); border: 1px solid var(--rule); padding: 1rem; }
+.card h3 { margin-bottom: .4rem; font-size: 1.1rem; }
+.card p { color: var(--muted); font-size: .95rem; }
+.card img { max-width: 100%; height: auto; display: block; margin-bottom: .7rem; border: 1px solid var(--rule); }
+
+/* ---------- reference table ---------- */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th { border-bottom: 2px solid var(--ink); }
+tr.now td { background: var(--wash); }
+tr.now td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+
+.files { list-style: none; }
+.files li { padding: .5rem 0; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem; }
+.files li span { color: var(--muted); font-size: .9rem; }
+
+/* ---------- footer ---------- */
+footer { border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+footer .wrap { padding-block: 1rem; }
+
+/* =========================================================
+   Breakpoints (mobile-first: each query ADDS to the one before)
+   ========================================================= */
+
+/* small tablet / large phone: 481–768px → 2 columns, nav goes horizontal */
+@media (min-width: 481px) {
+  :root { --gutter: 1.25rem; }
+  .site-nav .wrap { flex-direction: row; justify-content: space-between; align-items: center; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .header h1 { font-size: 2.2rem; }
+  .bp::after { content: "small tablet · 481–768px · 2 columns"; }
+}
+
+/* tablet / small laptop: 769–1024px → 3 columns */
+@media (min-width: 769px) {
+  :root { --gutter: 1.5rem; }
+  .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .header { padding: 3rem 0 2rem; }
+  .header h1 { font-size: 2.6rem; }
+  .bp::after { content: "tablet · 769–1024px · 3 columns"; }
+}
+
+/* desktop: > 1024px → 4 columns (Exercise 1) */
+@media (min-width: 1025px) {
+  body { font-size: 17px; }
+  .cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .bp::after { content: "desktop · > 1024px · 4 columns"; }
+}
+
+/* range query: only between the phone and desktop sizes */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .card p { font-size: .92rem; }
+}
+
+/* orientation */
+@media (orientation: landscape) and (max-height: 500px) {
+  .header { padding: 1rem 0; }
+}
+
+/* dark mode follows the system (Exercise 3) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1a1a1a;
+    --ink: #e0e0e0;
+    --muted: #a8a294;
+    --rule: #34312a;
+    --wash: #262420;
+    --card: #222120;
+    --accent: #e08a5f;
+  }
+}
+
+/* print: no nav, no decoration, links show where they go */
+@media print {
+  .site-nav, .bp { display: none; }
+  body { background: #fff; color: #000; }
+  .card { break-inside: avoid; border-color: #999; }
+  .card img { display: none; }
+  a[href^="manual/"]::after { content: " (" attr(href) ")"; font-size: .8em; }
+}
+
+/* reduced motion: nothing animates here, but be explicit */
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
