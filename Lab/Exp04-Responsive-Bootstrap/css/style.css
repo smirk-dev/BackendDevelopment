@@ -1,0 +1,40 @@
+/* Exp 04 hub page — same hand as Exp 01-03. The framework pages keep their own framework look;
+   only this index is in the house style. */
+:root {
+  --paper: #fbf9f4; --ink: #1c1b19; --muted: #736f66; --rule: #e6e0d4;
+  --accent: #9c4221; --wash: #f2ece0; --dark: #14212e;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: Consolas, "SF Mono", "DejaVu Sans Mono", monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0 auto; max-width: 52rem; padding: 0 1.5rem 5rem; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--sans); }
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.25; }
+h1 { font-size: 2.2rem; margin: .2rem 0 .6rem; }
+h2 { font-size: 1.6rem; margin: 3.5rem 0 1rem; padding-top: 1rem; border-top: 2px solid var(--ink); }
+h3 { font-size: 1.1rem; margin: 1.5rem 0 .4rem; }
+a { color: var(--accent); }
+code { font: .88em var(--mono); background: var(--wash); padding: .05em .3em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.masthead { padding-top: 3rem; }
+.eyebrow { margin: 0; color: var(--accent); font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+.lede { color: var(--muted); max-width: 38rem; }
+nav.toc { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin-top: 1.2rem; padding: .6rem 0; border-block: 1px solid var(--rule); font-size: .95rem; }
+nav.toc a { text-decoration: none; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.pane { padding: 1rem; border: 1px solid var(--rule); background: #fff; }
+.pane h3 { margin-top: 0; }
+.pane .big { display: inline-block; margin-top: .4rem; font: 600 1rem var(--sans); }
+.files { list-style: none; padding: 0; margin: 0; }
+.files li { padding: .5rem 0; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem; }
+.files li span { color: var(--muted); font-size: .9rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th { border-bottom: 2px solid var(--ink); }
+td.num { font-family: var(--mono); text-align: right; }
+.out { margin: .6rem 0 0; padding: .8rem 1rem; background: var(--dark); color: #e9e4d6; font: .84rem/1.55 var(--mono); white-space: pre-wrap; overflow-x: auto; }
+.muted, small { color: var(--muted); }
+footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+@media (max-width: 40rem) { .pair { grid-template-columns: 1fr; } h1 { font-size: 1.8rem; } }
+@media (max-width: 26rem) { body { padding: 0 1rem 4rem; } }

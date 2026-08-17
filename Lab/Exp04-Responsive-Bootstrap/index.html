@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Experiment 04 — Responsive Web Pages with Bootstrap and Tailwind CSS</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 04</p>
+  <h1>Responsive pages with Bootstrap and Tailwind CSS</h1>
+  <p class="lede">The same page built twice — once with Bootstrap's components and 12-column grid,
+    once with Tailwind's utility classes — plus the contact-form exercises and a live class count.
+    Both frameworks are vendored in <code>vendor/</code>: no CDN, works offline.</p>
+  <nav class="toc" aria-label="Sections">
+    <a href="#pages">1 · Finished pages</a>
+    <a href="#steps">2 · Step by step</a>
+    <a href="#compare">3 · Class count</a>
+    <a href="#vendor">4 · Vendored files</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="pages">
+  <h2>1 — The finished pages</h2>
+  <div class="pair">
+    <div class="pane">
+      <h3>Bootstrap 5.3.3</h3>
+      <p>Navbar that collapses to a hamburger under 992px, a <code>row</code> /
+        <code>col-lg-6</code> hero, a <code>col-md-6 col-lg-4</code> card grid and the
+        Exercise 1 contact form.</p>
+      <a class="big" href="exp04-bootstrap.html">Open exp04-bootstrap.html →</a>
+    </div>
+    <div class="pane">
+      <h3>Tailwind CSS 3.4.17</h3>
+      <p><code>flex-col lg:flex-row</code> hero, a
+        <code>grid-cols-1 md:grid-cols-2 lg:grid-cols-3</code> card grid and the Exercise 2
+        form rebuilt with utilities.</p>
+      <a class="big" href="exp04-tailwind.html">Open exp04-tailwind.html →</a>
+    </div>
+  </div>
+</section>
+
+<section id="steps">
+  <h2>2 — The manual's tasks, step by step</h2>
+  <h3>Part A — Bootstrap</h3>
+  <ul class="files">
+    <li><a href="manual/bootstrap-task1.html">Task 1 — setup</a><span>stylesheet only</span></li>
+    <li><a href="manual/bootstrap-task2.html">Task 2 — responsive navbar</a><span>navbar-expand-lg + JS bundle</span></li>
+    <li><a href="manual/bootstrap-task3.html">Task 3 — hero with grid columns</a><span>row · col-lg-6</span></li>
+    <li><a href="manual/bootstrap-task4.html">Task 4 — card grid section</a><span>col-md-6 col-lg-4 · g-4 · h-100</span></li>
+  </ul>
+  <h3>Part B — Tailwind CSS</h3>
+  <ul class="files">
+    <li><a href="manual/tailwind-task5.html">Task 5 — setup</a><span>stylesheet only</span></li>
+    <li><a href="manual/tailwind-task6.html">Task 6 — navbar</a><span>bg-gray-900 · flex justify-between</span></li>
+    <li><a href="manual/tailwind-task7.html">Task 7 — hero section</a><span>flex-col lg:flex-row</span></li>
+    <li><a href="manual/tailwind-task8.html">Task 8 — card grid and footer</a><span>grid-cols-1 md:2 lg:3</span></li>
+  </ul>
+  <p class="muted">Exercises 1 and 2 (the contact forms) are added to the finished pages above.
+    Exercise 3 is the next section.</p>
+</section>
+
+<section id="compare">
+  <h2>3 — Exercise 3: count the classes</h2>
+  <p>Both finished pages are fetched and parsed here, and every <code>class</code> attribute is
+    counted. Nothing below is typed in by hand.</p>
+  <div class="table-wrap">
+    <table id="compare-table">
+      <thead><tr><th>Measure</th><th>Bootstrap</th><th>Tailwind</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <pre class="out" id="compare-out">counting…</pre>
+  <p><strong>Which is easier to read?</strong> The Bootstrap file: <code>card</code>,
+    <code>btn btn-primary</code> and <code>navbar</code> name <em>what</em> an element is, so the
+    markup reads like an outline. The Tailwind file spells out <em>how</em> each element looks —
+    <code>bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow</code> — which is
+    longer to scan but means the design can be changed without leaving the HTML, and the
+    stylesheet that ships contains only the classes actually used.</p>
+</section>
+
+<section id="vendor">
+  <h2>4 — Vendored files</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>File</th><th>Source</th><th>Size</th></tr></thead>
+      <tbody>
+        <tr><td><code>vendor/bootstrap-5.3.3/css/bootstrap.min.css</code></td><td>jsdelivr <code>bootstrap@5.3.3/dist</code>, unmodified</td><td class="num">232,803 B</td></tr>
+        <tr><td><code>vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js</code></td><td>same, includes Popper</td><td class="num">80,721 B</td></tr>
+        <tr><td><code>vendor/tailwind/tailwind.css</code></td><td>built with the Tailwind CLI 3.4.17 from the classes in the Tailwind pages</td><td class="num">8,807 B</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">The manual uses <code>cdn.tailwindcss.com</code>, Tailwind's in-browser
+    compiler, which the manual itself says is for development only. Here the same classes are
+    compiled ahead of time — the "production" route the manual describes — so the page ships 9 KB
+    of CSS and no runtime script.</p>
+</section>
+
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development (CSFS3008P) · Experiment 04</footer>
+
+<script src="js/compare.js"></script>
+</body>
+</html>
