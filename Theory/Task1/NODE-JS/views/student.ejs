@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= student ? student.name : "Not found" %></title>
+    <link rel="stylesheet" href="/paper.css">
+</head>
+<body>
+<main>
+    <% if (student) { %>
+        <h1><%= student.name %></h1>
+        <p class="lede">Roll No. <%= student.id %> · Branch: <%= student.branch %></p>
+    <% } else { %>
+        <h1>Student not found</h1>
+        <p class="lede">No student has id <%= id %>.</p>
+    <% } %>
+    <hr>
+    <a href="/students">All students</a>
+</main>
+</body>
+</html>

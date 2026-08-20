@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Students</title>
+    <link rel="stylesheet" href="/paper.css">
+</head>
+<body>
+<main>
+    <h1>All Students</h1>
+    <p class="lede"><%= students.length %> records, rendered on the server with EJS.</p>
+    <ul class="plain">
+        <% students.forEach(student => { %>
+            <li><strong><a href="/students/<%= student.id %>"><%= student.name %></a></strong> — <%= student.branch %></li>
+        <% }); %>
+    </ul>
+    <a href="/">Back to Home</a>
+</main>
+</body>
+</html>

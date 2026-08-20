@@ -1,15 +1,18 @@
 {
-  "name": "test1",
+  "name": "task1-node-express",
   "version": "1.0.0",
-  "description": "testing the node js for webdev",
+  "description": "Theory Task 1 - Node.js, npm, Express and EJS (L03)",
   "license": "ISC",
   "author": "smirk-dev",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
     "dev": "nodemon server.js",
-    "node": "node server.js"
+    "step1": "node steps/01-hello-world.js",
+    "step2": "node steps/02-multiple-routes.js",
+    "step3": "node steps/03-json.js",
+    "step4": "node steps/04-html.js"
   },
   "keywords": [],
   "dependencies": {
