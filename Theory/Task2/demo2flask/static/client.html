@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student API Client</title>
+  <style>
+    :root { --paper:#fbf9f4; --ink:#1c1b19; --muted:#736f66; --rule:#e6e0d4; --accent:#9c4221; --wash:#f2ece0; }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:3rem 1.25rem; background:var(--paper); color:var(--ink); font:400 17px/1.6 "Segoe UI", Roboto, Arial, sans-serif; }
+    main { max-width:44rem; margin:0 auto; }
+    h1, h2 { font-family:Georgia, "Times New Roman", serif; font-weight:400; }
+    h1 { font-size:2.1rem; margin:0 0 .3rem; }
+    h2 { font-size:1.3rem; margin:2rem 0 .5rem; border-top:1px solid var(--rule); padding-top:1.2rem; }
+    p.lede { color:var(--muted); font-family:Georgia, serif; font-style:italic; margin-top:0; }
+    ul { list-style:none; padding:0; margin:0; }
+    li { padding:.45rem 0; border-bottom:1px solid var(--rule); }
+    label { display:block; font-size:.85rem; color:var(--muted); margin-top:.6rem; }
+    input { font:inherit; padding:.4rem .5rem; border:1px solid var(--rule); background:#fff; width:100%; max-width:18rem; }
+    button { font:inherit; margin-top:.8rem; padding:.4rem 1rem; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+    pre { background:var(--wash); padding:.7rem .9rem; font:14px/1.5 Consolas, monospace; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Students</h1>
+  <p class="lede">Every list on this page is filled by <code>fetch()</code> calls to the Flask API.</p>
+
+  <h2>All students</h2>
+  <ul id="student-list"></ul>
+
+  <h2>Branch CSE only (filtered in the browser)</h2>
+  <ul id="cse-list"></ul>
+
+  <h2>Add a student (POST)</h2>
+  <form id="add-form">
+    <label for="name">Name</label><input id="name" required>
+    <label for="branch">Branch</label><input id="branch" required>
+    <button type="submit">Add</button>
+  </form>
+
+  <h2>Log</h2>
+  <pre id="log"></pre>
+</main>
+
+<script>
+  const API = "/students";
+  const log = msg => { document.getElementById("log").textContent += msg + "\n"; };
+
+  function fill(listId, students) {
+    const list = document.getElementById(listId);
+    list.innerHTML = "";
+    students.forEach(student => {
+      const li = document.createElement("li");
+      li.textContent = `${student.name} — ${student.branch}`;   // textContent, so names are never parsed as HTML
+      list.appendChild(li);
+    });
+  }
+
+  // L04 Lab Exercise 4: fetch everything, then keep only CSE on the client side
+  async function getStudentsByBranch(branch) {
+    const response = await fetch(API);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const students = await response.json();
+    return students.filter(s => s.branch.toUpperCase() === branch.toUpperCase());
+  }
+
+  async function loadStudents() {
+    try {
+      const response = await fetch(API);
+      log(`GET ${API} -> ${response.status} ${response.headers.get("content-type")}`);
+      const students = await response.json();
+      fill("student-list", students);
+      const cse = await getStudentsByBranch("CSE");
+      fill("cse-list", cse);
+      log(`CSE filter kept ${cse.length} of ${students.length}`);
+    } catch (error) {
+      log("Error: " + error.message);
+    }
+  }
+
+  // L04 "POST request using async/await"
+  async function createStudent(name, branch) {
+    const response = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, branch })
+    });
+    const body = await response.json();
+    log(`POST ${API} -> ${response.status} ${JSON.stringify(body)}`);
+    if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
+    return body;
+  }
+
+  document.getElementById("add-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    const name = document.getElementById("name").value;
+    const branch = document.getElementById("branch").value;
+    try {
+      await createStudent(name, branch);
+      event.target.reset();
+      await loadStudents();
+    } catch (error) {
+      log("Error: " + error.message);
+    }
+  });
+
+  loadStudents();
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+{
+  "info": {
+    "name": "Theory Task 2 - Flask Student API",
+    "description": "L04 Task 3 / Lab Exercise 3: requests to the Flask server saved as a collection. Run with: npx newman run postman/flask-students.postman_collection.json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Home",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": []
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('200 and plain text', () => { pm.response.to.have.status(200); pm.expect(pm.response.text()).to.eql('Student Management API'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "All students",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('200 and an array of 3+', () => { pm.response.to.have.status(200); pm.expect(pm.response.json()).to.be.an('array').with.length.above(2); });",
+              "pm.test('JSON content type', () => pm.response.to.have.header('Content-Type', 'application/json'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student 2 (with custom header)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Student-Id",
+            "value": "590012069"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/students/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students",
+            "2"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Diya is id 2', () => { pm.response.to.have.status(200); pm.expect(pm.response.json().name).to.eql('Diya'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unknown student",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/students/99",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students",
+            "99"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('404 with error body', () => { pm.response.to.have.status(404); pm.expect(pm.response.json().error).to.eql('Student not found'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/students",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Priya\", \"branch\": \"cse\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('201 Created', () => pm.response.to.have.status(201));",
+              "pm.test('id assigned, branch upper-cased', () => { const s = pm.response.json(); pm.expect(s.id).to.be.a('number'); pm.expect(s.branch).to.eql('CSE'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create student - missing branch",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/students",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"NoBranch\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('400 Bad Request', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
