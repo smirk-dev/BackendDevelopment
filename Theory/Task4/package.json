@@ -1,0 +1,17 @@
+{
+  "name": "task4-sessions-cookies",
+  "version": "1.0.0",
+  "description": "Theory Task 4 - sessions, cookies and query strings in Express (L06)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "smirk-dev",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0"
+  }
+}
