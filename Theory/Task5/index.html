@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Storage Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Theory Task 5 · L07</p>
+    <h1>localStorage, sessionStorage and JSON</h1>
+    <p class="lede">The L07 exercises as working controls. Every action writes a line to the log at the bottom,
+      and the storage tables refresh after each one, so you can compare them with DevTools &rarr; Application.</p>
+  </header>
+
+  <!-- 2. localStorage -->
+  <section id="local">
+    <h2><span>2</span> localStorage &mdash; the four core methods</h2>
+    <p>Persists until something deletes it, and every tab on this origin shares it.</p>
+    <div class="row">
+      <label>Key <input id="ls-key" value="favColor"></label>
+      <label>Value <input id="ls-value" value="blue"></label>
+    </div>
+    <div class="buttons" data-store="local">
+      <button data-op="set">setItem()</button>
+      <button data-op="get">getItem()</button>
+      <button data-op="remove">removeItem()</button>
+      <button data-op="clear">clear()</button>
+      <button data-op="all">Show all (key(i), length)</button>
+    </div>
+    <table class="store"><thead><tr><th>key</th><th>value (always a string)</th></tr></thead><tbody id="ls-table"></tbody></table>
+  </section>
+
+  <!-- 3. sessionStorage -->
+  <section id="session">
+    <h2><span>3</span> sessionStorage &mdash; same API, shorter life</h2>
+    <p>Lives only as long as this tab. A new tab starts with an empty sessionStorage, even on the same page.</p>
+    <div class="row">
+      <label>Key <input id="ss-key" value="tempData"></label>
+      <label>Value <input id="ss-value" value="hello"></label>
+    </div>
+    <div class="buttons" data-store="session">
+      <button data-op="set">setItem()</button>
+      <button data-op="get">getItem()</button>
+      <button data-op="remove">removeItem()</button>
+      <button data-op="clear">clear()</button>
+      <button data-op="all">Show all (key(i), length)</button>
+    </div>
+    <table class="store"><thead><tr><th>key</th><th>value</th></tr></thead><tbody id="ss-table"></tbody></table>
+  </section>
+
+  <!-- 4-6. JSON -->
+  <section id="json">
+    <h2><span>4&ndash;6</span> Why objects need JSON</h2>
+    <p>Storage only keeps strings. Store an object directly and you get its default string form.
+      <code>JSON.stringify</code> turns it into text, <code>JSON.parse</code> brings it back.</p>
+    <div class="buttons">
+      <button id="btn-object-problem">Store an object without JSON</button>
+      <button id="btn-roundtrip">Round-trip with stringify / parse</button>
+      <button id="btn-bad-json">Parse invalid JSON (try/catch)</button>
+      <button id="btn-flow">Exercise 6.1: the complete flow</button>
+    </div>
+  </section>
+
+  <!-- 7. Playground -->
+  <section id="playground">
+    <h2><span>7</span> JSON playground</h2>
+    <div class="row">
+      <label>Key <input id="pg-key" value="profile"></label>
+    </div>
+    <label class="wide">Value (JSON)
+      <textarea id="pg-value" rows="3">{"user":{"name":"Bob","address":{"city":"NYC"}}}</textarea>
+    </label>
+    <div class="presets">Try:
+      <button class="link" data-preset='{"name":"Alice","age":22}'>simple object</button>
+      <button class="link" data-preset='{"user":{"name":"Bob","address":{"city":"NYC"}}}'>nested object</button>
+      <button class="link" data-preset='[{"id":1,"text":"Task 1"},{"id":2,"text":"Task 2"}]'>array of objects</button>
+    </div>
+    <div class="buttons">
+      <button data-pg="local-save">stringify &rarr; localStorage</button>
+      <button data-pg="local-load">getItem &rarr; parse (local)</button>
+      <button data-pg="session-save">stringify &rarr; sessionStorage</button>
+      <button data-pg="session-load">getItem &rarr; parse (session)</button>
+    </div>
+    <pre id="pg-out" class="out">Output appears here.</pre>
+  </section>
+
+  <!-- 7.2 helper pattern -->
+  <section id="helpers">
+    <h2><span>7.2</span> The save / load helper pattern</h2>
+<pre><code>function save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+function load(key) { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }</code></pre>
+    <p>Both helpers are on <code>window</code>, so they work from the DevTools console too.</p>
+    <div class="buttons">
+      <button id="btn-helpers">save("settings", {theme, fontSize}) then load it</button>
+    </div>
+  </section>
+
+  <!-- 11. mistakes -->
+  <section id="mistakes">
+    <h2><span>11</span> Common mistakes, reproduced</h2>
+    <div class="buttons">
+      <button data-mistake="1">1. Forgot stringify</button>
+      <button data-mistake="2">2. Forgot parse</button>
+      <button data-mistake="3">3. Missing key returns null</button>
+      <button data-mistake="4">4. Types do not survive</button>
+    </div>
+  </section>
+
+  <!-- 9.1 quiz -->
+  <section id="quiz">
+    <h2><span>9.1</span> Check yourself</h2>
+    <ol class="quiz">
+      <li>What does <code>localStorage.getItem("nope")</code> return? <button class="link" data-answer="null — not undefined, and not an error.">answer</button></li>
+      <li>Which storage survives closing the tab? <button class="link" data-answer="localStorage. sessionStorage is wiped with the tab.">answer</button></li>
+      <li>What is <code>typeof localStorage.getItem("num")</code> after <code>setItem("num", 42)</code>? <button class="link" data-answer='"string" — everything is stored as text.'>answer</button></li>
+      <li>Why can a value stored on <code>localhost:3046</code> not be read on <code>localhost:3047</code>? <button class="link" data-answer="Web Storage is per origin, and the port is part of the origin.">answer</button></li>
+    </ol>
+  </section>
+
+  <!-- 10. comparison -->
+  <section id="compare">
+    <h2><span>10</span> Side by side</h2>
+    <table>
+      <thead><tr><th></th><th>localStorage</th><th>sessionStorage</th><th>Cookie</th></tr></thead>
+      <tbody>
+        <tr><td>Lifetime</td><td>Until deleted</td><td>Until the tab closes</td><td>Until it expires</td></tr>
+        <tr><td>Scope</td><td>All tabs, same origin</td><td>One tab</td><td>Sent to the server on every request</td></tr>
+        <tr><td>Size</td><td>About 5&ndash;10 MB</td><td>About 5&ndash;10 MB</td><td>About 4 KB</td></tr>
+        <tr><td>Read from</td><td>JavaScript only</td><td>JavaScript only</td><td>Server, and JS unless httpOnly</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="console">
+    <h2>Log</h2>
+    <div class="buttons"><button id="btn-clear-log">Clear log</button></div>
+    <pre id="log" class="out" aria-live="polite"></pre>
+  </section>
+</main>
+<script src="storage-lab.js"></script>
+</body>
+</html>
