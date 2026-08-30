@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Student List{% endblock %}
+{% block content %}
+  <h1>Students</h1>
+
+  {% if students|length == 0 %}
+    <p class="empty">No students found.</p>
+  {% else %}
+    <p>Total students: {{ students|length }}</p>
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Branch</th></tr></thead>
+      <tbody>
+      {% for student in students %}
+        <tr class="{{ loop.cycle('row-even', 'row-odd') }}">
+          <td>{{ student.id }}</td>
+          <td>{{ student.name|upper }}</td>
+          <td>{{ student.branch }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+  <p class="muted"><a href="/students?empty=1">?empty=1</a> shows the empty branch.</p>
+{% endblock %}

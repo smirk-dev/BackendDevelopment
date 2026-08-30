@@ -1,0 +1,6 @@
+/* Lab Exercise 4: a stylesheet only the student list loads. It changes that page's background and font,
+   and gives the alternating row classes from Lab Exercise 1 their colours. */
+body { background: #f4efe3; font-family: Georgia, "Times New Roman", serif; }
+table.students tr.row-even { background: #fbf9f4; }
+table.students tr.row-odd { background: #ece3d0; }
+table.students td:first-child { font-family: Consolas, monospace; color: #9c4221; }

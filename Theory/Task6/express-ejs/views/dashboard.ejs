@@ -1,0 +1,19 @@
+<%- include("partials/header") %>
+    <h1><%= title %></h1>
+    <% if (branch) { %><p class="lede">Filtered to branch <%= upperCase(branch) %>. <a href="/dashboard">Show all</a></p><% } %>
+
+    <% if (students.length === 0) { %>
+        <p class="empty">No students found.</p>
+    <% } else { %>
+        <p>Total students: <strong><%= students.length %></strong></p>
+        <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Branch</th></tr></thead>
+            <tbody>
+            <% for (let i = 0; i < students.length; i++) { %>
+                <tr><td><%= students[i].id %></td><td><%= upperCase(students[i].name) %></td><td><%= students[i].branch %></td></tr>
+            <% } %>
+            </tbody>
+        </table>
+    <% } %>
+    <p class="muted">Try <a href="/dashboard?branch=cse">?branch=cse</a> or <a href="/dashboard?branch=civil">?branch=civil</a>.</p>
+<%- include("partials/footer") %>

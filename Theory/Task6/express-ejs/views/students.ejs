@@ -1,0 +1,15 @@
+<%- include("partials/header", { extraCss: "/css/students.css" }) %>
+    <h1><%= title %></h1>
+    <table class="students">
+        <thead><tr><th>ID</th><th>Name</th><th>Branch</th></tr></thead>
+        <tbody>
+        <% students.forEach((student, index) => { %>
+            <tr class="<%= index % 2 === 0 ? 'row-even' : 'row-odd' %>">
+                <td><%= student.id %></td>
+                <td><%= student.name %></td>
+                <td><%= student.branch %></td>
+            </tr>
+        <% }) %>
+        </tbody>
+    </table>
+<%- include("partials/footer") %>

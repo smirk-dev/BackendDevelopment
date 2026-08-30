@@ -1,0 +1,21 @@
+/* Base look for every page: Exp 01 register, warm paper and one accent. */
+:root { --paper: #fbf9f4; --ink: #1c1b19; --muted: #736f66; --rule: #e6e0d4; --accent: #9c4221; --wash: #f2ece0; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 "Segoe UI", Roboto, Arial, sans-serif; }
+header.site, main, footer.site { max-width: 44rem; margin: 0 auto; padding: 0 1.25rem; }
+header.site { display: flex; align-items: center; gap: 1rem; padding-top: 1.4rem; padding-bottom: .9rem; border-bottom: 1px solid var(--rule); }
+header.site nav a { margin-right: 1rem; color: var(--ink); text-decoration: none; font-size: .95rem; }
+header.site nav a:hover { color: var(--accent); }
+main { padding-top: 2rem; padding-bottom: 2rem; }
+h1 { font: 400 2.2rem/1.2 Georgia, "Times New Roman", serif; margin: 0 0 .6rem; }
+.lede { font-family: Georgia, serif; font-style: italic; color: var(--muted); }
+a { color: var(--accent); }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--rule); }
+th { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+dl { display: grid; grid-template-columns: 8rem 1fr; gap: .5rem 1rem; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+.empty { padding: 1rem; background: var(--wash); }
+.muted { color: var(--muted); font-size: .9rem; }
+footer.site { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--rule); padding-top: .8rem; }

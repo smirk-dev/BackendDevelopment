@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Server time{% endblock %}
+{% block content %}
+  <h1>Server time</h1>
+  <p class="big">{{ now }}</p>
+  <p class="muted">ISO: <time datetime="{{ iso }}">{{ iso }}</time>. Reload the page and the value changes, because the template is rendered again for every request.</p>
+{% endblock %}
