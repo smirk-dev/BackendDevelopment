@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Apply the saved theme before the first paint, so a dark-mode user never sees a white flash.
+        try { document.documentElement.dataset.theme = localStorage.getItem("notes-theme") || "light"; } catch (e) {}
+    </script>
+</head>
+<body>
+<header class="top">
+    <div>
+        <h1>Notes</h1>
+        <p class="sub">Kept in this browser's localStorage. Nothing is sent anywhere.</p>
+    </div>
+    <button type="button" id="themeToggle" class="ghost" aria-pressed="false">Dark mode</button>
+</header>
+
+<main>
+    <form id="addForm" class="add" autocomplete="off">
+        <label for="noteInput" class="vh">New note</label>
+        <textarea id="noteInput" rows="2" placeholder="Type a note..." required maxlength="2000"></textarea>
+        <div class="add-row">
+            <label for="tagInput" class="vh">Tags</label>
+            <input id="tagInput" type="text" placeholder="tags, comma separated (optional)" maxlength="120">
+            <button type="submit" id="addBtn">Add note</button>
+        </div>
+    </form>
+
+    <section class="toolbar" aria-label="Filter notes">
+        <label for="searchInput" class="vh">Search</label>
+        <input id="searchInput" type="search" placeholder="Search notes and tags">
+        <div class="seg" role="group" aria-label="Show">
+            <button type="button" data-show="all" class="on">All</button>
+            <button type="button" data-show="open">Open</button>
+            <button type="button" data-show="done">Done</button>
+        </div>
+    </section>
+    <div id="tagBar" class="tagbar" aria-label="Filter by tag"></div>
+
+    <p id="summary" class="summary" aria-live="polite"></p>
+    <ul id="notesList" class="notes"></ul>
+    <p id="emptyState" class="empty" hidden></p>
+
+    <section class="io" aria-label="Import and export">
+        <button type="button" id="exportBtn" class="ghost">Export JSON</button>
+        <label class="ghost file">Import JSON<input type="file" id="importFile" accept="application/json,.json"></label>
+        <span id="ioStatus" class="muted" aria-live="polite"></span>
+    </section>
+</main>
+
+<template id="noteTpl">
+    <li class="note" draggable="true">
+        <div class="note-head">
+            <input type="checkbox" class="done" aria-label="Mark complete">
+            <p class="text"></p>
+        </div>
+        <ul class="tags"></ul>
+        <p class="meta"></p>
+        <div class="actions">
+            <button type="button" class="edit">Edit</button>
+            <button type="button" class="del">Delete</button>
+            <button type="button" class="up" aria-label="Move up">Up</button>
+            <button type="button" class="down" aria-label="Move down">Down</button>
+        </div>
+    </li>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>

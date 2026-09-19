@@ -1,0 +1,42 @@
+PASS empty state on first load
+PASS add: 4 notes stored (button x3, Ctrl+Enter x1)
+PASS add: fields id/text/completed/tags/createdAt/updatedAt
+PASS add: ids unique
+PASS add: tags normalised (lower-case, # stripped)
+PASS add: newest first in the list
+PASS add: empty input ignored
+PASS escape: no script ran, markup shown literally
+PASS edit: form opens with current text
+PASS edit: text and tags saved
+PASS edit: updatedAt set, createdAt kept
+PASS edit: card shows "edited"
+PASS edit: Escape cancels without saving
+PASS delete: removed from storage and DOM
+PASS complete: stored completed=true, card struck through
+PASS filter Done: only the completed note
+PASS filter Open: the other three
+PASS search "assignment": one match
+PASS search is case-insensitive ("PAPER")
+PASS tag chip #backend: two notes
+PASS summary shows the filter count
+PASS reorder: Up moves the last note one place up
+PASS reorder: Down puts it back
+PASS reorder: drag first card onto the lower half of the third
+PASS reload: same notes, same order
+PASS reload: completed state kept
+PASS theme: dark applied and saved
+PASS theme: still dark after reload
+PASS new tab: sees the same 4 notes
+PASS storage event: tab 1 shows the tab-2 note without reloading
+PASS export: notes-YYYY-MM-DD.json equals localStorage
+     exported file: notes-2026-09-19.json, 5 notes
+PASS import: starting from 0 notes
+PASS import: every exported note restored
+PASS import: validates entries (1 added, 1 replaced, 2 skipped)
+PASS import: rejects a file that is not a list
+PASS corrupt value: page still renders, raw value backed up
+PASS mobile 390px: no horizontal scroll
+PASS no console errors (the corrupt-value warning is expected)
+     console: ["warning: notes: stored value was not valid JSON, backed up to notes-corrupt-backup"]
+
+38 passed, 0 failed
