@@ -1,0 +1,7 @@
+# With the current latest mongoose (9.x, MongoDB driver 7.x) the manual's section-5 snippet is rejected:
+$ npm ls mongoose
+`-- mongoose@9.13.1
+$ node connect.js
+Connection error: MongoParseError: options usenewurlparser, useunifiedtopology are not supported
+    at parseOptions (C:\Users\surya\OneDrive\Documents\Obsidian Vault\suryansh\university\sem5\Backend-Development\Lab\Exp13-MongoDB-Installation\node_modules\mongodb\lib\connection_string.js:331:15)
+    at new MongoClient (C:\Users\surya\OneDrive\Documents\Obsidian Vault\suryansh\university\sem5\Backend-Development\Lab\Exp13-MongoDB-Installation\node_modules\mongodb\lib\mongo_client.js:67:61)

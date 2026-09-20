@@ -1,0 +1,17 @@
+$ mongod --version
+db version v8.2.1
+Build Info: {
+    "version": "8.2.1",
+    "gitVersion": "3312bdcf28aa65f5930005e21c2cb130f648b8c3",
+    "modules": [],
+    "allocator": "tcmalloc-gperf",
+    "environment": {
+        "distmod": "windows"
+    }
+}
+
+$ mongosh --version
+2.5.3
+
+$ mongosh --quiet --eval "db.version()"
+8.2.1

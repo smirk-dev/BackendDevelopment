@@ -1,0 +1,17 @@
+{
+  "name": "exp13-mongodb-installation",
+  "version": "1.0.0",
+  "description": "Exp 13 - Installation of MongoDB: install report plus the manual's Mongoose connection, model, CRUD and query examples",
+  "main": "crud.js",
+  "scripts": {
+    "connect": "node connect.js",
+    "db": "node db.js",
+    "crud": "node crud.js",
+    "shell": "mongosh --quiet mongodb://127.0.0.1:27017 < shell-basics.mongosh.js"
+  },
+  "author": "smirk-dev",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^8.24.11"
+  }
+}

@@ -1,0 +1,71 @@
+$ node crud.js
+Student added!
+Inserted 5 more students for the query examples
+[
+  {
+    _id: new ObjectId('6aaf872447d38d4326638aa7'),
+    name: 'Alice',
+    age: 22,
+    course: 'B.Tech',
+    marks: 88,
+    __v: 0
+  },
+  {
+    _id: new ObjectId('6aaf872447d38d4326638aa9'),
+    name: 'Rohan',
+    age: 21,
+    course: 'CS',
+    marks: 79,
+    __v: 0
+  },
+  {
+    _id: new ObjectId('6aaf872447d38d4326638aaa'),
+    name: 'Meera',
+    age: 23,
+    course: 'CS',
+    marks: 72,
+    __v: 0
+  },
+  {
+    _id: new ObjectId('6aaf872447d38d4326638aab'),
+    name: 'Kabir',
+    age: 20,
+    course: 'IT',
+    marks: 65,
+    __v: 0
+  },
+  {
+    _id: new ObjectId('6aaf872447d38d4326638aac'),
+    name: 'Ishita',
+    age: 22,
+    course: 'B.Tech',
+    marks: 45,
+    __v: 0
+  },
+  {
+    _id: new ObjectId('6aaf872447d38d4326638aad'),
+    name: 'Arjun',
+    age: 24,
+    course: 'CS',
+    marks: 91,
+    __v: 0
+  }
+]
+{
+  _id: new ObjectId('6aaf872447d38d4326638aa7'),
+  name: 'Alice',
+  age: 22,
+  course: 'B.Tech',
+  marks: 88,
+  __v: 0
+}
+Record updated
+Alice now: { name: 'Alice', age: 22, course: 'B.Tech', marks: 92 }
+$gt 80      : Alice(92), Arjun(91)
+CS & >= 75  : Rohan(79), Arjun(91)
+IT or < 50  : Kabir(IT,65), Ishita(B.Tech,45)
+sorted desc : Alice(92), Arjun(91), Rohan(79), Meera(72), Kabir(65), Ishita(45)
+top 5       : Alice(92), Arjun(91), Rohan(79), Meera(72), Kabir(65)
+projection  : [{"name":"Alice","course":"B.Tech"},{"name":"Rohan","course":"CS"},{"name":"Meera","course":"CS"},{"name":"Kabir","course":"IT"},{"name":"Ishita","course":"B.Tech"},{"name":"Arjun","course":"CS"}]
+Record deleted
+count after delete: 5

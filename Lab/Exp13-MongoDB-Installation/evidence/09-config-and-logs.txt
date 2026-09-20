@@ -1,0 +1,54 @@
+# Windows equivalent of "sudo tail -f /var/log/mongodb/mongod.log" - the log path comes from mongod.cfg
+$ Get-Content "C:\Program Files\MongoDB\Server\8.2\log\mongod.log" | Select-String "Waiting for connections" | Select-Object -Last 1
+{"t":{"$date":"2026-09-17T22:03:53.076+05:30"},"s":"I",  "c":"NETWORK",  "id":23016,   "ctx":"listener","msg":"Waiting for connections","attr":{"port":27017,"ssl":"off"}}
+
+$ (Get-Item mongod.log).Length
+375394344
+
+$ type "C:\Program Files\MongoDB\Server\8.2\bin\mongod.cfg"
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# Where and how to store data.
+storage:
+  dbPath: C:\Program Files\MongoDB\Server\8.2\data
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: C:\Program Files\MongoDB\Server\8.2\log\mongod.log
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1
+#processManagement:
+
+#security:
+
+#operationProfiling:
+
+replication:
+  replSetName: rs0
+
+#sharding:
+
+## Enterprise-Only Options:
+
+#auditLog:
+
+$ mongosh --eval "rs.status().members"  (mongod.cfg sets replSetName: rs0)
+[ { name: 'localhost:27017', state: 'PRIMARY', health: 1 } ]
+
+$ mongosh --eval "db.serverStatus()" (selected fields)
+{
+  host: 'SuryanshMishra',
+  version: '8.2.1',
+  process: 'C:\\Program Files\\MongoDB\\Server\\8.2\\bin\\mongod.exe',
+  uptimeHours: 62.6,
+  storageEngine: 'wiredTiger',
+  connections: 9
+}

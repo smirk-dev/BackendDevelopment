@@ -1,0 +1,55 @@
+rs0 [direct: primary] test> switched to db admin
+rs0 [direct: primary] admin> ... ... ... ... {
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1789888022, i: 3 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1789888022, i: 3 })
+}
+rs0 [direct: primary] admin> {
+  _id: 'admin.adminUser',
+  userId: UUID('c959e31a-d2b9-422b-819e-4899a88ce324'),
+  user: 'adminUser',
+  db: 'admin',
+  roles: [ { role: 'userAdminAnyDatabase', db: 'admin' } ],
+  mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+}
+rs0 [direct: primary] admin> 
+$ mongosh -u adminUser -p securePassword123 --authenticationDatabase admin --eval "db.runCommand({connectionStatus:1}).authInfo"
+{
+  authenticatedUsers: [ { user: 'adminUser', db: 'admin' } ],
+  authenticatedUserRoles: [ { role: 'userAdminAnyDatabase', db: 'admin' } ]
+}
+
+$ mongosh -u adminUser -p wrongPassword --authenticationDatabase admin --eval "1"
+MongoServerError: Authentication failed.
+
+# clean-up: the demo user is removed again so the shared local server is left as it was
+$ mongosh --eval "db.getSiblingDB(\"admin\").dropUser(\"adminUser\")"
+{
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1789888031, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1789888031, i: 1 })
+}
+{
+  users: [],
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1789888031, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1789888031, i: 1 })
+}

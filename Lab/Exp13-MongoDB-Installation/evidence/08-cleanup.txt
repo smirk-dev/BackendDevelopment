@@ -1,0 +1,9 @@
+# clean-up after the run (same precedent as Exp13A): drop every database this experiment created
+$ mongosh --eval 'db.getSiblingDB("mydatabase").dropDatabase()'
+{ ok: 1, dropped: 'mydatabase' }
+$ mongosh --eval 'db.getSiblingDB("schoolDB").dropDatabase()'
+{ ok: 1, dropped: 'schoolDB' }
+$ mongosh --eval 'db.getSiblingDB("testDB").dropDatabase()'
+{ ok: 1, dropped: 'testDB' }
+$ show dbs (names only)
+admin, config, local, notes_lab, student_portal, userdb

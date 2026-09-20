@@ -1,0 +1,36 @@
+> Get-Service MongoDB | Format-List Name,DisplayName,Status,StartType
+Name        : MongoDB
+DisplayName : MongoDB Server (MongoDB)
+Status      : Running
+StartType   : Automatic
+
+> Get-CimInstance Win32_Service -Filter "Name='MongoDB'" | Format-List PathName,StartName,ProcessId
+PathName  : "C:\Program Files\MongoDB\Server\8.2\bin\mongod.exe" --config "C:\Program 
+            Files\MongoDB\Server\8.2\bin\mongod.cfg" --service
+StartName : NT AUTHORITY\NetworkService
+ProcessId : 5356
+
+> Get-NetTCPConnection -LocalPort 27017 -State Listen
+LocalAddress LocalPort  State OwningProcess
+------------ ---------  ----- -------------
+127.0.0.1        27017 Listen          5356
+
+> Get-Command mongosh, mongod
+C:\Program Files\MongoDB\mongosh.exe
+mongod on PATH: False
+
+> MongoDB Compass
+Name        LastWriteTime      
+----        -------------      
+app-1.49.10 02-07-2026 15:08:29
+app-1.49.12 28-07-2026 14:48:43
+app-1.49.9  28-07-2026 14:48:51
+ProductName    : MongoDBCompass
+ProductVersion : 1.49.12
+FileName       : C:\Users\surya\AppData\Local\MongoDBCompass\app-1.49.12\MongoDBCompass.exe
+
+> Database Tools (mongodump, mongorestore, mongoexport, mongoimport)
+mongodump: not installed
+mongorestore: not installed
+mongoexport: not installed
+mongoimport: not installed

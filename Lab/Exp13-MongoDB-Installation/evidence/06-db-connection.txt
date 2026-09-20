@@ -1,0 +1,5 @@
+$ node -e "require(\"./db.js\"); setTimeout(() => process.emit(\"SIGINT\"), 2000)"
+# (Windows cannot deliver a real SIGINT to a child process, so the handler is triggered with process.emit - same code path as Ctrl+C in a terminal)
+Database connected
+Database disconnected
+exit code: 0
