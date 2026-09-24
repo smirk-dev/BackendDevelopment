@@ -11,10 +11,10 @@
 
 :root {
     --paper: #faf7f2;
-    --card: #ffffff;
+    --card: #c0bcbc;
     --ink: #1f1c18;
-    --ink-soft: #5d574e;
-    --ink-faint: #8a8279;
+    --ink-soft: #7c7975;
+    --ink-faint: #93887c;
     --rule: #e3ddd2;
     --accent: #8a3324;      /* the single accent — a burnt sienna */
     --accent-soft: #f3e7e3;
