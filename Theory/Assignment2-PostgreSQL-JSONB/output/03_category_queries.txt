@@ -1,0 +1,41 @@
+-- Task 3 — one query per category, each filtering on a key only that category has.
+-- book: more than 500 pages
+SELECT name, attributes ->> 'author' AS author, (attributes ->> 'pages')::int AS pages
+FROM products
+WHERE category = 'book'
+  AND (attributes ->> 'pages')::int > 500;
+                 name                  |      author      | pages 
+---------------------------------------+------------------+-------
+ Designing Data-Intensive Applications | Martin Kleppmann |   616
+(1 row)
+
+-- laptop: at least 16 GB RAM
+SELECT name, attributes ->> 'cpu' AS cpu, (attributes ->> 'ram_gb')::int AS ram_gb
+FROM products
+WHERE category = 'laptop'
+  AND (attributes ->> 'ram_gb')::int >= 16;
+     name     |      cpu       | ram_gb 
+--------------+----------------+--------
+ ThinkPad E14 | Ryzen 7 7735HS |     16
+(1 row)
+
+-- accessory: colour is black (and show the nested array as well)
+SELECT name, attributes ->> 'color' AS color, attributes -> 'dpi' AS dpi_steps
+FROM products
+WHERE category = 'accessory'
+  AND attributes ->> 'color' = 'black';
+      name      | color |     dpi_steps     
+----------------+-------+-------------------
+ Wireless Mouse | black | [800, 1600, 2400]
+(1 row)
+
+-- bonus: reach into a nested object with the path operator #>>
+SELECT name, attributes #>> '{storage,type}' AS storage_type, (attributes #>> '{storage,gb}')::int AS gb
+FROM products
+WHERE attributes ? 'storage';
+      name      | storage_type | gb  
+----------------+--------------+-----
+ ThinkPad E14   | ssd          | 512
+ IdeaPad Slim 3 | ssd          | 512
+(2 rows)
+

@@ -1,0 +1,39 @@
+-- Task 5 — add a key to one row's jsonb without touching the table definition.
+UPDATE products
+SET attributes = attributes || '{"discount_pct": 10}'
+WHERE name = 'Wireless Mouse';
+UPDATE 1
+SELECT name, attributes FROM products WHERE name = 'Wireless Mouse';
+      name      |                                     attributes                                     
+----------------+------------------------------------------------------------------------------------
+ Wireless Mouse | {"dpi": [800, 1600, 2400], "color": "black", "wireless": true, "discount_pct": 10}
+(1 row)
+
+-- the same idea with jsonb_set (change a nested value) and the - operator (remove a key)
+UPDATE products
+SET attributes = jsonb_set(attributes, '{storage,gb}', '1024')
+WHERE name = 'ThinkPad E14';
+UPDATE 1
+UPDATE products
+SET attributes = attributes - 'edition'
+WHERE name = 'Designing Data-Intensive Applications';
+UPDATE 1
+SELECT name, attributes FROM products WHERE name IN ('ThinkPad E14', 'Designing Data-Intensive Applications') ORDER BY id;
+                 name                  |                                   attributes                                    
+---------------------------------------+---------------------------------------------------------------------------------
+ Designing Data-Intensive Applications | {"pages": 616, "author": "Martin Kleppmann"}
+ ThinkPad E14                          | {"cpu": "Ryzen 7 7735HS", "ram_gb": 16, "storage": {"gb": 1024, "type": "ssd"}}
+(2 rows)
+
+-- the table definition is unchanged: still exactly five columns
+SELECT column_name, data_type FROM information_schema.columns
+WHERE table_name = 'products' ORDER BY ordinal_position;
+ column_name |     data_type     
+-------------+-------------------
+ id          | integer
+ name        | character varying
+ category    | character varying
+ price       | numeric
+ attributes  | jsonb
+(5 rows)
+

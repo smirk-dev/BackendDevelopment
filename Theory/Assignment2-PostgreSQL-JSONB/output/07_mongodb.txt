@@ -1,0 +1,75 @@
+inserted: 5
+
+// book: pages > 500
+{
+  name: 'Designing Data-Intensive Applications',
+  attributes: {
+    author: 'Martin Kleppmann',
+    pages: 616
+  }
+}
+
+// laptop: ram_gb >= 16
+{
+  name: 'ThinkPad E14',
+  attributes: {
+    cpu: 'Ryzen 7 7735HS'
+  }
+}
+
+// accessory: color black
+{
+  name: 'Wireless Mouse',
+  attributes: {
+    dpi: [
+      800,
+      1600,
+      2400
+    ]
+  }
+}
+
+// nested: storage.type ssd
+{
+  name: 'ThinkPad E14'
+}
+{
+  name: 'IdeaPad Slim 3'
+}
+
+// wireless: true
+{
+  name: 'Wireless Mouse'
+}
+
+// array member: dpi contains 1600
+{
+  name: 'Wireless Mouse'
+}
+
+// key exists: attributes.storage
+{
+  name: 'ThinkPad E14'
+}
+{
+  name: 'IdeaPad Slim 3'
+}
+
+// updateOne matched/modified: 1 1
+
+// after $set
+{
+  name: 'Wireless Mouse',
+  attributes: {
+    color: 'black',
+    wireless: true,
+    dpi: [
+      800,
+      1600,
+      2400
+    ],
+    discount_pct: 10
+  }
+}
+
+// laptop query plan with index: FETCH -> IXSCAN (category_1_attributes.ram_gb_1) | keysExamined 1 | docsExamined 1

@@ -1,0 +1,101 @@
+INSERT 0 200000
+ANALYZE
+ category  | count 
+-----------+-------
+ accessory | 66668
+ book      | 66668
+ laptop    | 66669
+(3 rows)
+
+ table_size 
+------------
+ 24 MB
+(1 row)
+
+DROP INDEX
+=== BEFORE  containment @> {"wireless": true}
+NOTICE:  index "idx_products_attributes" does not exist, skipping
+                                                QUERY PLAN                                                 
+-----------------------------------------------------------------------------------------------------------
+ Seq Scan on products  (cost=0.00..5524.06 rows=340 width=24) (actual time=0.070..25.713 rows=335 loops=1)
+   Filter: (attributes @> '{"wireless": true}'::jsonb)
+   Rows Removed by Filter: 199670
+ Planning Time: 0.121 ms
+ Execution Time: 25.739 ms
+(5 rows)
+
+=== BEFORE  Task 3 laptop query (->> with a cast)
+                                                  QUERY PLAN                                                   
+---------------------------------------------------------------------------------------------------------------
+ Seq Scan on products  (cost=0.00..7579.40 rows=22114 width=56) (actual time=0.011..19.582 rows=26668 loops=1)
+   Filter: (((category)::text = 'laptop'::text) AND (((attributes ->> 'ram_gb'::text))::integer >= 16))
+   Rows Removed by Filter: 173337
+ Planning Time: 0.082 ms
+ Execution Time: 20.143 ms
+(5 rows)
+
+=== BEFORE  key-exists ? storage
+                                              QUERY PLAN                                               
+-------------------------------------------------------------------------------------------------------
+ Seq Scan on products  (cost=0.00..5524.06 rows=7 width=24) (actual time=0.007..16.982 rows=2 loops=1)
+   Filter: (attributes ? 'storage'::text)
+   Rows Removed by Filter: 200003
+ Planning Time: 0.068 ms
+ Execution Time: 16.994 ms
+(5 rows)
+
+CREATE INDEX
+ANALYZE
+ gin_index_size 
+----------------
+ 2248 kB
+(1 row)
+
+=== AFTER  containment @> {"wireless": true}
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on products  (cost=23.36..1030.77 rows=353 width=24) (actual time=0.624..0.959 rows=335 loops=1)
+   Recheck Cond: (attributes @> '{"wireless": true}'::jsonb)
+   Heap Blocks: exact=335
+   ->  Bitmap Index Scan on idx_products_attributes  (cost=0.00..23.28 rows=353 width=0) (actual time=0.592..0.593 rows=335 loops=1)
+         Index Cond: (attributes @> '{"wireless": true}'::jsonb)
+ Planning Time: 0.211 ms
+ Execution Time: 1.015 ms
+(7 rows)
+
+=== AFTER  Task 3 laptop query (->> with a cast)
+                                                  QUERY PLAN                                                   
+---------------------------------------------------------------------------------------------------------------
+ Seq Scan on products  (cost=0.00..7579.77 rows=22261 width=56) (actual time=0.011..18.854 rows=26668 loops=1)
+   Filter: (((category)::text = 'laptop'::text) AND (((attributes ->> 'ram_gb'::text))::integer >= 16))
+   Rows Removed by Filter: 173337
+ Planning Time: 0.067 ms
+ Execution Time: 19.431 ms
+(5 rows)
+
+=== AFTER  key-exists ? storage
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on products  (cost=12.85..39.93 rows=7 width=24) (actual time=0.016..0.017 rows=2 loops=1)
+   Recheck Cond: (attributes ? 'storage'::text)
+   Heap Blocks: exact=1
+   ->  Bitmap Index Scan on idx_products_attributes  (cost=0.00..12.85 rows=7 width=0) (actual time=0.008..0.008 rows=2 loops=1)
+         Index Cond: (attributes ? 'storage'::text)
+ Planning Time: 0.204 ms
+ Execution Time: 0.043 ms
+(7 rows)
+
+CREATE INDEX
+ANALYZE
+=== AFTER expression index  Task 3 laptop query, rarer value (>= 32)
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on products  (cost=251.79..3773.69 rows=22129 width=24) (actual time=0.738..3.379 rows=13334 loops=1)
+   Recheck Cond: ((((attributes ->> 'ram_gb'::text))::integer >= 32) AND ((category)::text = 'laptop'::text))
+   Heap Blocks: exact=3024
+   ->  Bitmap Index Scan on idx_products_ram  (cost=0.00..246.26 rows=22129 width=0) (actual time=0.483..0.484 rows=13334 loops=1)
+         Index Cond: (((attributes ->> 'ram_gb'::text))::integer >= 32)
+ Planning Time: 0.267 ms
+ Execution Time: 3.694 ms
+(7 rows)
+
