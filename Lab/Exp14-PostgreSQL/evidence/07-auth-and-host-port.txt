@@ -1,0 +1,15 @@
+# Module 1 "first-time setup": in the container the admin role is reached with docker exec instead of sudo -u postgres
+$ docker exec bdlab-postgres psql -U postgres -c "ALTER USER postgres WITH PASSWORD 'bdlab_pg_pass';"
+ALTER ROLE
+
+# connect over TCP through the published host port 5433, from a separate throwaway client container
+$ docker run --rm postgres:16 psql "postgresql://postgres:bdlab_pg_pass@host.docker.internal:5433/student_management" -c "SELECT inet_server_port(), current_database(), count(*) AS students FROM students;"
+ inet_server_port |  current_database  | students 
+------------------+--------------------+----------
+             5432 | student_management |        5
+(1 row)
+
+$ (same, wrong password)
+psql: error: connection to server at "host.docker.internal" (192.168.65.254), port 5433 failed: FATAL:  password authentication failed for user "postgres"
+$ Test-NetConnection localhost -Port 5433
+True

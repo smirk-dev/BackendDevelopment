@@ -1,0 +1,10 @@
+$ docker stop bdlab-postgres
+bdlab-postgres
+$ docker ps -a --filter name=bdlab-postgres
+NAMES            IMAGE         STATUS
+bdlab-postgres   postgres:16   Exited (0) Less than a second ago
+$ docker volume ls --filter name=bdlab-pgdata
+DRIVER    VOLUME NAME
+local     bdlab-pgdata
+$ mongosh show dbs (names only)
+admin, config, local, notes_lab, student_portal, userdb

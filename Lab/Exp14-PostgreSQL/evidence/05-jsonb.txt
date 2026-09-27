@@ -1,0 +1,80 @@
+$ docker exec -i bdlab-postgres psql -U postgres -d student_management -a < sql/04-jsonb.sql
+-- Module 5 — JSONB in PostgreSQL (verbatim from the manual)
+-- Add a flexible field to the relational table
+ALTER TABLE students ADD COLUMN profile JSONB;
+ALTER TABLE
+UPDATE students
+SET profile = '{"skills": ["python", "sql"], "clubs": {"robotics": true}}'
+WHERE email = 'alice@example.com';
+UPDATE 1
+-- Querying JSONB
+-- -> returns JSON, ->> returns text
+SELECT profile -> 'skills' FROM students WHERE email = 'alice@example.com';
+     ?column?      
+-------------------
+ ["python", "sql"]
+(1 row)
+
+SELECT profile ->> 'clubs' FROM students WHERE email = 'alice@example.com';
+      ?column?      
+--------------------
+ {"robotics": true}
+(1 row)
+
+-- @> containment check (does profile include this key/value?)
+SELECT * FROM students WHERE profile @> '{"clubs": {"robotics": true}}';
+ id |     name     | branch |       email       | enrollment_date |                          profile                           
+----+--------------+--------+-------------------+-----------------+------------------------------------------------------------
+  1 | Alice Sharma | CSE    | alice@example.com | 2024-01-15      | {"clubs": {"robotics": true}, "skills": ["python", "sql"]}
+(1 row)
+
+-- index JSONB for fast lookups, same idea as a MongoDB index
+CREATE INDEX idx_students_profile ON students USING GIN (profile);
+CREATE INDEX
+-- Beyond the manual: show the GIN index is usable and type the JSON result
+\d students
+                                    Table "public.students"
+     Column      |          Type          | Collation | Nullable |           Default            
+-----------------+------------------------+-----------+----------+------------------------------
+ id              | integer                |           | not null | generated always as identity
+ name            | character varying(100) |           | not null | 
+ branch          | character varying(50)  |           |          | 
+ email           | character varying(255) |           |          | 
+ enrollment_date | date                   |           |          | CURRENT_DATE
+ profile         | jsonb                  |           |          | 
+Indexes:
+    "students_pkey" PRIMARY KEY, btree (id)
+    "idx_students_profile" gin (profile)
+    "students_email_key" UNIQUE CONSTRAINT, btree (email)
+
+UPDATE students SET profile = '{"skills": ["c", "verilog"], "clubs": {"robotics": false, "music": true}}' WHERE email = 'bilal@example.com';
+UPDATE 1
+SELECT name, branch, profile ->> 'skills' AS skills, (profile -> 'clubs' ->> 'robotics')::boolean AS robotics FROM students ORDER BY id;
+     name     | branch |      skills       | robotics 
+--------------+--------+-------------------+----------
+ Alice Sharma | CSE    | ["python", "sql"] | t
+ Bilal Khan   | AI/ML  | ["c", "verilog"]  | f
+ Carla Gomez  | CSE    |                   | 
+ Ethan Brooks | CSE    |                   | 
+ Farah Ali    | IT     |                   | 
+(5 rows)
+
+SELECT name FROM students WHERE profile -> 'skills' ? 'sql';
+     name     
+--------------
+ Alice Sharma
+(1 row)
+
+SET enable_seqscan = off;
+SET
+EXPLAIN SELECT * FROM students WHERE profile @> '{"clubs": {"robotics": true}}';
+                                     QUERY PLAN                                     
+------------------------------------------------------------------------------------
+ Bitmap Heap Scan on students  (cost=21.57..25.58 rows=1 width=892)
+   Recheck Cond: (profile @> '{"clubs": {"robotics": true}}'::jsonb)
+   ->  Bitmap Index Scan on idx_students_profile  (cost=0.00..21.57 rows=1 width=0)
+         Index Cond: (profile @> '{"clubs": {"robotics": true}}'::jsonb)
+(4 rows)
+
+RESET enable_seqscan;
+RESET

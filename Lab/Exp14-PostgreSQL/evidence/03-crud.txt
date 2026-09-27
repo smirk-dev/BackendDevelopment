@@ -1,0 +1,109 @@
+$ docker exec -i bdlab-postgres psql -U postgres -d student_management -a < sql/02-crud.sql
+-- Module 3 — SQL CRUD (verbatim from the manual). Run while connected to student_management.
+-- Insert (Create)
+INSERT INTO students (name, branch, email, enrollment_date)
+VALUES
+    ('Alice Sharma',  'CSE', 'alice@example.com',  '2024-01-15'),
+    ('Bilal Khan',    'ECE', 'bilal@example.com',  '2023-08-10'),
+    ('Carla Gomez',   'CSE', 'carla@example.com',  '2024-03-02'),
+    ('Divya Nair',    'ME',  'divya@example.com',  '2023-11-20'),
+    ('Ethan Brooks',  'CSE', 'ethan@example.com',  '2024-02-18');
+INSERT 0 5
+SELECT * FROM students;
+ id |     name     | branch |       email       | enrollment_date 
+----+--------------+--------+-------------------+-----------------
+  1 | Alice Sharma | CSE    | alice@example.com | 2024-01-15
+  2 | Bilal Khan   | ECE    | bilal@example.com | 2023-08-10
+  3 | Carla Gomez  | CSE    | carla@example.com | 2024-03-02
+  4 | Divya Nair   | ME     | divya@example.com | 2023-11-20
+  5 | Ethan Brooks | CSE    | ethan@example.com | 2024-02-18
+(5 rows)
+
+-- Read (Retrieve)
+-- all students in CSE
+SELECT * FROM students WHERE branch = 'CSE';
+ id |     name     | branch |       email       | enrollment_date 
+----+--------------+--------+-------------------+-----------------
+  1 | Alice Sharma | CSE    | alice@example.com | 2024-01-15
+  3 | Carla Gomez  | CSE    | carla@example.com | 2024-03-02
+  5 | Ethan Brooks | CSE    | ethan@example.com | 2024-02-18
+(3 rows)
+
+-- students enrolled after Jan 2024
+SELECT * FROM students WHERE enrollment_date > '2024-01-31';
+ id |     name     | branch |       email       | enrollment_date 
+----+--------------+--------+-------------------+-----------------
+  3 | Carla Gomez  | CSE    | carla@example.com | 2024-03-02
+  5 | Ethan Brooks | CSE    | ethan@example.com | 2024-02-18
+(2 rows)
+
+-- case-insensitive name search
+SELECT * FROM students WHERE name ILIKE 'a%';
+ id |     name     | branch |       email       | enrollment_date 
+----+--------------+--------+-------------------+-----------------
+  1 | Alice Sharma | CSE    | alice@example.com | 2024-01-15
+(1 row)
+
+-- Update
+UPDATE students
+SET branch = 'AI/ML'
+WHERE email = 'bilal@example.com';
+UPDATE 1
+SELECT * FROM students WHERE email = 'bilal@example.com';
+ id |    name    | branch |       email       | enrollment_date 
+----+------------+--------+-------------------+-----------------
+  2 | Bilal Khan | AI/ML  | bilal@example.com | 2023-08-10
+(1 row)
+
+-- Delete
+-- always check what you're about to delete first
+SELECT * FROM students WHERE email = 'divya@example.com';
+ id |    name    | branch |       email       | enrollment_date 
+----+------------+--------+-------------------+-----------------
+  4 | Divya Nair | ME     | divya@example.com | 2023-11-20
+(1 row)
+
+DELETE FROM students
+WHERE email = 'divya@example.com';
+DELETE 1
+SELECT * FROM students ORDER BY id;
+ id |     name     | branch |       email       | enrollment_date 
+----+--------------+--------+-------------------+-----------------
+  1 | Alice Sharma | CSE    | alice@example.com | 2024-01-15
+  2 | Bilal Khan   | AI/ML  | bilal@example.com | 2023-08-10
+  3 | Carla Gomez  | CSE    | carla@example.com | 2024-03-02
+  5 | Ethan Brooks | CSE    | ethan@example.com | 2024-02-18
+(4 rows)
+
+-- Aggregation (bonus)
+SELECT branch, COUNT(*) AS total
+FROM students
+GROUP BY branch
+ORDER BY total DESC;
+ branch | total 
+--------+-------
+ CSE    |     3
+ AI/ML  |     1
+(2 rows)
+
+-- Constraints at work (not in the manual): duplicate email and missing name are refused
+INSERT INTO students (name, branch, email) VALUES ('Alice Copy', 'CSE', 'alice@example.com');
+ERROR:  duplicate key value violates unique constraint "students_email_key"
+DETAIL:  Key (email)=(alice@example.com) already exists.
+INSERT INTO students (branch, email) VALUES ('CSE', 'noname@example.com');
+ERROR:  null value in column "name" of relation "students" violates not-null constraint
+DETAIL:  Failing row contains (7, null, CSE, noname@example.com, 2026-09-27).
+-- id is GENERATED ALWAYS, so it cannot be set by hand
+INSERT INTO students (id, name) VALUES (99, 'Manual Id');
+ERROR:  cannot insert a non-DEFAULT value into column "id"
+DETAIL:  Column "id" is an identity column defined as GENERATED ALWAYS.
+HINT:  Use OVERRIDING SYSTEM VALUE to override.
+-- enrollment_date falls back to CURRENT_DATE
+INSERT INTO students (name, branch, email) VALUES ('Farah Ali', 'IT', 'farah@example.com');
+INSERT 0 1
+SELECT id, name, enrollment_date, enrollment_date = CURRENT_DATE AS is_today FROM students WHERE email = 'farah@example.com';
+ id |   name    | enrollment_date | is_today 
+----+-----------+-----------------+----------
+  8 | Farah Ali | 2026-09-27      | t
+(1 row)
+

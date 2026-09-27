@@ -1,0 +1,176 @@
+$ docker cp sql/hello.sql bdlab-postgres:/tmp/hello.sql
+$ docker exec -i bdlab-postgres psql -U postgres -a < sql/03-meta.sql
+-- Module 2 — psql meta-commands (no semicolon needed)
+\l
+                                                           List of databases
+        Name        |  Owner   | Encoding | Locale Provider |  Collate   |   Ctype    | ICU Locale | ICU Rules |   Access privileges   
+--------------------+----------+----------+-----------------+------------+------------+------------+-----------+-----------------------
+ postgres           | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | 
+ student_management | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | 
+ template0          | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/postgres          +
+                    |          |          |                 |            |            |            |           | postgres=CTc/postgres
+ template1          | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/postgres          +
+                    |          |          |                 |            |            |            |           | postgres=CTc/postgres
+(4 rows)
+
+\c student_management
+You are now connected to database "student_management" as user "postgres".
+\dt
+          List of relations
+ Schema |   Name   | Type  |  Owner   
+--------+----------+-------+----------
+ public | students | table | postgres
+(1 row)
+
+\d students
+                                    Table "public.students"
+     Column      |          Type          | Collation | Nullable |           Default            
+-----------------+------------------------+-----------+----------+------------------------------
+ id              | integer                |           | not null | generated always as identity
+ name            | character varying(100) |           | not null | 
+ branch          | character varying(50)  |           |          | 
+ email           | character varying(255) |           |          | 
+ enrollment_date | date                   |           |          | CURRENT_DATE
+Indexes:
+    "students_pkey" PRIMARY KEY, btree (id)
+    "students_email_key" UNIQUE CONSTRAINT, btree (email)
+
+\du
+                             List of roles
+ Role name |                         Attributes                         
+-----------+------------------------------------------------------------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS
+
+\h CREATE TABLE
+Command:     CREATE TABLE
+Description: define a new table
+Syntax:
+CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name ( [
+  { column_name data_type [ STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN | DEFAULT } ] [ COMPRESSION compression_method ] [ COLLATE collation ] [ column_constraint [ ... ] ]
+    | table_constraint
+    | LIKE source_table [ like_option ... ] }
+    [, ... ]
+] )
+[ INHERITS ( parent_table [, ... ] ) ]
+[ PARTITION BY { RANGE | LIST | HASH } ( { column_name | ( expression ) } [ COLLATE collation ] [ opclass ] [, ... ] ) ]
+[ USING method ]
+[ WITH ( storage_parameter [= value] [, ... ] ) | WITHOUT OIDS ]
+[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
+[ TABLESPACE tablespace_name ]
+
+CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name
+    OF type_name [ (
+  { column_name [ WITH OPTIONS ] [ column_constraint [ ... ] ]
+    | table_constraint }
+    [, ... ]
+) ]
+[ PARTITION BY { RANGE | LIST | HASH } ( { column_name | ( expression ) } [ COLLATE collation ] [ opclass ] [, ... ] ) ]
+[ USING method ]
+[ WITH ( storage_parameter [= value] [, ... ] ) | WITHOUT OIDS ]
+[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
+[ TABLESPACE tablespace_name ]
+
+CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } | UNLOGGED ] TABLE [ IF NOT EXISTS ] table_name
+    PARTITION OF parent_table [ (
+  { column_name [ WITH OPTIONS ] [ column_constraint [ ... ] ]
+    | table_constraint }
+    [, ... ]
+) ] { FOR VALUES partition_bound_spec | DEFAULT }
+[ PARTITION BY { RANGE | LIST | HASH } ( { column_name | ( expression ) } [ COLLATE collation ] [ opclass ] [, ... ] ) ]
+[ USING method ]
+[ WITH ( storage_parameter [= value] [, ... ] ) | WITHOUT OIDS ]
+[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
+[ TABLESPACE tablespace_name ]
+
+where column_constraint is:
+
+[ CONSTRAINT constraint_name ]
+{ NOT NULL |
+  NULL |
+  CHECK ( expression ) [ NO INHERIT ] |
+  DEFAULT default_expr |
+  GENERATED ALWAYS AS ( generation_expr ) STORED |
+  GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ ( sequence_options ) ] |
+  UNIQUE [ NULLS [ NOT ] DISTINCT ] index_parameters |
+  PRIMARY KEY index_parameters |
+  REFERENCES reftable [ ( refcolumn ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]
+    [ ON DELETE referential_action ] [ ON UPDATE referential_action ] }
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+
+and table_constraint is:
+
+[ CONSTRAINT constraint_name ]
+{ CHECK ( expression ) [ NO INHERIT ] |
+  UNIQUE [ NULLS [ NOT ] DISTINCT ] ( column_name [, ... ] ) index_parameters |
+  PRIMARY KEY ( column_name [, ... ] ) index_parameters |
+  EXCLUDE [ USING index_method ] ( exclude_element WITH operator [, ... ] ) index_parameters [ WHERE ( predicate ) ] |
+  FOREIGN KEY ( column_name [, ... ] ) REFERENCES reftable [ ( refcolumn [, ... ] ) ]
+    [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ] }
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+
+and like_option is:
+
+{ INCLUDING | EXCLUDING } { COMMENTS | COMPRESSION | CONSTRAINTS | DEFAULTS | GENERATED | IDENTITY | INDEXES | STATISTICS | STORAGE | ALL }
+
+and partition_bound_spec is:
+
+IN ( partition_bound_expr [, ...] ) |
+FROM ( { partition_bound_expr | MINVALUE | MAXVALUE } [, ...] )
+  TO ( { partition_bound_expr | MINVALUE | MAXVALUE } [, ...] ) |
+WITH ( MODULUS numeric_literal, REMAINDER numeric_literal )
+
+index_parameters in UNIQUE, PRIMARY KEY, and EXCLUDE constraints are:
+
+[ INCLUDE ( column_name [, ... ] ) ]
+[ WITH ( storage_parameter [= value] [, ... ] ) ]
+[ USING INDEX TABLESPACE tablespace_name ]
+
+exclude_element in an EXCLUDE constraint is:
+
+{ column_name | ( expression ) } [ COLLATE collation ] [ opclass [ ( opclass_parameter = value [, ... ] ) ] ] [ ASC | DESC ] [ NULLS { FIRST | LAST } ]
+
+referential_action in a FOREIGN KEY/REFERENCES constraint is:
+
+{ NO ACTION | RESTRICT | CASCADE | SET NULL [ ( column_name [, ... ] ) ] | SET DEFAULT [ ( column_name [, ... ] ) ] }
+
+URL: https://www.postgresql.org/docs/16/sql-createtable.html
+
+\i /tmp/hello.sql
+-- run from inside psql with \i to show script execution
+SELECT 'run from a .sql file with \i' AS message, current_database(), current_user, now()::date AS today;
+           message            |  current_database  | current_user |   today    
+------------------------------+--------------------+--------------+------------
+ run from a .sql file with \i | student_management | postgres     | 2026-09-27
+(1 row)
+
+
+$ docker exec bdlab-postgres psql -U postgres -c "\?" | head -25    (full list is 145 lines)
+General
+  \bind [PARAM]...       set query parameters
+  \copyright             show PostgreSQL usage and distribution terms
+  \crosstabview [COLUMNS] execute query and display result in crosstab
+  \errverbose            show most recent error message at maximum verbosity
+  \g [(OPTIONS)] [FILE]  execute query (and send result to file or |pipe);
+                         \g with no arguments is equivalent to a semicolon
+  \gdesc                 describe result of query, without executing it
+  \gexec                 execute query, then execute each value in its result
+  \gset [PREFIX]         execute query and store result in psql variables
+  \gx [(OPTIONS)] [FILE] as \g, but forces expanded output mode
+  \q                     quit psql
+  \restrict RESTRICT_KEY
+                         enter restricted mode with provided key
+  \unrestrict RESTRICT_KEY
+                         exit restricted mode if key matches
+  \watch [[i=]SEC] [c=N] execute query every SEC seconds, up to N times
+
+Help
+  \? [commands]          show help on backslash commands
+  \? options             show help on psql command-line options
+  \? variables           show help on special variables
+  \h [NAME]              help on syntax of SQL commands, * for all commands
+
+Query Buffer
+... (145 lines in total)
+
+$ echo "\q" | docker exec -i bdlab-postgres psql -U postgres; echo "exit code $?"
+exit code 0

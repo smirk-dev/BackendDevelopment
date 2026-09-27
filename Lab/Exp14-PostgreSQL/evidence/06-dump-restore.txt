@@ -1,0 +1,43 @@
+$ docker exec bdlab-postgres pg_dump -U postgres student_management > backup.sql
+backup.sql: 103 lines, 2626 bytes
+CREATE TABLE public.students (
+ALTER TABLE public.students OWNER TO postgres;
+ALTER TABLE public.students ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+COPY public.students (id, name, branch, email, enrollment_date, profile) FROM stdin;
+ALTER TABLE ONLY public.students
+ALTER TABLE ONLY public.students
+CREATE INDEX idx_students_profile ON public.students USING gin (profile);
+
+# restore into a fresh database (the original still exists, so restoring over it would only raise "already exists" errors)
+$ docker exec bdlab-postgres createdb -U postgres student_management_restore
+$ docker exec -i bdlab-postgres psql -U postgres student_management_restore < backup.sql
+ set_config 
+------------
+ 
+(1 row)
+
+ setval 
+--------
+      8
+(1 row)
+
+$ docker exec bdlab-postgres psql -U postgres -d student_management_restore -c "SELECT id, name, branch, email, enrollment_date, profile FROM students ORDER BY id;"
+ id |     name     | branch |       email       | enrollment_date |                                  profile                                  
+----+--------------+--------+-------------------+-----------------+---------------------------------------------------------------------------
+  1 | Alice Sharma | CSE    | alice@example.com | 2024-01-15      | {"clubs": {"robotics": true}, "skills": ["python", "sql"]}
+  2 | Bilal Khan   | AI/ML  | bilal@example.com | 2023-08-10      | {"clubs": {"music": true, "robotics": false}, "skills": ["c", "verilog"]}
+  3 | Carla Gomez  | CSE    | carla@example.com | 2024-03-02      | 
+  5 | Ethan Brooks | CSE    | ethan@example.com | 2024-02-18      | 
+  8 | Farah Ali    | IT     | farah@example.com | 2026-09-27      | 
+(5 rows)
+
+$ docker exec bdlab-postgres psql -U postgres -d student_management_restore -c "\di"
+                      List of relations
+ Schema |         Name         | Type  |  Owner   |  Table   
+--------+----------------------+-------+----------+----------
+ public | idx_students_profile | index | postgres | students
+ public | students_email_key   | index | postgres | students
+ public | students_pkey        | index | postgres | students
+(3 rows)
+
+$ docker exec bdlab-postgres dropdb -U postgres student_management_restore

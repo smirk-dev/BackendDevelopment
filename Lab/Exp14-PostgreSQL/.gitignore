@@ -1,0 +1,2 @@
+# nothing generated here needs ignoring except editor/OS cruft; data lives in the bdlab-pgdata Docker volume
+.env
