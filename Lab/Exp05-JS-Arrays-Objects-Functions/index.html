@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment 05 — JavaScript Arrays, Objects and Functions</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 05</p>
+  <h1>Programs to demonstrate JavaScript arrays, objects and functions</h1>
+  <p class="lede">The manual's two scripts, the PBL library utility and a set of further programs,
+    each run in this page. The panel under every program shows exactly what it printed to the
+    console; the same files run unchanged under Node.js.</p>
+  <nav aria-label="Sections">
+    <a href="#task1">Task 1 · script.js</a>
+    <a href="#task2">Task 2 · script2.js</a>
+    <a href="#pbl">PBL · library</a>
+    <a href="#more">Further programs</a>
+    <a href="#node">Task 4 · Node.js</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="task1">
+  <h2>Task 1 — Basic JavaScript</h2>
+  <p>Arrays (<code>push</code>), an object literal with dot access, and a function using a template
+    literal. Task 3 asks for an HTML page that loads <code>script.js</code>: this page does (see
+    the bottom of its source), and the manual's own bare page is kept as
+    <a href="task3-index.html"><code>task3-index.html</code></a>.</p>
+  <article class="program" data-src="script.js">
+    <details><summary>Source — <code>script.js</code></summary><pre class="code"></pre></details>
+    <pre class="out" aria-live="polite"></pre>
+  </article>
+</section>
+
+<section id="task2">
+  <h2>Task 2 — String, array and object methods</h2>
+  <p><code>toUpperCase</code>, <code>toLowerCase</code>, <code>split</code>; add, read and update on
+    an array by index and on an object by key.</p>
+  <article class="program" data-src="script2.js">
+    <details><summary>Source — <code>script2.js</code></summary><pre class="code"></pre></details>
+    <pre class="out" aria-live="polite"></pre>
+  </article>
+</section>
+
+<section id="pbl">
+  <h2>PBL — Library book manager</h2>
+  <p>An array named <code>library</code> holds book objects. <code>addBook(title, author)</code>
+    adds one (rejecting blanks and duplicate titles); <code>findBook(title)</code> looks one up,
+    ignoring case and surrounding spaces.</p>
+  <article class="program" data-src="library.js" data-expose="library,addBook,findBook">
+    <details><summary>Source — <code>library.js</code></summary><pre class="code"></pre></details>
+    <form id="add-form" class="row" autocomplete="off">
+      <label for="book-title">Title</label>
+      <input type="text" id="book-title">
+      <label for="book-author">Author</label>
+      <input type="text" id="book-author">
+      <button type="submit">addBook()</button>
+    </form>
+    <form id="find-form" class="row" autocomplete="off" style="margin-top:.6rem">
+      <label for="find-title">Find title</label>
+      <input type="text" id="find-title">
+      <button type="submit">findBook()</button>
+      <button type="button" id="seed" class="quiet">Add three sample books</button>
+    </form>
+    <pre class="out" id="pbl-out" aria-live="polite"></pre>
+    <table>
+      <thead><tr><th>id</th><th>title</th><th>author</th></tr></thead>
+      <tbody id="library-rows"><tr><td colspan="3"><small>library is empty</small></td></tr></tbody>
+    </table>
+  </article>
+</section>
+
+<section id="more">
+  <h2>Further programs</h2>
+  <p>Array methods (<code>map</code>, <code>filter</code>, <code>reduce</code>, <code>find</code>,
+    <code>splice</code>, <code>sort</code>…), object operations (keys/values/entries, destructuring,
+    spread, <code>freeze</code>, JSON, constructors and classes) and every common function form
+    (declaration, expression, arrow, default and rest parameters, closures, higher-order functions,
+    recursion, IIFE, callbacks).</p>
+  <article class="program" data-src="programs.js">
+    <details><summary>Source — <code>programs.js</code></summary><pre class="code"></pre></details>
+    <pre class="out" aria-live="polite"></pre>
+  </article>
+</section>
+
+<section id="node">
+  <h2>Task 4 — Node.js execution</h2>
+  <p>The same files run in a terminal:</p>
+  <pre class="out">node script.js
+node script2.js
+node library.js        # PBL demo
+node test-library.js   # 7 assertions on addBook / findBook
+node programs.js</pre>
+  <p class="warn">The browser panels format values the way Node's <code>console.log</code> does
+    (<code>[ 'Apple', 'Banana' ]</code>, <code>{ name: 'John Doe' }</code>), so the two outputs can
+    be compared line for line. Node additionally colours them and wraps long objects.</p>
+</section>
+
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+
+<script src="js/runner.js"></script>
+<!-- Task 3: the page also loads script.js directly, so its output appears in DevTools (F12) too. -->
+<script src="script.js"></script>
+</body>
+</html>
