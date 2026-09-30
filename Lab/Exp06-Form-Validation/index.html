@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment 06 — Client-Side Form Validation with JavaScript</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 06</p>
+  <h1>Client-side scripts for form validation using JavaScript</h1>
+  <p class="lede">A student registration form validated entirely in the browser. The form is
+    marked <code>novalidate</code>, so the browser's own bubbles stay out of the way and JavaScript
+    decides what is wrong, says it in plain words next to the field, and tells assistive technology
+    about it.</p>
+  <nav aria-label="Sections">
+    <a href="#form-section">The form</a>
+    <a href="#rules">Rules enforced</a>
+    <a href="#how">How it works</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="form-section">
+  <h2>Student registration</h2>
+  <p><small>Fields marked <span class="req" aria-hidden="true">*</span> are required. Errors appear
+    once you leave a field, then update as you type.</small></p>
+
+  <div id="error-summary" class="summary" role="alert" tabindex="-1" hidden>
+    <h3>Please fix <span id="error-count">0</span> problem(s) before submitting</h3>
+    <ul id="error-list"></ul>
+  </div>
+
+  <form id="reg-form" novalidate autocomplete="off">
+
+    <fieldset>
+      <legend>About you</legend>
+
+      <div class="field" data-field="fullName">
+        <label for="fullName">Full name <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="fullName" name="fullName" required minlength="3" maxlength="50"
+               aria-describedby="fullName-hint fullName-error" autocomplete="name">
+        <small id="fullName-hint">3-50 characters: letters, spaces, apostrophes, dots, hyphens.</small>
+        <p class="error" id="fullName-error"></p>
+      </div>
+
+      <div class="field" data-field="email">
+        <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+        <input type="email" id="email" name="email" required maxlength="100"
+               aria-describedby="email-hint email-error" autocomplete="email">
+        <small id="email-hint">For example name@stu.upes.ac.in</small>
+        <p class="error" id="email-error"></p>
+      </div>
+
+      <div class="field" data-field="phone">
+        <label for="phone">Mobile number <span class="req" aria-hidden="true">*</span></label>
+        <input type="tel" id="phone" name="phone" required inputmode="tel"
+               aria-describedby="phone-hint phone-error" autocomplete="tel">
+        <small id="phone-hint">10-digit Indian mobile, starting 6-9. +91 or 0 prefix optional.</small>
+        <p class="error" id="phone-error"></p>
+      </div>
+
+      <div class="field" data-field="dob">
+        <label for="dob">Date of birth <span class="req" aria-hidden="true">*</span></label>
+        <input type="date" id="dob" name="dob" required min="1950-01-01"
+               aria-describedby="dob-hint dob-error">
+        <small id="dob-hint">You must be at least 17 years old.</small>
+        <p class="error" id="dob-error"></p>
+      </div>
+
+      <fieldset class="field group" data-field="gender" id="gender-group" aria-describedby="gender-error">
+        <legend>Gender <span class="req" aria-hidden="true">*</span></legend>
+        <label class="inline"><input type="radio" name="gender" value="female" required> Female</label>
+        <label class="inline"><input type="radio" name="gender" value="male"> Male</label>
+        <label class="inline"><input type="radio" name="gender" value="other"> Other</label>
+        <label class="inline"><input type="radio" name="gender" value="na"> Prefer not to say</label>
+        <p class="error" id="gender-error"></p>
+      </fieldset>
+    </fieldset>
+
+    <fieldset>
+      <legend>Course</legend>
+
+      <div class="field" data-field="sapId">
+        <label for="sapId">SAP ID <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="sapId" name="sapId" required inputmode="numeric" pattern="5[0-9]{8}"
+               maxlength="9" aria-describedby="sapId-hint sapId-error">
+        <small id="sapId-hint">9 digits starting with 5.</small>
+        <p class="error" id="sapId-error"></p>
+      </div>
+
+      <div class="field" data-field="program">
+        <label for="program">Programme <span class="req" aria-hidden="true">*</span></label>
+        <select id="program" name="program" required aria-describedby="program-error">
+          <option value="">Choose a programme</option>
+          <option>B.Tech CSE</option>
+          <option>B.Tech CSE (Full Stack)</option>
+          <option>B.Tech CSE (AI &amp; ML)</option>
+          <option>B.Tech IT</option>
+          <option>BCA</option>
+        </select>
+        <p class="error" id="program-error"></p>
+      </div>
+
+      <div class="field" data-field="semester">
+        <label for="semester">Semester <span class="req" aria-hidden="true">*</span></label>
+        <input type="number" id="semester" name="semester" required min="1" max="8" step="1"
+               aria-describedby="semester-hint semester-error">
+        <small id="semester-hint">A whole number from 1 to 8.</small>
+        <p class="error" id="semester-error"></p>
+      </div>
+
+      <div class="field" data-field="website">
+        <label for="website">GitHub or portfolio URL <span class="opt">(optional)</span></label>
+        <input type="url" id="website" name="website" aria-describedby="website-hint website-error">
+        <small id="website-hint">Must start with http:// or https://</small>
+        <p class="error" id="website-error"></p>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Account</legend>
+
+      <div class="field" data-field="username">
+        <label for="username">Username <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="username" name="username" required minlength="4" maxlength="16"
+               pattern="[a-z][a-z0-9_]*" aria-describedby="username-hint username-error"
+               autocapitalize="none" spellcheck="false">
+        <small id="username-hint">4-16 characters: lower-case letters, digits, underscore; starts with a letter.</small>
+        <p class="error" id="username-error"></p>
+      </div>
+
+      <div class="field" data-field="password">
+        <label for="password">Password <span class="req" aria-hidden="true">*</span></label>
+        <div class="with-toggle">
+          <input type="password" id="password" name="password" required minlength="8" maxlength="64"
+                 aria-describedby="password-rules password-strength password-error" autocomplete="new-password">
+          <button type="button" class="quiet" id="toggle-password" aria-controls="password" aria-pressed="false">Show</button>
+        </div>
+        <div class="meter" aria-hidden="true"><span id="meter-bar"></span></div>
+        <p id="password-strength" class="strength" aria-live="polite"></p>
+        <ul id="password-rules" class="checklist"></ul>
+        <p class="error" id="password-error"></p>
+      </div>
+
+      <div class="field" data-field="confirm">
+        <label for="confirm">Confirm password <span class="req" aria-hidden="true">*</span></label>
+        <input type="password" id="confirm" name="confirm" required
+               aria-describedby="confirm-error" autocomplete="new-password">
+        <p class="error" id="confirm-error"></p>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Address and notes</legend>
+
+      <div class="field" data-field="pin">
+        <label for="pin">PIN code <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="pin" name="pin" required inputmode="numeric" maxlength="6"
+               aria-describedby="pin-hint pin-error">
+        <small id="pin-hint">6 digits, not starting with 0.</small>
+        <p class="error" id="pin-error"></p>
+      </div>
+
+      <div class="field" data-field="bio">
+        <label for="bio">Short bio <span class="opt">(optional)</span></label>
+        <textarea id="bio" name="bio" rows="3" maxlength="200" aria-describedby="bio-count bio-error"></textarea>
+        <small id="bio-count" aria-live="polite">0 / 200 characters (20 minimum if you write one)</small>
+        <p class="error" id="bio-error"></p>
+      </div>
+
+      <div class="field" data-field="terms">
+        <label class="inline"><input type="checkbox" id="terms" name="terms" required
+               aria-describedby="terms-error"> I confirm the details above are correct <span class="req" aria-hidden="true">*</span></label>
+        <p class="error" id="terms-error"></p>
+      </div>
+    </fieldset>
+
+    <div class="row actions">
+      <button type="submit">Register</button>
+      <button type="reset" class="quiet">Clear form</button>
+      <button type="button" class="quiet" id="fill-demo">Fill with valid sample data</button>
+    </div>
+  </form>
+
+  <div id="result" class="well" role="status" aria-live="polite" hidden></div>
+</section>
+
+<section id="rules">
+  <h2>Rules enforced</h2>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Field</th><th>Checks</th><th>Mechanism</th></tr></thead>
+    <tbody>
+      <tr><td>Full name</td><td>required, 3-50 chars, letters/spaces/<code>. ' -</code> only</td><td>length + Unicode regex</td></tr>
+      <tr><td>Email</td><td>required, valid address, must have a dotted domain</td><td><code>validity.typeMismatch</code> + stricter regex via <code>setCustomValidity</code></td></tr>
+      <tr><td>Mobile</td><td>required, Indian 10-digit mobile, optional +91 / 0</td><td>regex on the value with spaces and hyphens removed</td></tr>
+      <tr><td>Date of birth</td><td>required, real date, not in the future, at least 17 years old</td><td><code>badInput</code> + age calculation</td></tr>
+      <tr><td>Gender</td><td>one option chosen</td><td>radio group <code>valueMissing</code></td></tr>
+      <tr><td>SAP ID</td><td>required, 9 digits starting with 5</td><td><code>pattern</code> attribute → <code>validity.patternMismatch</code></td></tr>
+      <tr><td>Programme</td><td>a real option chosen (not the placeholder)</td><td><code>select required</code> → <code>valueMissing</code></td></tr>
+      <tr><td>Semester</td><td>whole number 1-8</td><td><code>rangeUnderflow</code>, <code>rangeOverflow</code>, <code>stepMismatch</code>, <code>badInput</code></td></tr>
+      <tr><td>Website</td><td>optional; if given, an http(s) URL</td><td><code>typeMismatch</code> + protocol check</td></tr>
+      <tr><td>Username</td><td>required, 4-16, pattern, not a reserved name</td><td>length, <code>patternMismatch</code>, reserved list via <code>setCustomValidity</code></td></tr>
+      <tr><td>Password</td><td>required, all five rules (length, lower, upper, digit, symbol), no spaces, not containing the username</td><td>live checklist and strength meter</td></tr>
+      <tr><td>Confirm</td><td>must equal the password; re-checked whenever the password changes</td><td>cross-field <code>setCustomValidity</code></td></tr>
+      <tr><td>PIN code</td><td>required, 6 digits not starting with 0</td><td>regex</td></tr>
+      <tr><td>Bio</td><td>optional; if given, 20-200 characters</td><td>live counter + length check</td></tr>
+      <tr><td>Terms</td><td>must be ticked</td><td>checkbox <code>valueMissing</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="how">
+  <h2>How it works</h2>
+  <ol>
+    <li><strong><code>novalidate</code> on the form</strong> switches off the browser's default
+      tooltips, but the <em>Constraint Validation API</em> still works: every input keeps its
+      <code>validity</code> object (<code>valueMissing</code>, <code>typeMismatch</code>,
+      <code>patternMismatch</code>, <code>rangeOverflow</code>…).</li>
+    <li><strong>One validator per field</strong> (<code>js/validate.js</code>) reads that
+      <code>validity</code> object, adds the rules HTML attributes cannot express (age, matching
+      passwords, reserved usernames, password strength), and returns one plain-language message.</li>
+    <li><strong><code>setCustomValidity(message)</code></strong> records that message on the
+      element, so <code>form.checkValidity()</code> and the <code>:invalid</code> state agree with
+      the JavaScript rules.</li>
+    <li><strong>Live, but not nagging</strong>: a field is checked on <code>blur</code> the first
+      time, then on every <code>input</code> after that. Submitting checks everything at once.</li>
+    <li><strong>Accessible errors</strong>: the field gets <code>aria-invalid="true"</code>; its
+      message sits in an element named by <code>aria-describedby</code>; on a failed submit an error
+      summary with links to each field takes focus (<code>role="alert"</code>), and focus moves to
+      the first invalid field when a link is used.</li>
+    <li><strong>Client-side checks are a convenience, not security.</strong> Anyone can bypass them
+      (DevTools, curl), so a real backend repeats every check on the server — the Exam 01 notes app
+      in this repo does exactly that.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+
+<script src="js/rules.js"></script>
+<script src="js/validate.js"></script>
+</body>
+</html>
