@@ -1,0 +1,130 @@
+## Experiment 1 - connection
+$ curl -X GET /
+{"message":"API is running..."}
+HTTP 200
+
+## Experiment 2 - registration
+$ curl -X POST /api/auth/register -d '{"username":"john","email":"john@example.com","password":"password123"}'
+{"message":"User registered successfully","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YjA2OGIwMDM4NDQ1YWE4OTFjNTkyNDMiLCJpYXQiOjE3OTU1OTA5MTIsImV4cCI6MTc5NjE5NTcxMn0.Sfc7ECqFcrCTcq4Yats45RANCNqKloSHEitWK3NwQaQ","user":{"id":"6ac1fd0038445aa891c59243","username":"john","email":"john@example.com"}}
+HTTP 201
+
+# duplicate registration is refused
+$ curl -X POST /api/auth/register -d '{"username":"john","email":"john@example.com","password":"password123"}'
+{"message":"User with this email or username already exists"}
+HTTP 400
+
+# schema validation (minlength 6 on password, email regex) surfaces as the catch-all 500
+$ curl -X POST /api/auth/register -d '{"username":"al","email":"not-an-email","password":"123"}'
+{"message":"Server error","error":"User validation failed: username: Username must be at least 3 characters, email: Please enter a valid email, password: Password must be at least 6 characters"}
+HTTP 500
+
+## Experiment 3 - login
+$ curl -X POST /api/auth/login -d '{"email":"john@example.com","password":"password123"}'
+{"message":"Login successful","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YjA2OGIwMDM4NDQ1YWE4OTFjNTkyNDMiLCJpYXQiOjE3OTU1OTA5MTMsImV4cCI6MTc5NjE5NTcxM30.JGkweOuDuvXGFE2KCTXgb6EncelU9WmNhNyFgM4zpnE","user":{"id":"6ac1fd0038445aa891c59243","username":"john","email":"john@example.com"}}
+HTTP 200
+
+# wrong password and unknown email get the same generic answer
+$ curl -X POST /api/auth/login -d '{"email":"john@example.com","password":"wrongpass"}'
+{"message":"Invalid credentials"}
+HTTP 401
+
+$ curl -X POST /api/auth/login -d '{"email":"nobody@example.com","password":"password123"}'
+{"message":"Invalid credentials"}
+HTTP 401
+
+$ curl -X POST /api/auth/login -d '{"email":"john@example.com"}'
+{"message":"Please provide email and password"}
+HTTP 400
+
+## Protected routes require a valid token
+$ curl -X GET /api/todos
+{"message":"No token, authorization denied"}
+HTTP 401
+
+$ curl -X GET /api/todos -H 'Authorization: Bearer <token>'
+{"message":"Token is not valid"}
+HTTP 401
+
+## Experiment 4 - todo CRUD
+$ curl -X POST /api/todos -d '{"title":"Buy groceries","description":"Milk, eggs, bread","priority":"high"}' -H 'Authorization: Bearer <token>'
+{"message":"Todo created successfully","todo":{"user":"6ac1fd0038445aa891c59243","title":"Buy groceries","description":"Milk, eggs, bread","completed":false,"priority":"high","_id":"6ac1fd0338445aa891c5924b","createdAt":"2026-10-04T07:15:15.286Z","updatedAt":"2026-10-04T07:15:15.286Z","__v":0}}
+HTTP 201
+
+$ curl -X POST /api/todos -d '{"title":"Finish Exp 13 B report","priority":"medium","dueDate":"2026-10-09"}' -H 'Authorization: Bearer <token>'
+{"message":"Todo created successfully","todo":{"user":"6ac1fd0038445aa891c59243","title":"Finish Exp 13 B report","completed":false,"priority":"medium","dueDate":"2026-10-09T00:00:00.000Z","_id":"6ac1fd0338445aa891c5924d","createdAt":"2026-10-04T07:15:15.747Z","updatedAt":"2026-10-04T07:15:15.747Z","__v":0}}
+HTTP 201
+
+$ curl -X POST /api/todos -d '{"title":"Call home","priority":"low"}' -H 'Authorization: Bearer <token>'
+{"message":"Todo created successfully","todo":{"user":"6ac1fd0038445aa891c59243","title":"Call home","completed":false,"priority":"low","_id":"6ac1fd0438445aa891c5924f","createdAt":"2026-10-04T07:15:16.130Z","updatedAt":"2026-10-04T07:15:16.130Z","__v":0}}
+HTTP 201
+
+# validation: missing title, bad priority enum
+$ curl -X POST /api/todos -d '{"description":"no title"}' -H 'Authorization: Bearer <token>'
+{"message":"Server error","error":"Todo validation failed: title: Title is required"}
+HTTP 500
+
+$ curl -X POST /api/todos -d '{"title":"x","priority":"urgent"}' -H 'Authorization: Bearer <token>'
+{"message":"Server error","error":"Todo validation failed: priority: `urgent` is not a valid enum value for path `priority`."}
+HTTP 500
+
+$ curl -X GET /api/todos -H 'Authorization: Bearer <token>'
+{"count":3,"todos":[{"_id":"6ac1fd0438445aa891c5924f","user":"6ac1fd0038445aa891c59243","title":"Call home","completed":false,"priority":"low","createdAt":"2026-10-04T07:15:16.130Z","updatedAt":"2026-10-04T07:15:16.130Z","__v":0},{"_id":"6ac1fd0338445aa891c5924d","user":"6ac1fd0038445aa891c59243","title":"Finish Exp 13 B report","completed":false,"priority":"medium","dueDate":"2026-10-09T00:00:00.000Z","createdAt":"2026-10-04T07:15:15.747Z","updatedAt":"2026-10-04T07:15:15.747Z","__v":0},{"_id":"6ac1fd0338445aa891c5924b","user":"6ac1fd0038445aa891c59243","title":"Buy groceries","description":"Milk, eggs, bread","completed":false,"priority":"high","createdAt":"2026-10-04T07:15:15.286Z","updatedAt":"2026-10-04T07:15:15.286Z","__v":0}]}
+HTTP 200
+
+$ curl -X GET /api/todos/6ac1fd0338445aa891c5924b -H 'Authorization: Bearer <token>'
+{"_id":"6ac1fd0338445aa891c5924b","user":"6ac1fd0038445aa891c59243","title":"Buy groceries","description":"Milk, eggs, bread","completed":false,"priority":"high","createdAt":"2026-10-04T07:15:15.286Z","updatedAt":"2026-10-04T07:15:15.286Z","__v":0}
+HTTP 200
+
+# toggle completed on, then off again
+$ curl -X PUT /api/todos/6ac1fd0338445aa891c5924b -d '{"completed":true}' -H 'Authorization: Bearer <token>'
+{"message":"Todo updated successfully","todo":{"_id":"6ac1fd0338445aa891c5924b","user":"6ac1fd0038445aa891c59243","title":"Buy groceries","description":"Milk, eggs, bread","completed":true,"priority":"high","createdAt":"2026-10-04T07:15:15.286Z","updatedAt":"2026-10-04T07:15:17.616Z","__v":0}}
+HTTP 200
+
+$ curl -X PUT /api/todos/6ac1fd0338445aa891c5924b -d '{"completed":false}' -H 'Authorization: Bearer <token>'
+{"message":"Todo updated successfully","todo":{"_id":"6ac1fd0338445aa891c5924b","user":"6ac1fd0038445aa891c59243","title":"Buy groceries","description":"Milk, eggs, bread","completed":false,"priority":"high","createdAt":"2026-10-04T07:15:15.286Z","updatedAt":"2026-10-04T07:15:17.871Z","__v":0}}
+HTTP 200
+
+$ curl -X PUT /api/todos/6ac1fd0338445aa891c5924d -d '{"completed":true,"title":"Finish Exp 13 B report (done)"}' -H 'Authorization: Bearer <token>'
+{"message":"Todo updated successfully","todo":{"_id":"6ac1fd0338445aa891c5924d","user":"6ac1fd0038445aa891c59243","title":"Finish Exp 13 B report (done)","completed":true,"priority":"medium","dueDate":"2026-10-09T00:00:00.000Z","createdAt":"2026-10-04T07:15:15.747Z","updatedAt":"2026-10-04T07:15:18.107Z","__v":0}}
+HTTP 200
+
+$ curl -X DELETE /api/todos/6ac1fd0438445aa891c5924f -H 'Authorization: Bearer <token>'
+{"message":"Todo deleted successfully","todo":{"_id":"6ac1fd0438445aa891c5924f","user":"6ac1fd0038445aa891c59243","title":"Call home","completed":false,"priority":"low","createdAt":"2026-10-04T07:15:16.130Z","updatedAt":"2026-10-04T07:15:16.130Z","__v":0}}
+HTTP 200
+
+$ curl -X GET /api/todos/6ac1fd0438445aa891c5924f -H 'Authorization: Bearer <token>'
+{"message":"Todo not found"}
+HTTP 404
+
+## Users cannot access other users todos
+$ curl -X POST /api/auth/register -d '{"username":"priya","email":"priya@example.com","password":"secret456"}'
+{"message":"User registered successfully","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YjA2OGIwNjM4NDQ1YWE4OTFjNTkyNWUiLCJpYXQiOjE3OTU1OTA5MTksImV4cCI6MTc5NjE5NTcxOX0.xB3Th80WOlUv_En5T6tPSEq3rPTYqTPG0cRofOyFIzo","user":{"id":"6ac1fd0638445aa891c5925e","username":"priya","email":"priya@example.com"}}
+HTTP 201
+
+$ curl -X GET /api/todos -H 'Authorization: Bearer <token>'
+{"count":0,"todos":[]}
+HTTP 200
+
+$ curl -X GET /api/todos/6ac1fd0338445aa891c5924b -H 'Authorization: Bearer <token>'
+{"message":"Todo not found"}
+HTTP 404
+
+$ curl -X PUT /api/todos/6ac1fd0338445aa891c5924b -d '{"completed":true}' -H 'Authorization: Bearer <token>'
+{"message":"Todo not found"}
+HTTP 404
+
+$ curl -X DELETE /api/todos/6ac1fd0338445aa891c5924b -H 'Authorization: Bearer <token>'
+{"message":"Todo not found"}
+HTTP 404
+
+# john still has both remaining todos, unchanged
+$ curl -X GET /api/todos -H 'Authorization: Bearer <token>'
+{"count":2,"todos":[{"_id":"6ac1fd0338445aa891c5924d","user":"6ac1fd0038445aa891c59243","title":"Finish Exp 13 B report (done)","completed":true,"priority":"medium","dueDate":"2026-10-09T00:00:00.000Z","createdAt":"2026-10-04T07:15:15.747Z","updatedAt":"2026-10-04T07:15:18.107Z","__v":0},{"_id":"6ac1fd0338445aa891c5924b","user":"6ac1fd0038445aa891c59243","title":"Buy groceries","description":"Milk, eggs, bread","completed":false,"priority":"high","createdAt":"2026-10-04T07:15:15.286Z","updatedAt":"2026-10-04T07:15:17.871Z","__v":0}]}
+HTTP 200
+
+## "Logout" - JWT is stateless, so logging out means the client discards the token
+# the API keeps no session; once the client drops the token every protected call is 401 again
+$ curl -X GET /api/todos
+{"message":"No token, authorization denied"}
+HTTP 401
+

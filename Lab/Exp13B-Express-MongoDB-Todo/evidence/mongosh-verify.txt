@@ -1,0 +1,76 @@
+$ mongosh --quiet mongodb://localhost:27017/todoapp --eval <script below>
+// what the API actually wrote
+db.getCollectionNames()
+db.users.find({}, { username: 1, email: 1, password: 1, createdAt: 1 }).toArray()
+db.users.getIndexes().map(i => ({ name: i.name, key: i.key, unique: !!i.unique }))
+db.todos.find({}, { title: 1, completed: 1, priority: 1, user: 1 }).toArray()
+db.todos.aggregate([{ $lookup: { from: "users", localField: "user", foreignField: "_id", as: "owner" } }, { $project: { _id: 0, title: 1, completed: 1, owner: { $first: "$owner.username" } } }]).toArray()
+--- output ---
+collections: ["todos","users"]
+[
+  {
+    _id: ObjectId('6ac1fd0038445aa891c59243'),
+    username: 'john',
+    email: 'john@example.com',
+    password: '$2b$10$rh6Y9UQSGIQjWofGOEut5ucU1IZkC.9L01NhdaV9wRDfkbcmdIKHK',
+    createdAt: ISODate('2026-10-04T07:15:12.128Z')
+  },
+  {
+    _id: ObjectId('6ac1fd0638445aa891c5925e'),
+    username: 'priya',
+    email: 'priya@example.com',
+    password: '$2b$10$BSogQ6ymY1J4wemnOX6b.uxjS15Zrz4kNerIaLsOD1xOXEaQ1IYFe',
+    createdAt: ISODate('2026-10-04T07:15:18.808Z')
+  }
+]
+[
+  {
+    name: '_id_',
+    key: {
+      _id: 1
+    },
+    unique: false
+  },
+  {
+    name: 'username_1',
+    key: {
+      username: 1
+    },
+    unique: true
+  },
+  {
+    name: 'email_1',
+    key: {
+      email: 1
+    },
+    unique: true
+  }
+]
+[
+  {
+    _id: ObjectId('6ac1fd0338445aa891c5924b'),
+    user: ObjectId('6ac1fd0038445aa891c59243'),
+    title: 'Buy groceries',
+    completed: false,
+    priority: 'high'
+  },
+  {
+    _id: ObjectId('6ac1fd0338445aa891c5924d'),
+    user: ObjectId('6ac1fd0038445aa891c59243'),
+    title: 'Finish Exp 13 B report (done)',
+    completed: true,
+    priority: 'medium'
+  }
+]
+[
+  {
+    title: 'Buy groceries',
+    completed: false,
+    owner: 'john'
+  },
+  {
+    title: 'Finish Exp 13 B report (done)',
+    completed: true,
+    owner: 'john'
+  }
+]

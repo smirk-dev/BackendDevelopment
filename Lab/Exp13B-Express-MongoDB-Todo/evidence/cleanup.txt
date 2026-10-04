@@ -1,0 +1,5 @@
+# clean-up after the run (Exp13A precedent): the demo users and todos are removed
+$ mongosh --eval 'db.getSiblingDB("todoapp").dropDatabase()'
+{ ok: 1, dropped: 'todoapp' }
+$ show dbs (names only)
+admin, config, local, notes_lab, student_portal, userdb
