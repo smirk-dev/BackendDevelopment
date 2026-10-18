@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}To-Do List{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'todo/css/style.css' %}">
+</head>
+<body>
+    {% include 'todo/partials/header.html' %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    {% include 'todo/partials/footer.html' %}
+    <script src="{% static 'todo/js/main.js' %}" defer></script>
+</body>
+</html>
