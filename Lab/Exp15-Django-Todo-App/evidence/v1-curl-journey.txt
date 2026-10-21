@@ -1,0 +1,78 @@
+# Exp 15 v1 — curl journey against python manage.py runserver 3036
+
+$ curl -X GET http://127.0.0.1:3036/ 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+  rendered list:
+   No tasks yet.
+
+$ curl -X GET http://127.0.0.1:3036/add/ 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+name="csrfmiddlewaretoken" value="jflaR97R…"  (token in the form)
+
+$ curl -X POST http://127.0.0.1:3036/add/ --data-urlencode csrfmiddlewaretoken=D867CqVtkaKVjkYwf6haZ2UdJbLCPE5P --data-urlencode title=Write the Exp 15 README
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3036/add/ --data-urlencode csrfmiddlewaretoken=D867CqVtkaKVjkYwf6haZ2UdJbLCPE5P --data-urlencode title=Revise Unit 3 notes on middleware
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3036/add/ --data-urlencode csrfmiddlewaretoken=D867CqVtkaKVjkYwf6haZ2UdJbLCPE5P --data-urlencode title=Submit Django lab
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3036/add/ --data-urlencode csrfmiddlewaretoken=D867CqVtkaKVjkYwf6haZ2UdJbLCPE5P --data-urlencode title=
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  (empty title: redirected, nothing created)
+  rendered list:
+   Submit Django lab [Toggle /toggle/3/] [Delete /delete/3/]
+   Revise Unit 3 notes on middleware [Toggle /toggle/2/] [Delete /delete/2/]
+   Write the Exp 15 README [Toggle /toggle/1/] [Delete /delete/1/]
+
+$ curl -X GET http://127.0.0.1:3036/toggle/2/ 
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  rendered list:
+   Submit Django lab [Toggle /toggle/3/] [Delete /delete/3/]
+   <s>Revise Unit 3 notes on middleware</s> [Toggle /toggle/2/] [Delete /delete/2/]
+   Write the Exp 15 README [Toggle /toggle/1/] [Delete /delete/1/]
+
+$ curl -X GET http://127.0.0.1:3036/delete/3/ 
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  rendered list:
+   <s>Revise Unit 3 notes on middleware</s> [Toggle /toggle/2/] [Delete /delete/2/]
+   Write the Exp 15 README [Toggle /toggle/1/] [Delete /delete/1/]
+
+$ curl -X GET http://127.0.0.1:3036/toggle/999/ 
+HTTP/1.1 500 Internal Server Error
+Content-Type: text/html
+  (v1 uses Task.objects.get(): an unknown id is an unhandled DoesNotExist -> 500)
+
+$ curl -X POST http://127.0.0.1:3036/add/ --data-urlencode title=no token
+HTTP/1.1 403 Forbidden
+Content-Type: text/html; charset=utf-8
+  (POST without csrfmiddlewaretoken -> 403 CSRF verification failed)
+
+## static files served by runserver (DEBUG=True)
+
+$ curl -X GET http://127.0.0.1:3036/static/todo/css/style.css 
+HTTP/1.1 200 OK
+Content-Type: text/css
+
+$ curl -X GET http://127.0.0.1:3036/static/todo/js/main.js 
+HTTP/1.1 200 OK
+Content-Type: text/javascript
+
+$ curl -X GET http://127.0.0.1:3036/static/todo/missing.css 
+HTTP/1.1 404 Not Found
+Content-Type: text/html; charset=utf-8

@@ -1,0 +1,10 @@
+/* Loaded only on the Add Task page through the extra_css block. */
+.char-count {
+    margin: -0.4rem 0 0;
+    font-size: 0.85rem;
+    color: #687386;
+}
+
+.char-count.near-limit {
+    color: #a62b37;
+}

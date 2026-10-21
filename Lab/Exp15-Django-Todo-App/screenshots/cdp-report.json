@@ -1,0 +1,113 @@
+{
+  "v1 list": {
+    "title": "To-Do List",
+    "stylesheets": [
+      "/static/todo/css/style.css"
+    ],
+    "brokenImages": [],
+    "horizontalOverflow": false,
+    "activeElement": "BODY",
+    "console": [
+      "[log:error] Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "items": 4,
+    "struck": [
+      "Revise Unit 3 notes on middleware"
+    ],
+    "bodyFont": "Georgia, \"Iowan Old Style\", \"Times New Roman\", serif"
+  },
+  "v1 add": {
+    "title": "Add Task",
+    "stylesheets": [
+      "/static/todo/css/style.css"
+    ],
+    "brokenImages": [],
+    "horizontalOverflow": false,
+    "activeElement": "title",
+    "console": []
+  },
+  "v2 list desktop": {
+    "title": "My Tasks | Task Tracker",
+    "stylesheets": [
+      "/static/todo/css/style.css"
+    ],
+    "brokenImages": [],
+    "horizontalOverflow": false,
+    "activeElement": "BODY",
+    "console": [
+      "[log] Task Tracker JavaScript loaded.",
+      "[log:error] Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "items": 4,
+    "completed": [
+      "Revise Unit 3 notes on middleware"
+    ],
+    "logoAlt": "Task Tracker logo",
+    "logoSize": 160,
+    "scripts": [
+      "/static/todo/js/app.js",
+      "/static/todo/js/confirm-delete.js"
+    ]
+  },
+  "v2 list mobile": {
+    "title": "My Tasks | Task Tracker",
+    "stylesheets": [
+      "/static/todo/css/style.css"
+    ],
+    "brokenImages": [],
+    "horizontalOverflow": false,
+    "activeElement": "BODY",
+    "console": [
+      "[log] Task Tracker JavaScript loaded."
+    ],
+    "headerDirection": "column",
+    "itemDirection": "column"
+  },
+  "v2 add": {
+    "title": "Add Task | Task Tracker",
+    "stylesheets": [
+      "/static/todo/css/style.css",
+      "/static/todo/css/add_task.css"
+    ],
+    "brokenImages": [],
+    "horizontalOverflow": false,
+    "activeElement": "title",
+    "console": [
+      "[log] Task Tracker JavaScript loaded."
+    ],
+    "charCount": "31 / 200 characters",
+    "describedBy": "title-count"
+  },
+  "v2 admin changelist": {
+    "title": "Select task to change | Django site admin",
+    "stylesheets": [
+      "/static/admin/css/base.css",
+      "/static/admin/css/dark_mode.css",
+      "/static/admin/css/nav_sidebar.css",
+      "/static/admin/css/changelists.css",
+      "/static/admin/css/widgets.css",
+      "/static/admin/css/forms.css",
+      "/static/admin/css/responsive.css"
+    ],
+    "brokenImages": [],
+    "horizontalOverflow": false,
+    "activeElement": "BODY",
+    "console": [],
+    "url": "/admin/todo/task/",
+    "h1": "Select task to change",
+    "columns": [
+      "Model name",
+      "Add link",
+      "Change or view list link",
+      "Model name",
+      "Add link",
+      "Change or view list link",
+      "Title",
+      "Completed",
+      "Created at"
+    ],
+    "filter": true,
+    "search": true,
+    "editableCheckboxes": 4
+  }
+}

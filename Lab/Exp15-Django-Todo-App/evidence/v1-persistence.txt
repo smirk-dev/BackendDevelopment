@@ -1,0 +1,7 @@
+# Exp 15 v1 — persistence across a server restart
+  rows in db.sqlite3 before restart:
+    1 Write the Exp 15 README False
+    2 Revise Unit 3 notes on middleware True
+  server restarted on 3036 (new PID); list after restart:
+   <s>Revise Unit 3 notes on middleware</s> [Toggle /toggle/2/] [Delete /delete/2/]
+   Write the Exp 15 README [Toggle /toggle/1/] [Delete /delete/1/]

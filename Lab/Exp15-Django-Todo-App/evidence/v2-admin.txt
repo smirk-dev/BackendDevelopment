@@ -1,0 +1,44 @@
+# Exp 15 v2 — Django Admin (list_display, list_filter, search_fields, list_editable)
+
+$ DJANGO_SUPERUSER_PASSWORD=labpass-2026 venv/Scripts/python.exe manage.py createsuperuser --noinput --username admin --email admin@example.com
+Superuser created successfully.
+
+$ curl -X GET http://127.0.0.1:3037/admin/todo/task/ 
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /admin/login/?next=/admin/todo/task/
+
+$ curl -X GET http://127.0.0.1:3037/admin/login/ 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+
+$ curl -X POST http://127.0.0.1:3037/admin/login/ --data-urlencode csrfmiddlewaretoken=GocddFscFxs8Q48FU58oCcQ84QiIO1pl --data-urlencode username=admin --data-urlencode password=labpass-2026 --data-urlencode next=/admin/todo/task/
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /admin/todo/task/
+
+$ curl -X GET http://127.0.0.1:3037/admin/todo/task/ 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+  page title           : Select task to change | Django site admin
+  heading              : Select task to change
+  column headers       : ['Add link', 'Change or view list link', 'Model name', 'Add link', 'Change or view list link', '', 'Title', 'Completed', 'Created at']
+  rows                 : ['Revise Unit 3 notes on middleware', 'Write the Exp 15 README']
+  editable checkboxes  : 2
+  search box present   : True
+  filter options       : [('1', 'Yes'), ('0', 'No')]
+
+$ curl -X GET http://127.0.0.1:3037/admin/todo/task/?q=Revise 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+  rows -> ['Revise Unit 3 notes on middleware']
+
+$ curl -X GET http://127.0.0.1:3037/admin/todo/task/?completed__exact=0 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+  rows -> ['Write the Exp 15 README']
+
+$ curl -X GET http://127.0.0.1:3037/admin/todo/task/?completed__exact=1 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+  rows -> ['Revise Unit 3 notes on middleware']

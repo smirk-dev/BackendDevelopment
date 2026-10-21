@@ -1,0 +1,121 @@
+# Exp 15 v2 — curl journey against python manage.py runserver 3037
+
+$ curl -X GET http://127.0.0.1:3037/ 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+  rendered list:
+   No tasks yet. Add your first task.
+
+$ curl -X GET http://127.0.0.1:3037/add/ 
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+name="csrfmiddlewaretoken" value="bIrISaMW…"  (token in the form)
+
+$ curl -X POST http://127.0.0.1:3037/add/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y --data-urlencode title=Write the Exp 15 README
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3037/add/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y --data-urlencode title=Revise Unit 3 notes on middleware
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3037/add/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y --data-urlencode title=Submit Django lab
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3037/add/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y --data-urlencode title=
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  (empty title: redirected, nothing created)
+
+$ curl -X POST http://127.0.0.1:3037/add/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y --data-urlencode title=   
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  (whitespace-only title: v2 strips it, nothing created)
+  rendered list:
+   Submit Django lab (class=none) [Mark complete POST /toggle/3/] [Delete POST /delete/3/]
+   Revise Unit 3 notes on middleware (class=none) [Mark complete POST /toggle/2/] [Delete POST /delete/2/]
+   Write the Exp 15 README (class=none) [Mark complete POST /toggle/1/] [Delete POST /delete/1/]
+
+$ curl -X GET http://127.0.0.1:3037/toggle/2/ 
+HTTP/1.1 405 Method Not Allowed
+Content-Type: text/html; charset=utf-8
+Allow: POST
+  (@require_POST: a plain link or crawler cannot change data)
+
+$ curl -X POST http://127.0.0.1:3037/toggle/2/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  rendered list:
+   Submit Django lab (class=none) [Mark complete POST /toggle/3/] [Delete POST /delete/3/]
+   Revise Unit 3 notes on middleware (class=completed) [Mark incomplete POST /toggle/2/] [Delete POST /delete/2/]
+   Write the Exp 15 README (class=none) [Mark complete POST /toggle/1/] [Delete POST /delete/1/]
+
+$ curl -X POST http://127.0.0.1:3037/toggle/2/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X POST http://127.0.0.1:3037/toggle/2/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+
+$ curl -X GET http://127.0.0.1:3037/delete/3/ 
+HTTP/1.1 405 Method Not Allowed
+Content-Type: text/html; charset=utf-8
+Allow: POST
+
+$ curl -X POST http://127.0.0.1:3037/delete/3/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=utf-8
+Location: /
+  rendered list:
+   Revise Unit 3 notes on middleware (class=completed) [Mark incomplete POST /toggle/2/] [Delete POST /delete/2/]
+   Write the Exp 15 README (class=none) [Mark complete POST /toggle/1/] [Delete POST /delete/1/]
+
+$ curl -X POST http://127.0.0.1:3037/toggle/999/ --data-urlencode csrfmiddlewaretoken=cffV22sYUetHlaWRmElZZtwZbGz9586y
+HTTP/1.1 404 Not Found
+Content-Type: text/html; charset=utf-8
+  (get_object_or_404: unknown id -> 404)
+
+$ curl -X POST http://127.0.0.1:3037/delete/2/ 
+HTTP/1.1 403 Forbidden
+Content-Type: text/html; charset=utf-8
+  (POST without csrfmiddlewaretoken -> 403 CSRF verification failed)
+
+## static files served by runserver (DEBUG=True)
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/css/style.css 
+HTTP/1.1 200 OK
+Content-Type: text/css
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/css/add_task.css 
+HTTP/1.1 200 OK
+Content-Type: text/css
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/js/app.js 
+HTTP/1.1 200 OK
+Content-Type: text/javascript
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/js/char_count.js 
+HTTP/1.1 200 OK
+Content-Type: text/javascript
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/js/confirm-delete.js 
+HTTP/1.1 200 OK
+Content-Type: text/javascript
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/images/logo.png 
+HTTP/1.1 200 OK
+Content-Type: image/png
+
+$ curl -X GET http://127.0.0.1:3037/static/todo/missing.css 
+HTTP/1.1 404 Not Found
+Content-Type: text/html; charset=utf-8
