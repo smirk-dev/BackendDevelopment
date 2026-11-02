@@ -1,0 +1,10 @@
+/* Exp 11 site additions on top of ../css/style.css */
+#site-nav a[aria-current="page"] { color: var(--ink); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+#view:focus { outline: none; }
+#view-status:empty { display: none; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .8rem; margin: 1rem 0; }
+.stats div { padding: .8rem 1rem; border: 1px solid var(--rule); background: #fff; }
+.stats strong { display: block; font: 600 2rem var(--serif); color: var(--accent); }
+.controls { display: grid; gap: .6rem; margin: .8rem 0; }
+.count { color: var(--muted); font-size: .9rem; }
+tr.empty td { color: var(--muted); font-style: italic; }

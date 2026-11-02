@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Directory — Experiment 11</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 11</p>
+  <h1>Campus Directory</h1>
+  <p class="lede">A website built with HTML, CSS and JavaScript in which every page body, every
+    record and every count arrives by AJAX. The shell you are reading loads once; the navigation
+    swaps the section below without reloading.</p>
+  <nav aria-label="Site" id="site-nav">
+    <a href="#home" data-view="home">Home</a>
+    <a href="#students" data-view="students">Students</a>
+    <a href="#courses" data-view="courses">Courses</a>
+    <a href="#about" data-view="about">How it works</a>
+    <a href="../">Exp 09-11 home</a>
+  </nav>
+</header>
+
+<p class="status" id="view-status" role="status"></p>
+<main id="view" tabindex="-1"></main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+
+<script src="../vendor/jquery-3.7.1.min.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

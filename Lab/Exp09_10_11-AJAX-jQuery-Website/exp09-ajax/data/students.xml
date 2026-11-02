@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student id="101">
+        <name>Aarav</name>
+        <course>B.Tech CSE</course>
+        <email>aarav.101@stu.upes.ac.in</email>
+        <semester>5</semester>
+    </student>
+    <student id="102">
+        <name>Meera</name>
+        <course>B.Tech IT</course>
+        <email>meera.102@stu.upes.ac.in</email>
+        <semester>3</semester>
+    </student>
+    <student id="103">
+        <name>Kabir</name>
+        <course>B.Tech CSE</course>
+        <email>kabir.103@stu.upes.ac.in</email>
+        <semester>5</semester>
+    </student>
+    <student id="104">
+        <name>Ananya</name>
+        <course>BCA</course>
+        <email>ananya.104@stu.upes.ac.in</email>
+        <semester>1</semester>
+    </student>
+    <student id="105">
+        <name>Rohan</name>
+        <course>B.Tech CSE (AI &amp; ML)</course>
+        <email>rohan.105@stu.upes.ac.in</email>
+        <semester>7</semester>
+    </student>
+    <student id="106">
+        <name>Ishita</name>
+        <course>B.Tech IT</course>
+        <email>ishita.106@stu.upes.ac.in</email>
+        <semester>5</semester>
+    </student>
+    <student id="107">
+        <name>Vihaan</name>
+        <course>BCA</course>
+        <email>vihaan.107@stu.upes.ac.in</email>
+        <semester>3</semester>
+    </student>
+    <student id="108">
+        <name>Saanvi</name>
+        <course>B.Tech CSE (AI &amp; ML)</course>
+        <email>saanvi.108@stu.upes.ac.in</email>
+        <semester>1</semester>
+    </student>
+</students>

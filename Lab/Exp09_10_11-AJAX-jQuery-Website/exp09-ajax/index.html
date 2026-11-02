@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment 09 — AJAX with HTML, XML and JSON</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 09</p>
+  <h1>Programs using AJAX with HTML, XML and JSON data</h1>
+  <p class="lede">The same three kinds of response — an HTML fragment, an XML document and JSON —
+    requested twice: once with the original <code>XMLHttpRequest</code> object and once with the
+    modern <code>fetch()</code> API. Then the failure cases, and sending JSON to a server.</p>
+  <nav aria-label="Sections">
+    <a href="../">← Exp 09-11 home</a>
+    <a href="#xhr">1 · XMLHttpRequest</a>
+    <a href="#fetch">2 · fetch()</a>
+    <a href="#errors">3 · Errors</a>
+    <a href="#post">4 · Sending data</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="xhr">
+  <h2>1 — XMLHttpRequest</h2>
+  <p>The object AJAX was named after. Each request below logs its <code>readyState</code> changes
+    (1 opened → 2 headers received → 3 loading → 4 done) and the HTTP status.</p>
+
+  <article>
+    <h3>1.1 HTML fragment → <code>responseText</code></h3>
+    <div class="row"><button id="xhr-html">Load data/notice.html</button></div>
+    <p class="status" id="xhr-html-status" role="status"></p>
+    <div class="target" id="xhr-html-target"></div>
+  </article>
+
+  <article>
+    <h3>1.2 XML → <code>responseXML</code></h3>
+    <p>The browser parses XML responses automatically into a DOM document.</p>
+    <div class="row"><button id="xhr-xml">Load data/students.xml</button></div>
+    <p class="status" id="xhr-xml-status" role="status"></p>
+    <div class="table-scroll"><table><thead><tr><th>ID</th><th>Name</th><th>Course</th><th>Email</th><th>Sem</th></tr></thead>
+      <tbody id="xhr-xml-rows"></tbody></table></div>
+  </article>
+
+  <article>
+    <h3>1.3 JSON → <code>responseType = "json"</code></h3>
+    <div class="row"><button id="xhr-json">Load data/students.json</button></div>
+    <p class="status" id="xhr-json-status" role="status"></p>
+    <div class="table-scroll"><table><thead><tr><th>ID</th><th>Name</th><th>Course</th><th>Email</th><th>Sem</th></tr></thead>
+      <tbody id="xhr-json-rows"></tbody></table></div>
+  </article>
+
+  <pre class="out" id="xhr-log" aria-label="XMLHttpRequest log"></pre>
+</section>
+
+<section id="fetch">
+  <h2>2 — fetch()</h2>
+  <p>Promise-based. <code>fetch()</code> only rejects on a network failure, so every handler checks
+    <code>response.ok</code> itself, then picks the reader that matches the format:
+    <code>.text()</code>, <code>.text()</code> + <code>DOMParser</code>, or <code>.json()</code>.</p>
+
+  <article>
+    <h3>2.1 HTML fragment → <code>response.text()</code></h3>
+    <div class="row"><button id="fetch-html">Load data/notice.html</button></div>
+    <p class="status" id="fetch-html-status" role="status"></p>
+    <div class="target" id="fetch-html-target"></div>
+  </article>
+
+  <article>
+    <h3>2.2 XML → <code>response.text()</code> + <code>DOMParser</code></h3>
+    <div class="row"><button id="fetch-xml">Load data/students.xml</button></div>
+    <p class="status" id="fetch-xml-status" role="status"></p>
+    <div class="table-scroll"><table><thead><tr><th>ID</th><th>Name</th><th>Course</th><th>Email</th><th>Sem</th></tr></thead>
+      <tbody id="fetch-xml-rows"></tbody></table></div>
+  </article>
+
+  <article>
+    <h3>2.3 JSON → <code>response.json()</code></h3>
+    <div class="row"><button id="fetch-json">Load data/students.json</button></div>
+    <p class="status" id="fetch-json-status" role="status"></p>
+    <div class="table-scroll"><table><thead><tr><th>ID</th><th>Name</th><th>Course</th><th>Email</th><th>Sem</th></tr></thead>
+      <tbody id="fetch-json-rows"></tbody></table></div>
+  </article>
+</section>
+
+<section id="errors">
+  <h2>3 — When it goes wrong</h2>
+  <p>Each button requests something broken on purpose and shows how the code notices.</p>
+  <div class="row">
+    <button id="err-404-xhr">XHR: missing file (404)</button>
+    <button id="err-404-fetch">fetch: missing file (404)</button>
+    <button id="err-xml">Malformed XML</button>
+    <button id="err-json">Malformed JSON</button>
+    <button id="err-network">Unreachable server</button>
+  </div>
+  <pre class="out" id="err-log" aria-live="polite"></pre>
+</section>
+
+<section id="post">
+  <h2>4 — Sending JSON to the server</h2>
+  <p>AJAX is not only for reading. These send a JSON body with <code>POST</code> to the Express
+    backend's <code>/api/echo</code>, which answers <code>201 Created</code> with what it received.
+    (Needs <code>npm start</code>; a plain static server answers 404/501 and the status line says so.)</p>
+  <form id="post-form" class="row" autocomplete="off">
+    <label for="post-name">Name</label>
+    <input type="text" id="post-name" value="Suryansh">
+    <label for="post-course">Course</label>
+    <input type="text" id="post-course" value="B.Tech CSE (Full Stack)">
+    <button type="submit" data-via="xhr">POST with XHR</button>
+    <button type="submit" data-via="fetch">POST with fetch</button>
+  </form>
+  <p class="status" id="post-status" role="status"></p>
+  <pre class="out" id="post-out"></pre>
+</section>
+
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+<script src="ajax.js"></script>
+</body>
+</html>

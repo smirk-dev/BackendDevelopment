@@ -1,0 +1,32 @@
+<section>
+  <h2>How it works</h2>
+  <ol>
+    <li>The browser loads <code>index.html</code>, <code>site.css</code> and <code>site.js</code> once.</li>
+    <li>Clicking a navigation link changes the URL hash; <code>site.js</code> hears <code>hashchange</code>
+      and fetches <code>partials/&lt;page&gt;.html</code> into <code>&lt;main&gt;</code>.</li>
+    <li>Each page then requests its data — JSON, XML or the Express API — and builds the table or
+      cards with <code>textContent</code>, so data is never interpreted as HTML.</li>
+    <li>Presentation (HTML/CSS), logic (<code>site.js</code>) and data (<code>data/</code> or the API)
+      stay in separate files: swapping the static file for the backend changed one URL.</li>
+  </ol>
+
+  <h3>Fetch API vs jQuery AJAX — measured</h3>
+  <p>The manual's observation table, filled in by actually making the requests (one with each
+    library, against <code>data/students.json</code>).</p>
+  <div class="row"><button id="measure">Measure now</button></div>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Observation</th><th>Fetch API</th><th>jQuery AJAX</th></tr></thead>
+    <tbody id="measure-rows">
+      <tr><td>Library required</td><td>No additional library</td><td>jQuery <span id="jq-version"></span></td></tr>
+      <tr><td>Request method used</td><td>GET</td><td>GET</td></tr>
+      <tr><td>JSON parsing</td><td><code>response.json()</code></td><td><code>dataType: "json"</code></td></tr>
+      <tr><td>Success handling</td><td><code>try</code> / <code>await</code></td><td><code>success</code> callback</td></tr>
+      <tr><td>Error handling</td><td><code>catch</code> and status check</td><td><code>error</code> callback</td></tr>
+      <tr><td>DOM manipulation</td><td>Native JavaScript</td><td>jQuery or native JavaScript</td></tr>
+      <tr><td>HTTP status</td><td id="m-fetch-status">—</td><td id="m-jq-status">—</td></tr>
+      <tr><td>Response format</td><td id="m-fetch-type">—</td><td id="m-jq-type">—</td></tr>
+      <tr><td>Records received</td><td id="m-fetch-count">—</td><td id="m-jq-count">—</td></tr>
+      <tr><td>Duration</td><td id="m-fetch-ms">—</td><td id="m-jq-ms">—</td></tr>
+    </tbody>
+  </table></div>
+</section>

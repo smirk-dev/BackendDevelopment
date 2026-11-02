@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment 10 · Program 1 — jQuery selectors, DOM, events and effects</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 10 · Program 1</p>
+  <h1>jQuery: selectors, DOM manipulation, events and effects</h1>
+  <p class="lede">A small study planner built with jQuery 3.7.1 (served from <code>vendor/</code>,
+    no CDN). Every action writes the jQuery call it used to the log at the bottom.</p>
+  <nav aria-label="Sections">
+    <a href="../">← Exp 09-11 home</a>
+    <a href="program2-ajax.html">Program 2 · jQuery AJAX →</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="planner">
+  <h2>Study planner</h2>
+  <p>Add a topic, click a topic to mark it done (event delegation — works for items added later),
+    double-click to remove it.</p>
+  <form id="add-topic" class="row" autocomplete="off">
+    <label for="topic">Topic</label>
+    <input type="text" id="topic" maxlength="40" placeholder="e.g. Express middleware">
+    <button type="submit">Add</button>
+    <small id="char-count">0 / 40</small>
+  </form>
+  <ul id="topics" class="pick">
+    <li>HTML5 semantic elements</li>
+    <li>CSS flexbox and grid</li>
+    <li>ES6 modules</li>
+  </ul>
+  <p id="summary" role="status"></p>
+  <div class="row">
+    <button id="number-them" class="quiet">Number with .each()</button>
+    <button id="stripe" class="quiet">Highlight :even with .filter()</button>
+    <button id="clear-done" class="quiet">Remove done items</button>
+  </div>
+</section>
+
+<section id="effects">
+  <h2>Effects and CSS</h2>
+  <div class="row">
+    <button id="toggle-box">.toggle()</button>
+    <button id="fade-box">.fadeToggle()</button>
+    <button id="slide-box">.slideToggle()</button>
+    <button id="animate-box">.animate()</button>
+    <button id="css-box">.css() / .toggleClass()</button>
+    <button id="attr-box">.attr()</button>
+  </div>
+  <div id="box" class="demo-box" title="the demo box" aria-label="demo box"></div>
+  <p id="box-info"><small>box state appears here</small></p>
+</section>
+
+<section id="events">
+  <h2>Events</h2>
+  <p>Hover, focus and keyboard events, plus <code>.one()</code> (fires once) and <code>.off()</code>.</p>
+  <div id="hover-pad" class="pad" tabindex="0">Hover or focus me</div>
+  <div class="row" style="margin-top:.6rem">
+    <button id="once">.one('click') — only the first click counts</button>
+    <button id="unbind" class="quiet">.off() the hover handlers</button>
+  </div>
+</section>
+
+<section>
+  <h2>Log</h2>
+  <pre class="out" id="log" aria-live="polite"></pre>
+</section>
+
+</main>
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+
+<script src="../vendor/jquery-3.7.1.min.js"></script>
+<script src="program1-dom.js"></script>
+</body>
+</html>

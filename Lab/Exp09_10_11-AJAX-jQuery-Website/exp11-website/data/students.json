@@ -1,0 +1,60 @@
+{
+  "students": [
+    {
+      "id": 101,
+      "name": "Aarav",
+      "course": "B.Tech CSE",
+      "email": "aarav.101@stu.upes.ac.in",
+      "semester": 5
+    },
+    {
+      "id": 102,
+      "name": "Meera",
+      "course": "B.Tech IT",
+      "email": "meera.102@stu.upes.ac.in",
+      "semester": 3
+    },
+    {
+      "id": 103,
+      "name": "Kabir",
+      "course": "B.Tech CSE",
+      "email": "kabir.103@stu.upes.ac.in",
+      "semester": 5
+    },
+    {
+      "id": 104,
+      "name": "Ananya",
+      "course": "BCA",
+      "email": "ananya.104@stu.upes.ac.in",
+      "semester": 1
+    },
+    {
+      "id": 105,
+      "name": "Rohan",
+      "course": "B.Tech CSE (AI & ML)",
+      "email": "rohan.105@stu.upes.ac.in",
+      "semester": 7
+    },
+    {
+      "id": 106,
+      "name": "Ishita",
+      "course": "B.Tech IT",
+      "email": "ishita.106@stu.upes.ac.in",
+      "semester": 5
+    },
+    {
+      "id": 107,
+      "name": "Vihaan",
+      "course": "BCA",
+      "email": "vihaan.107@stu.upes.ac.in",
+      "semester": 3
+    },
+    {
+      "id": 108,
+      "name": "Saanvi",
+      "course": "B.Tech CSE (AI & ML)",
+      "email": "saanvi.108@stu.upes.ac.in",
+      "semester": 1
+    }
+  ]
+}

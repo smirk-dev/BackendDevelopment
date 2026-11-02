@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiments 09, 10 and 11 — AJAX, XML, JSON, jQuery and an Ajax website</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiments 09, 10 and 11 (combined)</p>
+  <h1>AJAX, XML, JSON, jQuery and interactive web development</h1>
+  <p class="lede">The manual treats the three experiments as one project. Its own step-by-step code
+    is kept unchanged in <code>manual/</code>; the three experiments are then built out in full in
+    their own folders, all served by one small Express server.</p>
+</header>
+
+<main>
+  <section>
+    <h2>Contents</h2>
+    <ol class="toc">
+      <li><strong>Manual walkthrough</strong> — the "Student Directory" exactly as the manual builds it:
+        <a href="manual/part-c-d/">Parts C-D (fetch for JSON and XML)</a> and
+        <a href="manual/part-e-f/">Parts E-F (jQuery <code>$.ajax</code> for JSON, fetch for XML)</a>.</li>
+      <li><strong>Experiment 09</strong> — <a href="exp09-ajax/">AJAX with HTML, XML and JSON</a>:
+        each format with <code>XMLHttpRequest</code> and with <code>fetch()</code>, the failure
+        cases, and POSTing JSON.</li>
+      <li><strong>Experiment 10</strong> — two jQuery programs:
+        <a href="exp10-jquery/program1-dom.html">Program 1, selectors, DOM, events and effects</a>;
+        <a href="exp10-jquery/program2-ajax.html">Program 2, jQuery AJAX</a>.</li>
+      <li><strong>Experiment 11</strong> — <a href="exp11-website/">Campus Directory</a>, a website in
+        HTML, CSS and JavaScript that loads every page and record with AJAX (Practice Tasks 1-5).</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Backend API</h2>
+    <p>Started with <code>npm start</code> (<code>server.js</code>, Express). Same records as the static files.</p>
+    <table>
+      <thead><tr><th>Route</th><th>Returns</th></tr></thead>
+      <tbody>
+        <tr><td><a href="/api/students"><code>GET /api/students</code></a></td><td>all students, <code>{ count, students }</code></td></tr>
+        <tr><td><code>GET /api/students?course=BCA</code></td><td>one course</td></tr>
+        <tr><td><code>GET /api/students?q=aa</code></td><td>names containing "aa"</td></tr>
+        <tr><td><a href="/api/students/101"><code>GET /api/students/101</code></a></td><td>one student, or 404</td></tr>
+        <tr><td><a href="/api/courses"><code>GET /api/courses</code></a></td><td>the course directory</td></tr>
+        <tr><td><code>POST /api/echo</code></td><td>201 with the JSON body it received</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+</body>
+</html>

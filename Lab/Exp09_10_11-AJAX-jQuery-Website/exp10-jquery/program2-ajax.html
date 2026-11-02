@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment 10 · Program 2 — jQuery AJAX</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Backend Development · CSFS3008P · Experiment 10 · Program 2</p>
+  <h1>jQuery AJAX: <code>$.ajax</code>, <code>$.getJSON</code>, <code>$.get</code>, <code>.load</code>, <code>$.post</code></h1>
+  <p class="lede">A course explorer whose data all arrives through jQuery's AJAX helpers. The
+    global <code>ajaxStart</code> / <code>ajaxStop</code> events drive the "loading" marker.
+    <span class="spinner" id="spinner" aria-hidden="true">loading…</span></p>
+  <nav aria-label="Sections">
+    <a href="../">← Exp 09-11 home</a>
+    <a href="program1-dom.html">← Program 1 · jQuery DOM</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="filter">
+  <h2>Students by course — <code>$.ajax</code> + <code>$.grep</code></h2>
+  <p>Practice Task 3, jQuery version: pick a course and load only its students.</p>
+  <div class="row">
+    <label for="course">Course</label>
+    <select id="course"><option value="">All courses</option></select>
+    <button id="load-course">Load students</button>
+  </div>
+  <p class="status" id="course-status" role="status"></p>
+  <div class="table-scroll"><table>
+    <thead><tr><th>ID</th><th>Name</th><th>Course</th><th>Email</th><th>Sem</th></tr></thead>
+    <tbody id="course-rows"></tbody>
+  </table></div>
+</section>
+
+<section id="courses">
+  <h2>Course catalogue — <code>$.getJSON</code></h2>
+  <div class="row"><button id="load-catalogue">Load courses.json</button></div>
+  <p class="status" id="catalogue-status" role="status"></p>
+  <div class="cards" id="catalogue"></div>
+</section>
+
+<section id="xml">
+  <h2>XML with <code>$.get</code> and <code>$(xml).find()</code></h2>
+  <div class="row"><button id="load-xml">Load students.xml</button></div>
+  <p class="status" id="xml-status" role="status"></p>
+  <ul id="xml-list"></ul>
+</section>
+
+<section id="fragment">
+  <h2>HTML fragment with <code>.load()</code></h2>
+  <div class="row"><button id="load-tip">Load data/tip.html #tip</button></div>
+  <div class="target" id="tip-target"></div>
+</section>
+
+<section id="parallel">
+  <h2>Two requests at once — <code>$.when</code></h2>
+  <div class="row"><button id="load-both">Load students and courses together</button></div>
+  <p class="status" id="both-status" role="status"></p>
+</section>
+
+<section id="post">
+  <h2>Sending data — <code>$.post</code> / <code>$.ajax({ method: "POST" })</code></h2>
+  <p>Needs the Express server (<code>npm start</code>), which echoes the body back.</p>
+  <div class="row"><button id="post-json">POST a student to /api/echo</button></div>
+  <p class="status" id="post-status" role="status"></p>
+  <pre class="out" id="post-out"></pre>
+</section>
+
+<section id="errors">
+  <h2>Error handling — <code>.fail()</code></h2>
+  <div class="row"><button id="load-missing">Request data/missing.json</button></div>
+  <p class="status" id="missing-status" role="status"></p>
+</section>
+
+<section>
+  <h2>Log</h2>
+  <pre class="out" id="log" aria-live="polite"></pre>
+</section>
+
+</main>
+<footer>Suryansh Mishra · 590012069 · Backend Development Lab</footer>
+
+<script src="../vendor/jquery-3.7.1.min.js"></script>
+<script src="program2-ajax.js"></script>
+</body>
+</html>

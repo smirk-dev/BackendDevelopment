@@ -1,0 +1,53 @@
+{
+  "courses": [
+    {
+      "code": "C101",
+      "title": "Backend Development",
+      "credits": 4,
+      "semester": 5,
+      "summary": "Node.js, Express, MongoDB, Django and REST APIs."
+    },
+    {
+      "code": "C102",
+      "title": "Discrete Mathematics",
+      "credits": 4,
+      "semester": 3,
+      "summary": "Logic, sets, relations, graphs and combinatorics."
+    },
+    {
+      "code": "C103",
+      "title": "Database Management Systems",
+      "credits": 4,
+      "semester": 3,
+      "summary": "Relational model, SQL, normalisation and transactions."
+    },
+    {
+      "code": "C104",
+      "title": "Object Oriented Programming",
+      "credits": 3,
+      "semester": 4,
+      "summary": "Classes, inheritance, polymorphism and design in Java."
+    },
+    {
+      "code": "C105",
+      "title": "Operating Systems",
+      "credits": 4,
+      "semester": 3,
+      "summary": "Processes, scheduling, memory and file systems."
+    },
+    {
+      "code": "C106",
+      "title": "Frontend Development",
+      "credits": 4,
+      "semester": 4,
+      "summary": "HTML, CSS, JavaScript and React fundamentals."
+    },
+    {
+      "code": "C107",
+      "title": "Data Communication and Networks",
+      "credits": 3,
+      "semester": 4,
+      "summary": "OSI and TCP/IP layers, routing and protocols."
+    }
+  ]
+}
