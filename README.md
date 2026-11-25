@@ -3,7 +3,7 @@
 Course: **Backend Development (CSFS3008P)** · B.Tech Full Stack, Semester 5 · UPES
 Instructor: Dr. Prateek Raj Gautam · Student: Suryansh Mishra (590012069, `smirk-dev`)
 
-All the coursework, one folder per experiment or task. Live index: <https://smirk-dev.github.io/BackendDevelopment/>
+All the coursework, one folder per experiment or task. Live site: <https://smirk-dev.github.io/BackendDevelopment/> shows every folder's README and downloads any of them, or all of them together, as a PDF report.
 
 - **PBL Assignment:** [smirk-dev/Backend-PBL](https://github.com/smirk-dev/Backend-PBL), the Exam 01 notes app with Docker, docker-compose, automated route tests and a scheduled GitHub Actions pipeline (test, then build and push to Docker Hub)
 - **Unit 4 hands-on (Docker + CI/CD):** [smirk-dev/FastAPI-Docker-Tutorial](https://github.com/smirk-dev/FastAPI-Docker-Tutorial), mounted here as the submodule [`Theory/Unit4-Docker-CICD`](Theory/Unit4-Docker-CICD/)
