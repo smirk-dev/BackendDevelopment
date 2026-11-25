@@ -14,11 +14,11 @@ with the actual output.
 | Task 4: Sessions, cookies and query strings | [`Task4/`](Task4/) | Unit 1, L06 Managing server-side Session, Cookie, and State Management | done, checked with curl cookie jars |
 | Task 5: localStorage, sessionStorage and JSON | [`Task5/`](Task5/) | Unit 1, L07 LocalStorage, SessionStorage and JSON, §1-11 | done, checked in headless Chrome |
 | Task 6: Server-side rendering and templating engines | [`Task6/`](Task6/) | Unit 1, L08 Server-Side Rendering and Templating Engines | done, Express + EJS and FastAPI + Jinja2 both run |
-| Unit 4: FastAPI + Docker + GitHub Actions CI/CD | [`Unit4-Docker-CICD/`](Unit4-Docker-CICD/) (git submodule) | Unit 4, Docker and CI/CD | done, in its own repo: [smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd](https://github.com/smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd) |
+| Unit 4: FastAPI + Docker + GitHub Actions CI/CD | [`Unit4-Docker-CICD/`](Unit4-Docker-CICD/) (git submodule) | Unit 4, Docker and CI/CD | done, in its own repo: [smirk-dev/FastAPI-Docker-Tutorial](https://github.com/smirk-dev/FastAPI-Docker-Tutorial) |
 | Assignment 1: Notes app | [`Assignment1-Notes-App/`](Assignment1-Notes-App/) | Unit 1, L07 §12 "Final Task: Build a Notes App" | done, 38/38 browser tests pass |
 | Assignment 2: PostgreSQL JSONB | [`Assignment2-PostgreSQL-JSONB/`](Assignment2-PostgreSQL-JSONB/), write-up [`Assignment 2 PostgreSQL JSONB.md`](Assignment%202%20PostgreSQL%20JSONB.md) (same text as [`590012069_assignment2.md`](590012069_assignment2.md)) | Assignment 2 brief (database unit; builds on Lab Exp 13 and 14) | done, every query run on Postgres 17 and MongoDB 8.2, outputs saved |
 | Assignment 3: Event-driven serverless (Topic 9) | [`Assignment3-Event-Driven-Serverless/`](Assignment3-Event-Driven-Serverless/) | Unit 5, L55-57 Serverless with AWS Lambda and L59 Assignment III | done, 12-slide deck, PDF and presenter notes |
-| PBL Assignment: Notes app with Docker and CI/CD | separate repo | Unit 4 PBL | done, in its own repo: [smirk-dev/backend-pbl-notes-cicd](https://github.com/smirk-dev/backend-pbl-notes-cicd) |
+| PBL Assignment: Notes app with Docker and CI/CD | separate repo | Unit 4 PBL | done, in its own repo: [smirk-dev/Backend-PBL](https://github.com/smirk-dev/Backend-PBL) |
 
 `Unit4-Docker-CICD` was the original `Task4` folder. It became a submodule pointing at its own
 repository, and `Task4/` now holds the L06 sessions and cookies task.

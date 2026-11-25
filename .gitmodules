@@ -1,3 +1,3 @@
 [submodule "Theory/Unit4-Docker-CICD"]
 	path = Theory/Unit4-Docker-CICD
-	url = https://github.com/smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd.git
+	url = https://github.com/smirk-dev/FastAPI-Docker-Tutorial.git

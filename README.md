@@ -3,10 +3,10 @@
 Course: **Backend Development (CSFS3008P)** · B.Tech Full Stack, Semester 5 · UPES
 Instructor: Dr. Prateek Raj Gautam · Student: Suryansh Mishra (590012069, `smirk-dev`)
 
-All the coursework, one folder per experiment or task. Live index: <https://smirk-dev.github.io/Backend-Development/>
+All the coursework, one folder per experiment or task. Live index: <https://smirk-dev.github.io/BackendDevelopment/>
 
-- **PBL Assignment:** [smirk-dev/backend-pbl-notes-cicd](https://github.com/smirk-dev/backend-pbl-notes-cicd), the Exam 01 notes app with Docker, docker-compose, automated route tests and a scheduled GitHub Actions pipeline (test, then build and push to Docker Hub)
-- **Unit 4 hands-on (Docker + CI/CD):** [smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd](https://github.com/smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd), mounted here as the submodule [`Theory/Unit4-Docker-CICD`](Theory/Unit4-Docker-CICD/)
+- **PBL Assignment:** [smirk-dev/Backend-PBL](https://github.com/smirk-dev/Backend-PBL), the Exam 01 notes app with Docker, docker-compose, automated route tests and a scheduled GitHub Actions pipeline (test, then build and push to Docker Hub)
+- **Unit 4 hands-on (Docker + CI/CD):** [smirk-dev/FastAPI-Docker-Tutorial](https://github.com/smirk-dev/FastAPI-Docker-Tutorial), mounted here as the submodule [`Theory/Unit4-Docker-CICD`](Theory/Unit4-Docker-CICD/)
 
 ## Lab experiments
 
@@ -46,7 +46,7 @@ Full table with the lecture each one comes from: [`Theory/README.md`](Theory/REA
 | Assignment 1: Notes app with localStorage | [`Theory/Assignment1-Notes-App/`](Theory/Assignment1-Notes-App/) |
 | Assignment 2: PostgreSQL JSONB vs MongoDB | [`Theory/Assignment2-PostgreSQL-JSONB/`](Theory/Assignment2-PostgreSQL-JSONB/) |
 | Assignment 3: Event-driven serverless (Topic 9) | [`Theory/Assignment3-Event-Driven-Serverless/`](Theory/Assignment3-Event-Driven-Serverless/) |
-| PBL Assignment | [smirk-dev/backend-pbl-notes-cicd](https://github.com/smirk-dev/backend-pbl-notes-cicd) |
+| PBL Assignment | [smirk-dev/Backend-PBL](https://github.com/smirk-dev/Backend-PBL) |
 
 ## Running any of them
 
