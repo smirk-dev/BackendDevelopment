@@ -198,10 +198,15 @@
       '<dt>Source</dt><dd>github.com/' + esc(S.repo) + '</dd></dl></header>';
   }
 
-  function printRoot(nodes, title) {
+  function fullName() { return S.sapId + '_' + S.student.replace(/\s+/g, '_') + '_Backend_Development_Report'; }
+  function reportHref(entry) { return 'reports/' + (entry ? fileBase(entry) + '_Report' : fullName()) + '.pdf'; }
+
+  // keep = lay the report out and stop (used to pre-build the PDFs in reports/).
+  function printRoot(nodes, title, keep) {
     var root = $('#print-root');
     root.innerHTML = '';
     nodes.forEach(function (n) { root.appendChild(n); });
+    if (keep) { document.title = title; return waitForImages(root, 20000); }
     var oldTitle = document.title;
     document.title = title;
     var restore = function () { document.title = oldTitle; root.innerHTML = ''; window.removeEventListener('afterprint', restore); };
@@ -214,17 +219,17 @@
     return (/^\d/.test(e.num) ? g.short + ' ' : '') + e.num;
   }
 
-  function printDoc(doc) {
+  function printDoc(doc, keep) {
     var e = doc.entry;
     return fetchMd(doc).then(function (md) {
       var sec = el('section', { class: 'p-doc' });
       sec.innerHTML = coverHtml(e ? entryLabel(e) + ': ' + e.title : doc.src.split('/').pop(), e ? e.summary : '');
       sec.appendChild(renderMarkdown(md, doc, { dropH1: !!e, idPrefix: 'p-' }));
-      return printRoot([sec], fileBase(e) + '_Report');
+      return printRoot([sec], fileBase(e) + '_Report', keep);
     });
   }
 
-  function printAll() {
+  function printAll(keep) {
     var list = S.entries.slice();
     var ov = $('#overlay'), msg = $('#overlay-msg');
     ov.hidden = false;
@@ -256,9 +261,27 @@
         nodes.push(sec);
       });
       msg.textContent = 'Loading screenshots';
-      return printRoot(nodes, S.sapId + '_' + S.student.replace(/\s+/g, '_') + '_Backend_Development_Report');
+      return printRoot(nodes, fullName(), keep);
     }).finally(function () { ov.hidden = true; });
   }
+
+  // Downloads the pre-built PDF from reports/; if it is not there yet, falls back to printing.
+  function downloadPdf(btn) {
+    var href = btn.getAttribute('data-href');
+    var all = btn.getAttribute('data-fallback') === 'all';
+    btn.disabled = true;
+    return fetch(href, { method: 'HEAD', cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('missing');
+      var a = el('a', { href: href, download: href.split('/').pop() });
+      document.body.appendChild(a); a.click(); a.remove();
+    }).catch(function () {
+      return all ? printAll() : current ? printDoc(current) : null;
+    }).finally(function () { btn.disabled = false; });
+  }
+
+  window.__report = function (id) {
+    return id === 'all' ? printAll(true) : printDoc(docFor(entryById(id)), true);
+  };
 
   // ---------- views ----------
 
@@ -285,7 +308,7 @@
         '<p class="lede">Every lab experiment, theory task, assignment and project from the course. Open any card to read its report, try the live page where there is one, or download a report as a PDF.</p>' +
         '<p class="who">' + esc(S.student) + ' &middot; ' + esc(S.sapId) + ' &middot; Instructor: ' + esc(S.instructor) + '</p>' +
         '<div class="hero-actions">' +
-          '<button class="btn primary" data-action="print-all" type="button">' + icon('download') + 'Download full report (PDF)</button>' +
+          '<button class="btn primary" data-action="pdf" data-fallback="all" data-href="' + reportHref(null) + '" type="button">' + icon('download') + 'Download full report (PDF)</button>' +
           '<a class="btn" href="' + GH + S.repo + '" target="_blank" rel="noopener">' + icon('github') + 'Source on GitHub</a>' +
         '</div>' +
         '<div class="stats">' + counts + '</div>' +
@@ -340,7 +363,8 @@
         '<div class="doc-actions">' +
           (e ? liveButtons(e, 'btn primary') : '') +
           '<a class="btn" href="' + sourceUrl(doc) + '" target="_blank" rel="noopener">' + icon('github') + 'Source</a>' +
-          '<button class="btn" type="button" data-action="print-doc">' + icon('download') + 'Download PDF</button>' +
+          (e ? '<button class="btn" type="button" data-action="pdf" data-href="' + reportHref(e) + '">' + icon('download') + 'Download PDF</button>'
+             : '<button class="btn" type="button" data-action="print-doc">' + icon('download') + 'Print / PDF</button>') +
           '<button class="btn" type="button" data-action="download-md">' + icon('file') + 'README.md</button>' +
         '</div>' +
       '</header>' +
@@ -470,7 +494,8 @@
     var b = ev.target.closest('[data-action]');
     if (!b) return;
     var act = b.getAttribute('data-action');
-    if (act === 'print-all') { b.disabled = true; printAll().finally(function () { b.disabled = false; }); }
+    if (act === 'pdf') downloadPdf(b);
+    else if (act === 'print-all') { b.disabled = true; printAll().finally(function () { b.disabled = false; }); }
     else if (act === 'print-doc' && current) { b.disabled = true; printDoc(current).finally(function () { b.disabled = false; }); }
     else if (act === 'download-md' && current) {
       var d = current;
