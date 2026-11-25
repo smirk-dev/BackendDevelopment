@@ -3,24 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Backend Development Lab (CSFS3008P) - all experiments</title>
+<title>Backend Development (CSFS3008P) - all experiments and tasks</title>
 </head>
 <body>
 
-<h1>Backend Development Lab (CSFS3008P)</h1>
-<p>B.Tech Full Stack, Semester 5, UPES. Student: Suryansh (smirk-dev). Instructor: Dr. Prateek Raj Gautam.</p>
+<h1>Backend Development (CSFS3008P)</h1>
+<p>B.Tech Full Stack, Semester 5, UPES. Student: Suryansh Mishra (590012069, smirk-dev). Instructor: Dr. Prateek Raj Gautam.</p>
 <p>Source: <a href="https://github.com/smirk-dev/Backend-Development">github.com/smirk-dev/Backend-Development</a>.
 Lab manuals: <a href="https://upessocs.github.io">upessocs.github.io</a>.
 <a href="learnings.html">Learnings from Experiment 07 &amp; 08</a>.</p>
+<p><strong>PBL Assignment:</strong> <a href="https://github.com/smirk-dev/backend-pbl-notes-cicd">smirk-dev/backend-pbl-notes-cicd</a>
+(notes app, Docker, docker-compose, automated tests, scheduled GitHub Actions to Docker Hub).
+<strong>Unit 4 hands-on:</strong> <a href="https://github.com/smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd">smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd</a>.</p>
 
-<h2>Experiments</h2>
-<p>Static experiments run right here (live link). Server experiments need Node.js and, where noted, MongoDB, so they link to source only.</p>
+<h2>Lab experiments</h2>
+<p>Static experiments run right here (live link). Server experiments need Node.js, Python, MongoDB or PostgreSQL, so they link to source only.</p>
 
 <table border="1" cellpadding="6" cellspacing="0">
 <thead>
 <tr><th>#</th><th>Experiment</th><th>Stack</th><th>Live</th><th>Source</th></tr>
 </thead>
 <tbody>
+<tr>
+<td>00</td>
+<td>Git basics and the optional Git hands-on: config, branches, merge, rebase, remotes, submodules, stash</td>
+<td>Git</td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/blob/main/Lab/Exp00-Git-Basics/git-lab-transcript.md">Transcript</a></td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp00-Git-Basics">Folder</a></td>
+</tr>
 <tr>
 <td>01</td>
 <td>A web page using all 110 non-deprecated HTML5 elements, with local SVG diagrams and generated media</td>
@@ -30,10 +40,38 @@ Lab manuals: <a href="https://upessocs.github.io">upessocs.github.io</a>.
 </tr>
 <tr>
 <td>02</td>
-<td>A web page with all types of CSS</td>
-<td>-</td>
-<td>Not started</td>
-<td>-</td>
+<td>All types of CSS on one page: external, imported, internal and inline, with the cascade and specificity rules that pick between them</td>
+<td>HTML, CSS</td>
+<td><a href="Lab/Exp02-CSS-Types/">Open</a></td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp02-CSS-Types">Folder</a></td>
+</tr>
+<tr>
+<td>03</td>
+<td>Responsive page without a framework: viewport meta, flexbox navigation, CSS Grid cards, media queries</td>
+<td>HTML, CSS</td>
+<td><a href="Lab/Exp03-Responsive-HTML-CSS/">Open</a></td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp03-Responsive-HTML-CSS">Folder</a></td>
+</tr>
+<tr>
+<td>04</td>
+<td>The same responsive page built with Bootstrap and with Tailwind CSS (both vendored, works offline)</td>
+<td>Bootstrap, Tailwind CSS</td>
+<td><a href="Lab/Exp04-Responsive-Bootstrap/">Open</a></td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp04-Responsive-Bootstrap">Folder</a></td>
+</tr>
+<tr>
+<td>05</td>
+<td>JavaScript arrays, objects and functions: the manual's programs plus a small library manager</td>
+<td>JS</td>
+<td><a href="Lab/Exp05-JS-Arrays-Objects-Functions/">Open</a></td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp05-JS-Arrays-Objects-Functions">Folder</a></td>
+</tr>
+<tr>
+<td>06</td>
+<td>Client-side form validation: a student registration form with every common kind of check</td>
+<td>HTML, CSS, JS</td>
+<td><a href="Lab/Exp06-Form-Validation/">Open</a></td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp06-Form-Validation">Folder</a></td>
 </tr>
 <tr>
 <td>07 &amp; 08</td>
@@ -41,6 +79,13 @@ Lab manuals: <a href="https://upessocs.github.io">upessocs.github.io</a>.
 <td>HTML, CSS, JS (ES modules)</td>
 <td><a href="Lab/Exp07_08-ES6-DOM-Events/">Demos</a>, <a href="Lab/Exp07_08-ES6-DOM-Events/todo/">To-Do app</a></td>
 <td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp07_08-ES6-DOM-Events">Folder</a></td>
+</tr>
+<tr>
+<td>09, 10, 11</td>
+<td>AJAX with XML and JSON, two jQuery programs, and a student/course website that loads its data with Ajax (Express API optional)</td>
+<td>JS, jQuery, Node.js, Express</td>
+<td><a href="Lab/Exp09_10_11-AJAX-jQuery-Website/">Open</a> (static data; the API needs a server)</td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp09_10_11-AJAX-jQuery-Website">Folder</a></td>
 </tr>
 <tr>
 <td>12</td>
@@ -57,11 +102,39 @@ Lab manuals: <a href="https://upessocs.github.io">upessocs.github.io</a>.
 <td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp12B-State-Management">Folder</a></td>
 </tr>
 <tr>
+<td>13</td>
+<td>Installing MongoDB, mongosh basics, users and authentication, and Mongoose connection, model, CRUD and queries</td>
+<td>MongoDB, mongosh, Mongoose</td>
+<td>Needs MongoDB</td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp13-MongoDB-Installation">Folder</a></td>
+</tr>
+<tr>
 <td>13A</td>
 <td>User registration and login with Express and Mongoose against local MongoDB (signup, login, list users)</td>
 <td>Node.js, Express, Mongoose, MongoDB</td>
 <td>Needs a server and MongoDB</td>
 <td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp13A-MongoDB-Mongoose-UserAuth">Folder</a></td>
+</tr>
+<tr>
+<td>13B</td>
+<td>JSON REST API: register, log in with a JWT, and manage your own to-do list</td>
+<td>Node.js, Express, Mongoose, JWT</td>
+<td>Needs a server and MongoDB</td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp13B-Express-MongoDB-Todo">Folder</a></td>
+</tr>
+<tr>
+<td>14</td>
+<td>PostgreSQL vs MongoDB: tables, constraints, joins, CRUD, psql commands, dump and restore, then the same data as documents</td>
+<td>PostgreSQL, MongoDB, Docker</td>
+<td>Needs PostgreSQL</td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp14-PostgreSQL">Folder</a></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Django To-Do app, both versions of the manual: models, views, templates, forms and the admin</td>
+<td>Python, Django</td>
+<td>Needs a server</td>
+<td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Lab/Exp15-Django-Todo-App">Folder</a></td>
 </tr>
 <tr>
 <td>Exam 01</td>
@@ -73,15 +146,23 @@ Lab manuals: <a href="https://upessocs.github.io">upessocs.github.io</a>.
 </tbody>
 </table>
 
-<h2>Theory tasks</h2>
+<h2>Theory tasks and assignments</h2>
 <table border="1" cellpadding="6" cellspacing="0">
 <thead>
-<tr><th>Task</th><th>What it is</th><th>Source</th></tr>
+<tr><th>Task</th><th>What it is</th><th>Live</th><th>Source</th></tr>
 </thead>
 <tbody>
-<tr><td>Task 1</td><td>Node.js Express server with a student list (EJS view engine)</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task1">Folder</a></td></tr>
-<tr><td>Task 2</td><td>Flask JSON API for students, plus EJS views</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task2">Folder</a></td></tr>
-<tr><td>Task 3</td><td>FastAPI student management API with Pydantic models</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task3">Folder</a></td></tr>
+<tr><td>Task 1</td><td>Node.js Express server with a student list (EJS view engine)</td><td>Needs a server</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task1">Folder</a></td></tr>
+<tr><td>Task 2</td><td>Flask JSON API for students, inspected with DevTools, curl and Postman</td><td>Needs a server</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task2">Folder</a></td></tr>
+<tr><td>Task 3</td><td>FastAPI student and course APIs with Pydantic models, Swagger and ReDoc</td><td>Needs a server</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task3">Folder</a></td></tr>
+<tr><td>Task 4</td><td>Sessions, cookies and query strings in Express</td><td>Needs a server</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task4">Folder</a></td></tr>
+<tr><td>Task 5</td><td>localStorage, sessionStorage and JSON</td><td><a href="Theory/Task5/">Open</a></td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task5">Folder</a></td></tr>
+<tr><td>Task 6</td><td>Server-side rendering: Express + EJS (partials, locals) and FastAPI + Jinja2</td><td>Needs a server</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Task6">Folder</a></td></tr>
+<tr><td>Unit 4</td><td>FastAPI in Docker, pushed to Docker Hub by GitHub Actions (weekly rebuild)</td><td>-</td><td><a href="https://github.com/smirk-dev/upes-sem5-backend-task4-fastapi-docker-cicd">Repository</a></td></tr>
+<tr><td>Assignment 1</td><td>Notes app on localStorage: add, edit, delete, search, drag to reorder, import and export</td><td><a href="Theory/Assignment1-Notes-App/">Open</a></td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Assignment1-Notes-App">Folder</a></td></tr>
+<tr><td>Assignment 2</td><td>PostgreSQL JSONB vs MongoDB: schema, queries, GIN indexes and timings</td><td>-</td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Assignment2-PostgreSQL-JSONB">Folder</a></td></tr>
+<tr><td>Assignment 3</td><td>Event-driven serverless architecture (Topic 9): slides, PDF and presenter notes</td><td><a href="Theory/Assignment3-Event-Driven-Serverless/Event-Driven%20Serverless.pdf">PDF</a></td><td><a href="https://github.com/smirk-dev/Backend-Development/tree/main/Theory/Assignment3-Event-Driven-Serverless">Folder</a></td></tr>
+<tr><td>PBL Assignment</td><td>Notes app with Docker, docker-compose, automated route tests and a scheduled CI/CD pipeline to Docker Hub</td><td>-</td><td><a href="https://github.com/smirk-dev/backend-pbl-notes-cicd">Repository</a></td></tr>
 </tbody>
 </table>
 
@@ -89,9 +170,11 @@ Lab manuals: <a href="https://upessocs.github.io">upessocs.github.io</a>.
 <table border="1" cellpadding="6" cellspacing="0">
 <thead><tr><th>Kind</th><th>Command</th></tr></thead>
 <tbody>
-<tr><td>Static (01, 07 &amp; 08)</td><td><code>py -3 -m http.server 8000</code> from the experiment folder, then open http://localhost:8000</td></tr>
-<tr><td>Node (12, 12B, 13A, Exam 01)</td><td><code>npm install</code> then <code>npm start</code> from the experiment folder, then open http://localhost:3000</td></tr>
-<tr><td>MongoDB experiments (13A, Exam 01)</td><td>A MongoDB server on localhost:27017 must be running first</td></tr>
+<tr><td>Static (01-08, 09-11 pages, Theory Task 5, Assignment 1)</td><td><code>py -3 -m http.server 8000</code> from the folder, then open http://localhost:8000</td></tr>
+<tr><td>Node (09-11 API, 12, 12B, 13, 13A, 13B, Exam 01, Theory Tasks 1, 4, 6)</td><td><code>npm install</code> then <code>npm start</code> from the folder; the port is in its README</td></tr>
+<tr><td>Python (Exp 15, Theory Tasks 2, 3, 6)</td><td>Create a virtual environment, <code>pip install -r requirements.txt</code>, then the command in the folder's README</td></tr>
+<tr><td>MongoDB experiments (13, 13A, 13B, Exam 01)</td><td>A MongoDB server on localhost:27017 must be running first</td></tr>
+<tr><td>PostgreSQL (14, Assignment 2)</td><td>Postgres in Docker; the exact commands are in the folder</td></tr>
 </tbody>
 </table>
 
